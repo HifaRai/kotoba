@@ -466,6 +466,7 @@ footer{
     <button class="btn secondary" onclick="previousKotoba()">←</button>
     <button class="btn" onclick="flipCard('kotobaCard')">Flip</button>
     <button class="btn green" onclick="nextKotoba()">→</button>
+    <button class="btn purple" onclick="shuffleKotoba()"> 🔀 Shuffle </button>
   </div>
 
 </section>
@@ -1116,6 +1117,30 @@ function previousKotoba(){
 }
 
 
+function shuffleKotoba() {
+    const chapterData = kotoba[currentKotobaChapter];
+
+    if (!chapterData || chapterData.length === 0) return;
+
+    let randomIndex = Math.floor(
+        Math.random() * chapterData.length
+    );
+
+    if (chapterData.length > 1) {
+        while (randomIndex === currentKotobaIndex) {
+            randomIndex = Math.floor(
+                Math.random() * chapterData.length
+            );
+        }
+    
+
+    currentKotobaIndex = randomIndex;
+
+    const card = document.getElementById("kotobaCard");
+    card.classList.remove("flipped");
+
+    showKotoba();
+}
 /* =========================
    KANJI
 ========================= */
