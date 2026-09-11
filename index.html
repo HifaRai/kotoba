@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>N4 Japanese Study</title>
+
+<style>
+:root{
+  --bg:#fffaf7;
+  --card:#ffffff;
+  --pink:#f7cfd8;
+  --pink2:#fbe5ea;
+  --lav:#dcd5f5;
+  --blue:#cfe7f5;
+  --green:#dcebd8;
+  --yellow:#f8e8b8;
+  --text:#3d3a40;
+  --muted:#88838b;
+  --shadow:0 8px 25px rgba(80,60,80,.08);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+button{
+  font-family:inherit;
+  border:none;
+  cursor:pointer;
+}
+
+header{
+  padding:25px 20px 15px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.logo{
+  font-size:14px;
+  color:var(--muted);
+  letter-spacing:2px;
+}
+
+header h1{
+  font-size:30px;
+  margin-top:5px;
+}
+
+header p{
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.nav{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding:15px 20px 20px;
+  max-width:1100px;
+  margin:auto;
+}
+
+.nav button{
+  flex:none;
+  padding:11px 17px;
+  border-radius:30px;
+  background:white;
+  color:var(--text);
+  box-shadow:var(--shadow);
+}
+
+.nav button.active{
+  background:var(--pink);
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:5px 20px 100px;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.hero{
+  padding:28px;
+  border-radius:30px;
+  background:linear-gradient(135deg,var(--pink2),var(--lav));
+  margin-bottom:20px;
+}
+
+.hero h2{
+  font-size:28px;
+}
+
+.hero p{
+  margin-top:8px;
+  color:#68636c;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.card h3{
+  margin-bottom:8px;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.icon{
+  font-size:30px;
+  margin-bottom:12px;
+}
+
+.btn{
+  padding:12px 18px;
+  border-radius:15px;
+  background:var(--pink);
+  margin-top:15px;
+}
+
+.btn.secondary{
+  background:var(--blue);
+}
+
+.btn.green{
+  background:var(--green);
+}
+
+.btn.yellow{
+  background:var(--yellow);
+}
+
+.section-title{
+  margin:25px 0 15px;
+}
+
+.selector{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:20px;
+}
+
+.selector button{
+  padding:9px 13px;
+  border-radius:15px;
+  background:white;
+  box-shadow:var(--shadow);
+}
+
+.selector button.selected{
+  background:var(--lav);
+}
+
+.flashcard{
+  max-width:600px;
+  margin:25px auto;
+  perspective:1000px;
+}
+
+.flash-inner{
+  min-height:330px;
+  position:relative;
+  transition:.6s;
+  transform-style:preserve-3d;
+}
+
+.flashcard.flipped .flash-inner{
+  transform:rotateY(180deg);
+}
+
+.flash-front,
+.flash-back{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  border-radius:30px;
+  box-shadow:var(--shadow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:30px;
+  text-align:center;
+}
+
+.flash-front{
+  background:linear-gradient(135deg,#fff,var(--pink2));
+}
+
+.flash-back{
+  background:linear-gradient(135deg,var(--lav),var(--blue));
+  transform:rotateY(180deg);
+}
+
+.word{
+  font-size:42px;
+  font-weight:700;
+}
+
+.reading{
+  font-size:20px;
+  margin-top:10px;
+  color:var(--muted);
+}
+
+.meaning{
+  font-size:25px;
+  margin-top:15px;
+}
+
+.flash-actions{
+  text-align:center;
+}
+
+.quiz{
+  max-width:700px;
+  margin:auto;
+}
+
+.quiz-question{
+  background:white;
+  border-radius:25px;
+  padding:30px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.quiz-question .jp{
+  font-size:32px;
+  font-weight:bold;
+}
+
+.answers{
+  display:grid;
+  gap:10px;
+  margin-top:20px;
+}
+
+.answers button{
+  padding:15px;
+  border-radius:15px;
+  background:#fff;
+  box-shadow:var(--shadow);
+  text-align:left;
+}
+
+.answers button:hover{
+  background:var(--pink2);
+}
+
+.result{
+  margin-top:15px;
+  min-height:25px;
+  font-weight:bold;
+}
+
+.bunpou{
+  display:grid;
+  gap:15px;
+}
+
+.grammar{
+  background:white;
+  border-radius:22px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.grammar .pattern{
+  display:inline-block;
+  background:var(--pink2);
+  padding:8px 12px;
+  border-radius:12px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.grammar .example{
+  margin-top:12px;
+  padding:14px;
+  background:#faf8fb;
+  border-radius:15px;
+}
+
+.progress{
+  height:9px;
+  background:#eee;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress div{
+  height:100%;
+  width:0;
+  background:#dcaebb;
+  transition:.3s;
+}
+
+footer{
+  text-align:center;
+  color:var(--muted);
+  padding:30px;
+}
+
+@media(max-width:600px){
+  header h1{
+    font-size:25px;
+  }
+
+  .hero{
+    padding:22px;
+  }
+
+  .word{
+    font-size:35px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">日本語 STUDY SPACE</div>
+  <h1>N4 Japanese Notes ♡</h1>
+  <p>Minna no Nihongo 2 • Vocabulary • Kanji • Bunpou • Quiz</p>
+</header>
+
+<nav class="nav">
+  <button class="active" onclick="showPage('home',this)">⌂ Home</button>
+  <button onclick="showPage('kotoba',this)">ことば Kotoba</button>
+  <button onclick="showPage('kanji',this)">漢字 Kanji</button>
+  <button onclick="showPage('bunpou',this)">文法 Bunpou</button>
+  <button onclick="showPage('quiz',this)">✦ Quiz</button>
+</nav>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <div class="hero">
+    <h2>Study Japanese, softly.</h2>
+    <p>
+      Belajar N4 dengan flashcard, kanji, kosakata,
+      bunpou, dan kuis dalam satu tempat.
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="icon">🌸</div>
+      <h3>Flashcard Kotoba</h3>
+      <p>Review kosakata Minna no Nihongo 2 bab 26–50.</p>
+      <button class="btn" onclick="showPageById('kotoba')">
+        Mulai belajar
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="icon">漢</div>
+      <h3>Flashcard Kanji</h3>
+      <p>Latihan membaca dan memahami kanji level N4.</p>
+      <button class="btn secondary" onclick="showPageById('kanji')">
+        Latihan kanji
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="icon">文</div>
+      <h3>Bunpou</h3>
+      <p>Ringkasan pola kalimat Minna no Nihongo 2.</p>
+      <button class="btn green" onclick="showPageById('bunpou')">
+        Lihat bunpou
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="icon">✦</div>
+      <h3>Quiz</h3>
+      <p>Uji kemampuanmu dengan pertanyaan random.</p>
+      <button class="btn yellow" onclick="showPageById('quiz')">
+        Mulai quiz
+      </button>
+    </div>
+
+  </div>
+
+  <h2 class="section-title">Your progress</h2>
+
+  <div class="card">
+    <p>Quiz score</p>
+    <h2 id="homeScore">0 / 0</h2>
+
+    <div class="progress">
+      <div id="progressBar"></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- KOTOBA -->
+<section id="kotoba" class="page">
+
+  <div class="hero">
+    <h2>ことば — Kotoba</h2>
+    <p>Flashcard vocabulary Minna no Nihongo 2.</p>
+  </div>
+
+  <div class="selector" id="kotobaChapters"></div>
+
+  <div class="flashcard" id="kotobaCard" onclick="flipCard('kotobaCard')">
+
+    <div class="flash-inner">
+
+      <div class="flash-front">
+        <div class="word" id="kotobaWord">相談します</div>
+        <div class="reading" id="kotobaReading">そうだんします</div>
+        <small>tap to flip</small>
+      </div>
+
+      <div class="flash-back">
+        <div class="meaning" id="kotobaMeaning">berkonsultasi</div>
+        <p id="kotobaExample"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="flash-actions">
+    <button class="btn secondary" onclick="previousKotoba()">←</button>
+    <button class="btn" onclick="flipCard('kotobaCard')">Flip</button>
+    <button class="btn green" onclick="nextKotoba()">→</button>
+  </div>
+
+</section>
+
+
+<!-- KANJI -->
+<section id="kanji" class="page">
+
+  <div class="hero">
+    <h2>漢字 — N4 Kanji</h2>
+    <p>Flashcard kanji dengan reading dan arti.</p>
+  </div>
+
+  <div class="flashcard" id="kanjiCard" onclick="flipCard('kanjiCard')">
+
+    <div class="flash-inner">
+
+      <div class="flash-front">
+        <div class="word" id="kanjiWord">経験</div>
+        <div class="reading" id="kanjiReading">けいけん</div>
+        <small>tap to flip</small>
+      </div>
+
+      <div class="flash-back">
+        <div class="meaning" id="kanjiMeaning">pengalaman</div>
+        <p id="kanjiExample"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="flash-actions">
+    <button class="btn secondary" onclick="previousKanji()">←</button>
+    <button class="btn" onclick="flipCard('kanjiCard')">Flip</button>
+    <button class="btn green" onclick="nextKanji()">→</button>
+  </div>
+
+</section>
+
+
+<!-- BUNPOU -->
+<section id="bunpou" class="page">
+
+  <div class="hero">
+    <h2>文法 — Bunpou</h2>
+    <p>Ringkasan pola penting Minna no Nihongo 2.</p>
+  </div>
+
+  <div class="selector">
+    <button onclick="filterGrammar('all')">All</button>
+    <button onclick="filterGrammar(26)">26</button>
+    <button onclick="filterGrammar(27)">27</button>
+    <button onclick="filterGrammar(28)">28</button>
+    <button onclick="filterGrammar(29)">29</button>
+    <button onclick="filterGrammar(30)">30</button>
+    <button onclick="filterGrammar(31)">31</button>
+    <button onclick="filterGrammar(32)">32</button>
+    <button onclick="filterGrammar(33)">33</button>
+    <button onclick="filterGrammar(34)">34</button>
+    <button onclick="filterGrammar(35)">35</button>
+    <button onclick="filterGrammar(36)">36</button>
+    <button onclick="filterGrammar(37)">37</button>
+    <button onclick="filterGrammar(38)">38</button>
+  </div>
+
+  <div class="bunpou" id="grammarList"></div>
+
+</section>
+
+
+<!-- QUIZ -->
+<section id="quiz" class="page">
+
+  <div class="hero">
+    <h2>✦ Quick Quiz</h2>
+    <p>Test your Japanese vocabulary.</p>
+  </div>
+
+  <div class="quiz">
+
+    <div class="quiz-question">
+
+      <p>Question <span id="quizNumber">1</span></p>
+
+      <div class="jp" id="question">
+        準備します
+      </div>
+
+      <div class="answers" id="answers"></div>
+
+      <div class="result" id="quizResult"></div>
+
+      <button class="btn" onclick="nextQuiz()">
+        Next question →
+      </button>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+      <p>Score</p>
+      <h2 id="score">0</h2>
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  Made for Japanese study ♡
+</footer>
+
+
+<script>
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
+
+  document.getElementById(page).classList.add("active");
+
+  document.querySelectorAll(".nav button")
+    .forEach(b=>b.classList.remove("active"));
+
+  if(button) button.classList.add("active");
+}
+
+function showPageById(id){
+
+  showPage(id);
+
+  document.querySelectorAll(".nav button")
+    .forEach(b=>{
+      if(
+        b.textContent.toLowerCase()
+        .includes(id === "kotoba" ? "kotoba" :
+        id === "kanji" ? "kanji" :
+        id === "bunpou" ? "bunpou" : "quiz")
+      ){
+        b.classList.add("active");
+      }
+    });
+}
+
+
+/* =========================
+   KOTOBA
+========================= */
+
+/*
+  Tambahkan kosakata lain dengan format:
+  {
+    word:"...",
+    reading:"...",
+    meaning:"...",
+    example:"..."
+  }
+*/
+
+const kotoba = {
+
+26:[
+ {word:"相談します",reading:"そうだんします",meaning:"berkonsultasi",example:"先生に相談します。"},
+ {word:"連絡します",reading:"れんらくします",meaning:"menghubungi",example:"あとで連絡します。"},
+ {word:"約束します",reading:"やくそくします",meaning:"berjanji",example:"友達と約束しました。"}
+],
+
+27:[
+ {word:"飼います",reading:"かいます",meaning:"memelihara",example:"犬を飼っています。"},
+ {word:"建てます",reading:"たてます",meaning:"membangun",example:"家を建てます。"},
+ {word:"走ります",reading:"はしります",meaning:"berlari",example:"毎朝走ります。"}
+],
+
+28:[
+ {word:"参加します",reading:"さんかします",meaning:"ikut serta",example:"パーティーに参加します。"},
+ {word:"働きます",reading:"はたらきます",meaning:"bekerja",example:"会社で働いています。"},
+ {word:"休みます",reading:"やすみます",meaning:"beristirahat/libur",example:"今日は休みます。"}
+],
+
+29:[
+ {word:"壊れます",reading:"こわれます",meaning:"rusak",example:"時計が壊れました。"},
+ {word:"割れます",reading:"われます",meaning:"pecah",example:"コップが割れました。"},
+ {word:"忘れます",reading:"わすれます",meaning:"lupa",example:"宿題を忘れました。"}
+],
+
+30:[
+ {word:"貼ります",reading:"はります",meaning:"menempelkan",example:"写真を貼ります。"},
+ {word:"飾ります",reading:"かざります",meaning:"menghias",example:"部屋を飾ります。"},
+ {word:"戻します",reading:"もどします",meaning:"mengembalikan",example:"本を戻します。"}
+],
+
+31:[
+ {word:"始まります",reading:"はじまります",meaning:"dimulai",example:"授業が始まります。"},
+ {word:"続けます",reading:"つづけます",meaning:"melanjutkan",example:"勉強を続けます。"},
+ {word:"見つけます",reading:"みつけます",meaning:"menemukan",example:"仕事を見つけました。"}
+],
+
+32:[
+ {word:"運動します",reading:"うんどうします",meaning:"berolahraga",example:"毎日運動します。"},
+ {word:"成功します",reading:"せいこうします",meaning:"berhasil",example:"試験に成功しました。"},
+ {word:"失敗します",reading:"しっぱいします",meaning:"gagal",example:"試験に失敗しました。"}
+],
+
+33:[
+ {word:"逃げます",reading:"にげます",meaning:"melarikan diri",example:"犬が逃げました。"},
+ {word:"騒ぎます",reading:"さわぎます",meaning:"ribut",example:"教室で騒がないでください。"},
+ {word:"守ります",reading:"まもります",meaning:"menaati/menjaga",example:"ルールを守ります。"}
+],
+
+34:[
+ {word:"磨きます",reading:"みがきます",meaning:"menggosok",example:"歯を磨きます。"},
+ {word:"組み立てます",reading:"くみたてます",meaning:"merakit",example:"机を組み立てます。"},
+ {word:"折ります",reading:"おります",meaning:"melipat/mematahkan",example:"紙を折ります。"}
+],
+
+35:[
+ {word:"咲きます",reading:"さきます",meaning:"mekar",example:"桜が咲きました。"},
+ {word:"変わります",reading:"かわります",meaning:"berubah",example:"季節が変わりました。"},
+ {word:"困ります",reading:"こまります",meaning:"kesulitan",example:"お金がなくて困っています。"}
+],
+
+36:[
+ {word:"測ります",reading:"はかります",meaning:"mengukur",example:"長さを測ります。"},
+ {word:"飛びます",reading:"とびます",meaning:"terbang",example:"鳥が飛びます。"},
+ {word:"直します",reading:"なおします",meaning:"memperbaiki",example:"自転車を直します。"}
+],
+
+37:[
+ {word:"褒めます",reading:"ほめます",meaning:"memuji",example:"先生が私を褒めました。"},
+ {word:"叱ります",reading:"しかります",meaning:"memarahi",example:"母に叱られました。"},
+ {word:"招待します",reading:"しょうたいします",meaning:"mengundang",example:"友達を招待します。"}
+],
+
+38:[
+ {word:"育てます",reading:"そだてます",meaning:"membesarkan",example:"子供を育てます。"},
+ {word:"運びます",reading:"はこびます",meaning:"membawa/mengangkut",example:"荷物を運びます。"},
+ {word:"亡くなります",reading:"なくなります",meaning:"meninggal",example:"祖父が亡くなりました。"}
+],
+
+39:[
+ {word:"間に合います",reading:"まにあいます",meaning:"tepat waktu",example:"電車に間に合いました。"},
+ {word:"遅れます",reading:"おくれます",meaning:"terlambat",example:"学校に遅れました。"},
+ {word:"驚きます",reading:"おどろきます",meaning:"terkejut",example:"ニュースに驚きました。"}
+],
+
+40:[
+ {word:"数えます",reading:"かぞえます",meaning:"menghitung",example:"人数を数えます。"},
+ {word:"測ります",reading:"はかります",meaning:"mengukur",example:"時間を測ります。"},
+ {word:"確かめます",reading:"たしかめます",meaning:"memastikan",example:"答えを確かめます。"}
+],
+
+41:[
+ {word:"頂きます",reading:"いただきます",meaning:"menerima",example:"先生から本を頂きました。"},
+ {word:"くださいます",reading:"くださいます",meaning:"memberikan kepada saya",example:"先生が本をくださいました。"},
+ {word:"差し上げます",reading:"さしあげます",meaning:"memberikan",example:"先生にプレゼントを差し上げます。"}
+],
+
+42:[
+ {word:"使います",reading:"つかいます",meaning:"menggunakan",example:"パソコンを使います。"},
+ {word:"利用します",reading:"りようします",meaning:"memanfaatkan",example:"電車を利用します。"},
+ {word:"必要です",reading:"ひつようです",meaning:"diperlukan",example:"時間が必要です。"}
+],
+
+43:[
+ {word:"増えます",reading:"ふえます",meaning:"bertambah",example:"人口が増えました。"},
+ {word:"減ります",reading:"へります",meaning:"berkurang",example:"体重が減りました。"},
+ {word:"上がります",reading:"あがります",meaning:"naik",example:"温度が上がります。"}
+],
+
+44:[
+ {word:"選びます",reading:"えらびます",meaning:"memilih",example:"好きな色を選びます。"},
+ {word:"間違えます",reading:"まちがえます",meaning:"salah",example:"答えを間違えました。"},
+ {word:"確認します",reading:"かくにんします",meaning:"memeriksa",example:"予定を確認します。"}
+],
+
+45:[
+ {word:"謝ります",reading:"あやまります",meaning:"meminta maaf",example:"友達に謝ります。"},
+ {word:"信じます",reading:"しんじます",meaning:"percaya",example:"あなたを信じます。"},
+ {word:"知らせます",reading:"しらせます",meaning:"memberitahu",example:"結果を知らせます。"}
+],
+
+46:[
+ {word:"焼きます",reading:"やきます",meaning:"memanggang",example:"パンを焼きます。"},
+ {word:"沸かします",reading:"わかします",meaning:"mendidihkan",example:"お湯を沸かします。"},
+ {word:"冷やします",reading:"ひやします",meaning:"mendinginkan",example:"飲み物を冷やします。"}
+],
+
+47:[
+ {word:"発表します",reading:"はっぴょうします",meaning:"mempresentasikan",example:"明日発表します。"},
+ {word:"到着します",reading:"とうちゃくします",meaning:"tiba",example:"駅に到着しました。"},
+ {word:"説明します",reading:"せつめいします",meaning:"menjelaskan",example:"先生が説明します。"}
+],
+
+48:[
+ {word:"預けます",reading:"あずけます",meaning:"menitipkan",example:"荷物を預けます。"},
+ {word:"迎えます",reading:"むかえます",meaning:"menjemput",example:"駅へ迎えに行きます。"},
+ {word:"連れて行きます",reading:"つれていきます",meaning:"membawa seseorang pergi",example:"友達を旅行に連れて行きます。"}
+],
+
+49:[
+ {word:"伺います",reading:"うかがいます",meaning:"berkunjung/bertanya secara sopan",example:"明日伺います。"},
+ {word:"申します",reading:"もうします",meaning:"berkata/bernama secara sopan",example:"田中と申します。"},
+ {word:"存じます",reading:"ぞんじます",meaning:"mengetahui secara sopan",example:"よく存じています。"}
+],
+
+50:[
+ {word:"参ります",reading:"まいります",meaning:"datang/pergi secara sopan",example:"明日参ります。"},
+ {word:"おります",reading:"おります",meaning:"ada secara sopan",example:"こちらにおります。"},
+ {word:"いたします",reading:"いたします",meaning:"melakukan secara sopan",example:"よろしくお願いいたします。"}
+]
+
+};
+
+let selectedChapter=26;
+let kotobaIndex=0;
+
+const chapterContainer=
+document.getElementById("kotobaChapters");
+
+for(let i=26;i<=50;i++){
+
+  const btn=document.createElement("button");
+
+  btn.textContent="Bab "+i;
+
+  btn.onclick=()=>{
+    selectedChapter=i;
+    kotobaIndex=0;
+
+    document.querySelectorAll("#kotobaChapters button")
+      .forEach(x=>x.classList.remove("selected"));
+
+    btn.classList.add("selected");
+
+    updateKotoba();
+  };
+
+  chapterContainer.appendChild(btn);
+}
+
+chapterContainer.children[0].classList.add("selected");
+
+function updateKotoba(){
+
+  const item=kotoba[selectedChapter][kotobaIndex];
+
+  document.getElementById("kotobaWord").textContent=item.word;
+  document.getElementById("kotobaReading").textContent=item.reading;
+  document.getElementById("kotobaMeaning").textContent=item.meaning;
+  document.getElementById("kotobaExample").textContent=item.example;
+
+  document.getElementById("kotobaCard")
+    .classList.remove("flipped");
+}
+
+function nextKotoba(){
+
+  kotobaIndex++;
+
+  if(kotobaIndex>=kotoba[selectedChapter].length)
+    kotobaIndex=0;
+
+  updateKotoba();
+}
+
+function previousKotoba(){
+
+  kotobaIndex--;
+
+  if(kotobaIndex<0)
+    kotobaIndex=kotoba[selectedChapter].length-1;
+
+  updateKotoba();
+}
+
+
+/* =========================
+   KANJI
+========================= */
+
+const kanji=[
+
+ {word:"経験",reading:"けいけん",meaning:"pengalaman",example:"日本へ行く前に、いろいろな経験をしたいです。"},
+ {word:"必要",reading:"ひつよう",meaning:"perlu",example:"パスポートが必要です。"},
+ {word:"準備",reading:"じゅんび",meaning:"persiapan",example:"旅行の準備をします。"},
+ {word:"説明",reading:"せつめい",meaning:"penjelasan",example:"先生が説明します。"},
+ {word:"連絡",reading:"れんらく",meaning:"kontak",example:"後で連絡します。"},
+ {word:"約束",reading:"やくそく",meaning:"janji",example:"友達と約束があります。"},
+ {word:"参加",reading:"さんか",meaning:"partisipasi",example:"イベントに参加します。"},
+ {word:"成功",reading:"せいこう",meaning:"keberhasilan",example:"試験に成功しました。"},
+ {word:"失敗",reading:"しっぱい",meaning:"kegagalan",example:"失敗から学びます。"},
+ {word:"注意",reading:"ちゅうい",meaning:"perhatian",example:"車に注意してください。"},
+ {word:"安心",reading:"あんしん",meaning:"lega/tenang",example:"無事で安心しました。"},
+ {word:"安全",reading:"あんぜん",meaning:"aman",example:"ここは安全です。"},
+ {word:"危険",reading:"きけん",meaning:"bahaya",example:"ここは危険です。"},
+ {word:"文化",reading:"ぶんか",meaning:"budaya",example:"日本の文化を勉強します。"},
+ {word:"社会",reading:"しゃかい",meaning:"masyarakat",example:"社会について考えます。"},
+ {word:"世界",reading:"せかい",meaning:"dunia",example:"世界を旅行したいです。"},
+ {word:"生活",reading:"せいかつ",meaning:"kehidupan",example:"日本の生活に慣れたいです。"},
+ {word:"仕事",reading:"しごと",meaning:"pekerjaan",example:"仕事を探しています。"},
+ {word:"会社",reading:"かいしゃ",meaning:"perusahaan",example:"会社で働きます。"},
+ {word:"時間",reading:"じかん",meaning:"waktu",example:"時間があります。"},
+ {word:"場所",reading:"ばしょ",meaning:"tempat",example:"好きな場所です。"},
+ {word:"理由",reading:"りゆう",meaning:"alasan",example:"理由を説明します。"},
+ {word:"問題",reading:"もんだい",meaning:"masalah/soal",example:"問題を解きます。"},
+ {word:"答え",reading:"こたえ",meaning:"jawaban",example:"答えを書きます。"},
+ {word:"方法",reading:"ほうほう",meaning:"cara/metode",example:"いい方法を考えます。"},
+ {word:"意味",reading:"いみ",meaning:"arti",example:"この言葉の意味は何ですか。"},
+ {word:"気持ち",reading:"きもち",meaning:"perasaan",example:"気持ちを伝えます。"},
+ {word:"自由",reading:"じゆう",meaning:"bebas",example:"自由な時間が好きです。"},
+ {word:"未来",reading:"みらい",meaning:"masa depan",example:"未来について考えます。"},
+ {word:"目標",reading:"もくひょう",meaning:"target",example:"目標を決めます。"}
+
+];
+
+let kanjiIndex=0;
+
+function updateKanji(){
+
+  const item=kanji[kanjiIndex];
+
+  document.getElementById("kanjiWord").textContent=item.word;
+  document.getElementById("kanjiReading").textContent=item.reading;
+  document.getElementById("kanjiMeaning").textContent=item.meaning;
+  document.getElementById("kanjiExample").textContent=item.example;
+
+  document.getElementById("kanjiCard")
+    .classList.remove("flipped");
+}
+
+function nextKanji(){
+
+  kanjiIndex++;
+
+  if(kanjiIndex>=kanji.length)
+    kanjiIndex=0;
+
+  updateKanji();
+}
+
+function previousKanji(){
+
+  kanjiIndex--;
+
+  if(kanjiIndex<0)
+    kanjiIndex=kanji.length-1;
+
+  updateKanji();
+}
+
+
+/* =========================
+   FLASHCARD
+========================= */
+
+function flipCard(id){
+
+  document.getElementById(id)
+    .classList.toggle("flipped");
+}
+
+
+/* =========================
+   BUNPOU
+========================= */
+
+const grammar=[
+
+{
+chapter:26,
+pattern:"〜んです",
+meaning:"memberikan penjelasan/alasan",
+example:"どうして遅れたんですか。"
+},
+
+{
+chapter:26,
+pattern:"〜んですが、〜",
+meaning:"membuka topik sebelum meminta sesuatu",
+example:"日本語を勉強したいんですが、いい本がありますか。"
+},
+
+{
+chapter:27,
+pattern:"可能形",
+meaning:"bentuk kemampuan: bisa melakukan",
+example:"日本語が話せます。"
+},
+
+{
+chapter:27,
+pattern:"〜しか〜ません",
+meaning:"hanya... (dengan bentuk negatif)",
+example:"100円しかありません。"
+},
+
+{
+chapter:28,
+pattern:"〜ながら",
+meaning:"melakukan dua kegiatan secara bersamaan",
+example:"音楽を聞きながら勉強します。"
+},
+
+{
+chapter:28,
+pattern:"〜ています",
+meaning:"kebiasaan atau keadaan yang berlangsung",
+example:"毎日日本語を勉強しています。"
+},
+
+{
+chapter:29,
+pattern:"〜ています",
+meaning:"menunjukkan keadaan sebagai hasil suatu kejadian",
+example:"窓が開いています。"
+},
+
+{
+chapter:29,
+pattern:"自動詞",
+meaning:"kata kerja intransitif",
+example:"ドアが開きました。"
+},
+
+{
+chapter:30,
+pattern:"〜てあります",
+meaning:"suatu keadaan hasil tindakan yang disengaja",
+example:"机の上に本が置いてあります。"
+},
+
+{
+chapter:30,
+pattern:"〜ておきます",
+meaning:"melakukan sesuatu sebagai persiapan",
+example:"旅行の前にホテルを予約しておきます。"
+},
+
+{
+chapter:31,
+pattern:"意向形",
+meaning:"bentuk volisional: ayo / berniat",
+example:"一緒に行こう。"
+},
+
+{
+chapter:31,
+pattern:"〜ようと思っています",
+meaning:"berniat melakukan sesuatu",
+example:"日本へ行こうと思っています。"
+},
+
+{
+chapter:32,
+pattern:"〜ほうがいいです",
+meaning:"sebaiknya",
+example:"もっと休んだほうがいいです。"
+},
+
+{
+chapter:32,
+pattern:"〜でしょう",
+meaning:"kemungkinan / perkiraan",
+example:"明日は雨でしょう。"
+},
+
+{
+chapter:33,
+pattern:"命令形・禁止形",
+meaning:"perintah dan larangan",
+example:"ここに入るな。"
+},
+
+{
+chapter:33,
+pattern:"〜と言います",
+meaning:"mengutip perkataan",
+example:"先生は明日来ると言いました。"
+},
+
+{
+chapter:34,
+pattern:"〜とおりに",
+meaning:"sesuai dengan / mengikuti",
+example:"説明書のとおりに作ります。"
+},
+
+{
+chapter:34,
+pattern:"〜たあとで",
+meaning:"setelah melakukan sesuatu",
+example:"ご飯を食べたあとで勉強します。"
+},
+
+{
+chapter:35,
+pattern:"〜ば",
+meaning:"bentuk pengandaian",
+example:"時間があれば、行きます。"
+},
+
+{
+chapter:35,
+pattern:"〜なら",
+meaning:"kalau mengenai / jika",
+example:"日本へ行くなら、東京がおすすめです。"
+},
+
+{
+chapter:36,
+pattern:"〜ように",
+meaning:"agar / supaya",
+example:"忘れないようにメモします。"
+},
+
+{
+chapter:36,
+pattern:"〜ようになります",
+meaning:"menjadi bisa / mengalami perubahan",
+example:"日本語が話せるようになりました。"
+},
+
+{
+chapter:37,
+pattern:"受身形",
+meaning:"bentuk pasif",
+example:"先生に褒められました。"
+},
+
+{
+chapter:38,
+pattern:"〜のは",
+meaning:"menjadikan klausa sebagai topik",
+example:"日本語を勉強するのは楽しいです。"
+},
+
+{
+chapter:38,
+pattern:"〜のが",
+meaning:"menyatakan hal yang disukai/tidak disukai",
+example:"歌うのが好きです。"
+},
+
+{
+chapter:39,
+pattern:"〜て",
+meaning:"menunjukkan sebab/alasan",
+example:"病気になって、学校を休みました。"
+},
+
+{
+chapter:40,
+pattern:"〜かどうか",
+meaning:"apakah atau tidak",
+example:"来るかどうかわかりません。"
+},
+
+{
+chapter:40,
+pattern:"疑問詞＋〜か",
+meaning:"klausa pertanyaan tidak langsung",
+example:"何を食べるか決めました。"
+},
+
+{
+chapter:41,
+pattern:"授受表現",
+meaning:"memberi dan menerima secara sopan",
+example:"先生が本をくださいました。"
+},
+
+{
+chapter:42,
+pattern:"〜ために",
+meaning:"untuk / demi suatu tujuan",
+example:"日本で働くために勉強しています。"
+},
+
+{
+chapter:43,
+pattern:"〜そうです",
+meaning:"kelihatannya / tampaknya",
+example:"このケーキはおいしそうです。"
+},
+
+{
+chapter:44,
+pattern:"〜すぎます",
+meaning:"terlalu...",
+example:"このかばんは高すぎます。"
+},
+
+{
+chapter:44,
+pattern:"〜やすい / 〜にくい",
+meaning:"mudah / sulit dilakukan",
+example:"この本は読みやすいです。"
+},
+
+{
+chapter:45,
+pattern:"〜場合は",
+meaning:"dalam kasus / jika",
+example:"雨の場合は中止します。"
+},
+
+{
+chapter:46,
+pattern:"〜ところです",
+meaning:"tepat sedang/akan/setelah melakukan",
+example:"今から出かけるところです。"
+},
+
+{
+chapter:47,
+pattern:"〜そうです",
+meaning:"katanya / menurut informasi",
+example:"明日は雨が降るそうです。"
+},
+
+{
+chapter:48,
+pattern:"使役形",
+meaning:"menyuruh/membiarkan seseorang melakukan",
+example:"母は私に野菜を食べさせました。"
+},
+
+{
+chapter:49,
+pattern:"尊敬語",
+meaning:"bahasa hormat",
+example:"先生は何を召し上がりますか。"
+},
+
+{
+chapter:50,
+pattern:"謙譲語",
+meaning:"bahasa merendahkan diri",
+example:"私が説明いたします。"
+}
+
+];
+
+function renderGrammar(list=grammar){
+
+  const container=document.getElementById("grammarList");
+
+  container.innerHTML="";
+
+  list.forEach(g=>{
+
+    const div=document.createElement("div");
+
+    div.className="grammar";
+
+    div.innerHTML=`
+      <small>MINNA NO NIHONGO II • BAB ${g.chapter}</small>
+      <br><br>
+      <span class="pattern">${g.pattern}</span>
+      <p>${g.meaning}</p>
+      <div class="example">
+        🇯🇵 ${g.example}
+      </div>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+function filterGrammar(chapter){
+
+  if(chapter==="all"){
+    renderGrammar();
+    return;
+  }
+
+  renderGrammar(
+    grammar.filter(g=>g.chapter===chapter)
+  );
+}
+
+renderGrammar();
+
+
+/* =========================
+   QUIZ
+========================= */
+
+const quizData=[
+
+{
+q:"相談します",
+answers:["berkonsultasi","berlari","memasak","menunggu"],
+correct:"berkonsultasi"
+},
+
+{
+q:"準備します",
+answers:["menjual","mempersiapkan","menghapus","membeli"],
+correct:"mempersiapkan"
+},
+
+{
+q:"経験",
+answers:["pengalaman","perusahaan","peraturan","perasaan"],
+correct:"pengalaman"
+},
+
+{
+q:"必要",
+answers:["bahaya","perlu","bebas","sulit"],
+correct:"perlu"
+},
+
+{
+q:"参加します",
+answers:["berpartisipasi","berhenti","meminjam","mengirim"],
+correct:"berpartisipasi"
+},
+
+{
+q:"失敗します",
+answers:["berhasil","gagal","berubah","beristirahat"],
+correct:"gagal"
+},
+
+{
+q:"守ります",
+answers:["memuji","menaati","menghitung","membangun"],
+correct:"menaati"
+},
+
+{
+q:"未来",
+answers:["masa lalu","masa depan","sekarang","kemarin"],
+correct:"masa depan"
+},
+
+{
+q:"選びます",
+answers:["memilih","mengukur","menjelaskan","mengundang"],
+correct:"memilih"
+},
+
+{
+q:"謝ります",
+answers:["percaya","meminta maaf","melupakan","menjemput"],
+correct:"meminta maaf"
+}
+
+];
+
+let quizIndex=0;
+let score=0;
+let answered=false;
+
+function loadQuiz(){
+
+  answered=false;
+
+  const q=quizData[quizIndex];
+
+  document.getElementById("question").textContent=q.q;
+
+  document.getElementById("quizNumber").textContent=
+    quizIndex+1;
+
+  document.getElementById("quizResult").textContent="";
+
+  const answers=document.getElementById("answers");
+
+  answers.innerHTML="";
+
+  q.answers
+    .sort(()=>Math.random()-.5)
+    .forEach(answer=>{
+
+      const btn=document.createElement("button");
+
+      btn.textContent=answer;
+
+      btn.onclick=()=>checkAnswer(answer,btn);
+
+      answers.appendChild(btn);
+
+    });
+}
+
+function checkAnswer(answer,button){
+
+  if(answered) return;
+
+  answered=true;
+
+  const correct=quizData[quizIndex].correct;
+
+  if(answer===correct){
+
+    score++;
+
+    button.style.background="#dcebd8";
+
+    document.getElementById("quizResult")
+      .textContent="✓ Benar! よくできました！";
+
+  }else{
+
+    button.style.background="#f7cfd8";
+
+    document.getElementById("quizResult")
+      .textContent="✗ Jawaban: "+correct;
+
+  }
+
+  document.getElementById("score").textContent=score;
+
+  updateProgress();
+}
+
+function nextQuiz(){
+
+  quizIndex++;
+
+  if(quizIndex>=quizData.length){
+
+    quizIndex=0;
+
+    alert("Quiz selesai! Score: "+score+"/"+quizData.length);
+
+  }
+
+  loadQuiz();
+}
+
+function updateProgress(){
+
+  const percentage=
+    Math.min(
+      (score/quizData.length)*100,
+      100
+    );
+
+  document.getElementById("progressBar")
+    .style.width=percentage+"%";
+
+  document.getElementById("homeScore")
+    .textContent=score+" / "+quizData.length;
+}
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+updateKotoba();
+updateKanji();
+loadQuiz();
+
+</script>
+
+</body>
+</html>
