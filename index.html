@@ -1117,21 +1117,23 @@ function previousKotoba(){
 }
 
 
-function shuffleKotoba() {
-    const chapterData = kotoba[currentKotobaChapter];
+function shuffleKotoba(){
 
-    if (!chapterData || chapterData.length === 0) return;
+    const data = kotoba[selectedChapter];
 
-    let randomIndex = Math.floor(
-        Math.random() * chapterData.length
-    );
+    if (!data || data.length <= 1) return;
 
-    if (chapterData.length > 1) {
-        while (randomIndex === currentKotobaIndex) {
-            randomIndex = Math.floor(
-                Math.random() * chapterData.length
-            );
-        }
+    let randomIndex;
+
+    do {
+        randomIndex = Math.floor(Math.random() * data.length);
+    } while (randomIndex === kotobaIndex);
+
+    kotobaIndex = randomIndex;
+
+    updateKotoba();
+}
+        
     
 
     currentKotobaIndex = randomIndex;
