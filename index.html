@@ -3456,6 +3456,258 @@ function flipCard(id){
 }
 
 
+// ================================
+// IRODORI KANJI WORDS
+// ================================
+
+const irodoriKanji = {
+
+  9: [
+    {kanji:"高校", reading:"こうこう", meaning:"SMA"},
+    {kanji:"大学", reading:"だいがく", meaning:"universitas"},
+    {kanji:"練習", reading:"れんしゅう", meaning:"latihan"},
+    {kanji:"漢字", reading:"かんじ", meaning:"kanji"},
+    {kanji:"無料", reading:"むりょう", meaning:"gratis"},
+    {kanji:"言う", reading:"いう", meaning:"mengatakan"},
+    {kanji:"書く", reading:"かく", meaning:"menulis"},
+    {kanji:"貸す", reading:"かす", meaning:"meminjamkan"},
+    {kanji:"教える", reading:"おしえる", meaning:"mengajar; memberitahu"},
+    {kanji:"説明する", reading:"せつめいする", meaning:"menjelaskan"}
+  ],
+
+  10: [
+    {kanji:"午前", reading:"ごぜん", meaning:"pagi; AM"},
+    {kanji:"午後", reading:"ごご", meaning:"siang/sore; PM"},
+    {kanji:"教科書", reading:"きょうかしょ", meaning:"buku pelajaran"},
+    {kanji:"教室", reading:"きょうしつ", meaning:"kelas; ruang kelas"},
+    {kanji:"先生", reading:"せんせい", meaning:"guru"},
+    {kanji:"全部", reading:"ぜんぶ", meaning:"semua"},
+    {kanji:"～回", reading:"～かい", meaning:"~ kali"},
+    {kanji:"参加する", reading:"さんかする", meaning:"berpartisipasi"},
+    {kanji:"用意する", reading:"よういする", meaning:"menyiapkan"}
+  ],
+
+  11: [
+    {kanji:"飲み物", reading:"のみもの", meaning:"minuman"},
+    {kanji:"お茶", reading:"おちゃ", meaning:"teh"},
+    {kanji:"お酒", reading:"おさけ", meaning:"minuman beralkohol; sake"},
+    {kanji:"材料", reading:"ざいりょう", meaning:"bahan"},
+    {kanji:"野菜", reading:"やさい", meaning:"sayuran"},
+    {kanji:"牛肉", reading:"ぎゅうにく", meaning:"daging sapi"},
+    {kanji:"豚肉", reading:"ぶたにく", meaning:"daging babi"},
+    {kanji:"皿", reading:"さら", meaning:"piring"},
+    {kanji:"売る", reading:"うる", meaning:"menjual"},
+    {kanji:"持って行く", reading:"もっていく", meaning:"membawa pergi"}
+  ],
+
+  12: [
+    {kanji:"卵", reading:"たまご", meaning:"telur"},
+    {kanji:"料理", reading:"りょうり", meaning:"masakan; memasak"},
+    {kanji:"お湯", reading:"おゆ", meaning:"air panas"},
+    {kanji:"調理方法", reading:"ちょうりほうほう", meaning:"cara memasak"},
+    {kanji:"少し", reading:"すこし", meaning:"sedikit"},
+    {kanji:"味", reading:"あじ", meaning:"rasa"},
+    {kanji:"甘い", reading:"あまい", meaning:"manis"},
+    {kanji:"辛い", reading:"からい", meaning:"pedas"},
+    {kanji:"苦手な", reading:"にがてな", meaning:"tidak pandai; tidak suka"}
+  ],
+
+  13: [
+    {kanji:"コピー機", reading:"コピーき", meaning:"mesin fotokopi"},
+    {kanji:"数字", reading:"すうじ", meaning:"angka"},
+    {kanji:"電気", reading:"でんき", meaning:"listrik; lampu"},
+    {kanji:"音", reading:"おと", meaning:"suara; bunyi"},
+    {kanji:"机", reading:"つくえ", meaning:"meja"},
+    {kanji:"都合", reading:"つごう", meaning:"keadaan; kondisi"},
+    {kanji:"悪い", reading:"わるい", meaning:"buruk; tidak baik"},
+    {kanji:"動く", reading:"うごく", meaning:"bergerak; berfungsi"},
+    {kanji:"使う", reading:"つかう", meaning:"menggunakan"},
+    {kanji:"終わる", reading:"おわる", meaning:"selesai"},
+    {kanji:"お願いします", reading:"おねがいします", meaning:"tolong; mohon"}
+  ],
+
+  14: [
+    {kanji:"用事", reading:"ようじ", meaning:"keperluan; urusan"},
+    {kanji:"早く", reading:"はやく", meaning:"lebih awal; cepat"},
+    {kanji:"氏名", reading:"しめい", meaning:"nama lengkap"},
+    {kanji:"吸う", reading:"すう", meaning:"mengisap; merokok"},
+    {kanji:"理由", reading:"りゆう", meaning:"alasan"},
+    {kanji:"取る", reading:"とる", meaning:"mengambil"},
+    {kanji:"連絡先", reading:"れんらくさき", meaning:"kontak"},
+    {kanji:"帰る", reading:"かえる", meaning:"pulang; kembali"},
+    {kanji:"別に", reading:"べつに", meaning:"tidak khusus"},
+    {kanji:"伝える", reading:"つたえる", meaning:"menyampaikan"}
+  ],
+
+  15: [
+    {kanji:"熱", reading:"ねつ", meaning:"demam; panas tubuh"},
+    {kanji:"薬", reading:"くすり", meaning:"obat"},
+    {kanji:"病気", reading:"びょうき", meaning:"penyakit; sakit"},
+    {kanji:"病院", reading:"びょういん", meaning:"rumah sakit"},
+    {kanji:"医者", reading:"いしゃ", meaning:"dokter"},
+    {kanji:"住所", reading:"じゅうしょ", meaning:"alamat"},
+    {kanji:"～才", reading:"～さい", meaning:"~ tahun (usia)"},
+    {kanji:"痛い", reading:"いたい", meaning:"sakit; nyeri"},
+    {kanji:"眠い", reading:"ねむい", meaning:"mengantuk"},
+    {kanji:"寝る", reading:"ねる", meaning:"tidur"},
+    {kanji:"記入する", reading:"きにゅうする", meaning:"mengisi formulir"}
+  ],
+
+  16: [
+    {kanji:"体", reading:"からだ", meaning:"tubuh"},
+    {kanji:"顔", reading:"かお", meaning:"wajah"},
+    {kanji:"目", reading:"め", meaning:"mata"},
+    {kanji:"耳", reading:"みみ", meaning:"telinga"},
+    {kanji:"口", reading:"くち", meaning:"mulut"},
+    {kanji:"頭", reading:"あたま", meaning:"kepala"},
+    {kanji:"足", reading:"あし", meaning:"kaki"},
+    {kanji:"手", reading:"て", meaning:"tangan"},
+    {kanji:"起きる", reading:"おきる", meaning:"bangun"},
+    {kanji:"歩く", reading:"あるく", meaning:"berjalan"},
+    {kanji:"走る", reading:"はしる", meaning:"berlari"},
+    {kanji:"運動する", reading:"うんどうする", meaning:"berolahraga"}
+  ],
+
+  17: [
+    {kanji:"お父さん", reading:"おとうさん", meaning:"ayah"},
+    {kanji:"お母さん", reading:"おかあさん", meaning:"ibu"},
+    {kanji:"兄", reading:"あに", meaning:"kakak laki-laki saya"},
+    {kanji:"お兄さん", reading:"おにいさん", meaning:"kakak laki-laki orang lain"},
+    {kanji:"姉", reading:"あね", meaning:"kakak perempuan saya"},
+    {kanji:"お姉さん", reading:"おねえさん", meaning:"kakak perempuan orang lain"},
+    {kanji:"弟", reading:"おとうと", meaning:"adik laki-laki"},
+    {kanji:"妹", reading:"いもうと", meaning:"adik perempuan"},
+    {kanji:"夫", reading:"おっと", meaning:"suami saya"},
+    {kanji:"妻", reading:"つま", meaning:"istri saya"},
+    {kanji:"両親", reading:"りょうしん", meaning:"orang tua"}
+  ],
+
+  18: [
+    {kanji:"男の子", reading:"おとこのこ", meaning:"anak laki-laki"},
+    {kanji:"女の子", reading:"おんなのこ", meaning:"anak perempuan"},
+    {kanji:"お祝い", reading:"おいわい", meaning:"perayaan; hadiah ucapan selamat"},
+    {kanji:"誕生日", reading:"たんじょうび", meaning:"ulang tahun"},
+    {kanji:"結婚", reading:"けっこん", meaning:"pernikahan"},
+    {kanji:"時計", reading:"とけい", meaning:"jam"},
+    {kanji:"幸せな", reading:"しあわせな", meaning:"bahagia"},
+    {kanji:"生まれる", reading:"うまれる", meaning:"lahir"},
+    {kanji:"思う", reading:"おもう", meaning:"berpikir; merasa"},
+    {kanji:"選ぶ", reading:"えらぶ", meaning:"memilih"},
+    {kanji:"合格する", reading:"ごうかくする", meaning:"lulus"}
+  ]
+
+};
+
+// ================================
+// IRODORI SYSTEM
+// ================================
+
+let selectedIrodoriChapter = 9;
+let irodoriIndex = 0;
+
+const irodoriChapterContainer =
+  document.getElementById("irodoriChapters");
+
+for(let i = 9; i <= 18; i++){
+
+  const btn = document.createElement("button");
+
+  btn.textContent = "Bab " + i;
+
+  btn.onclick = () => {
+
+    selectedIrodoriChapter = i;
+    irodoriIndex = 0;
+
+    document.querySelectorAll("#irodoriChapters button")
+      .forEach(x => x.classList.remove("selected"));
+
+    btn.classList.add("selected");
+
+    updateIrodori();
+  };
+
+  irodoriChapterContainer.appendChild(btn);
+}
+
+irodoriChapterContainer.children[0]
+  .classList.add("selected");
+
+
+function updateIrodori(){
+
+  const item =
+    irodoriKanji[selectedIrodoriChapter][irodoriIndex];
+
+  document.getElementById("irodoriWord")
+    .textContent = item.kanji;
+
+  document.getElementById("irodoriReading")
+    .textContent = item.reading;
+
+  document.getElementById("irodoriMeaning")
+    .textContent = item.meaning;
+
+  document.getElementById("irodoriProgress")
+    .textContent =
+      `${irodoriIndex + 1} / ${irodoriKanji[selectedIrodoriChapter].length}`;
+
+  document.getElementById("irodoriCard")
+    .classList.remove("flipped");
+}
+
+
+function nextIrodori(){
+
+  irodoriIndex++;
+
+  if(
+    irodoriIndex >=
+    irodoriKanji[selectedIrodoriChapter].length
+  ){
+    irodoriIndex = 0;
+  }
+
+  updateIrodori();
+}
+
+
+function previousIrodori(){
+
+  irodoriIndex--;
+
+  if(irodoriIndex < 0){
+
+    irodoriIndex =
+      irodoriKanji[selectedIrodoriChapter].length - 1;
+
+  }
+
+  updateIrodori();
+}
+
+
+function shuffleIrodori(){
+
+  const data =
+    irodoriKanji[selectedIrodoriChapter];
+
+  if(!data || data.length <= 1) return;
+
+  let randomIndex;
+
+  do{
+
+    randomIndex =
+      Math.floor(Math.random() * data.length);
+
+  }while(randomIndex === irodoriIndex);
+
+  irodoriIndex = randomIndex;
+
+  updateIrodori();
+}
+  
 /* =========================
    BUNPOU
 ========================= */
