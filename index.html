@@ -530,60 +530,11 @@ footer{
 
   <div class="hero">
     <h2>いろどり — Irodori</h2>
-    <p>Kanji Words Irodori Dasar 1 — Bab 9–18.</p>
+    <p>Kanji Words Irodori Dasar 1.</p>
   </div>
-
 
   <!-- PILIH BAB -->
-  <div class="chapter-buttons">
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(9)">
-      Bab 9
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(10)">
-      Bab 10
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(11)">
-      Bab 11
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(12)">
-      Bab 12
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(13)">
-      Bab 13
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(14)">
-      Bab 14
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(15)">
-      Bab 15
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(16)">
-      Bab 16
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(17)">
-      Bab 17
-    </button>
-
-    <button class="btn secondary" onclick="selectIrodoriChapter(18)">
-      Bab 18
-    </button>
-
-  </div>
-
-
-  <!-- JUDUL BAB -->
-  <div class="irodori-chapter">
-    <span id="irodoriChapterTitle">Irodori Bab 9</span>
-  </div>
+  <div class="selector" id="irodoriChapters"></div>
 
 
   <!-- FLASHCARD -->
@@ -595,7 +546,6 @@ footer{
 
     <div class="flash-inner">
 
-      <!-- DEPAN -->
       <div class="flash-front">
 
         <div class="word" id="irodoriWord">
@@ -611,7 +561,6 @@ footer{
       </div>
 
 
-      <!-- BELAKANG -->
       <div class="flash-back">
 
         <div class="meaning" id="irodoriMeaning">
@@ -625,7 +574,7 @@ footer{
   </div>
 
 
-  <!-- BUTTON -->
+  <!-- CONTROLS -->
   <div class="flash-actions">
 
     <button
@@ -643,24 +592,27 @@ footer{
     </button>
 
     <button
-      class="btn purple"
-      onclick="shuffleIrodori()"
-    >
-      🔀
-    </button>
-
-    <button
       class="btn green"
       onclick="nextIrodori()"
     >
       →
     </button>
 
+    <button
+      class="btn purple"
+      onclick="shuffleIrodori()"
+    >
+      🔀 Shuffle
+    </button>
+
   </div>
 
 
   <!-- PROGRESS -->
-  <p class="irodori-progress" id="irodoriProgress">
+  <p
+    class="irodori-progress"
+    id="irodoriProgress"
+  >
     1 / 10
   </p>
 
