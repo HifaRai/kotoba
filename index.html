@@ -509,6 +509,101 @@ footer{
 </section>
 
 
+  <section id="irodori" class="page">
+
+  <div class="hero">
+    <h2>いろどり — Irodori</h2>
+    <p>Kanji Words Irodori Dasar 1 — Bab 9–18.</p>
+  </div>
+
+  <!-- PILIH BAB -->
+  <div class="chapter-buttons">
+
+    <button onclick="selectIrodoriChapter(9)">Bab 9</button>
+    <button onclick="selectIrodoriChapter(10)">Bab 10</button>
+    <button onclick="selectIrodoriChapter(11)">Bab 11</button>
+    <button onclick="selectIrodoriChapter(12)">Bab 12</button>
+    <button onclick="selectIrodoriChapter(13)">Bab 13</button>
+    <button onclick="selectIrodoriChapter(14)">Bab 14</button>
+    <button onclick="selectIrodoriChapter(15)">Bab 15</button>
+    <button onclick="selectIrodoriChapter(16)">Bab 16</button>
+    <button onclick="selectIrodoriChapter(17)">Bab 17</button>
+    <button onclick="selectIrodoriChapter(18)">Bab 18</button>
+
+  </div>
+
+
+  <!-- JUDUL BAB -->
+  <div class="irodori-title">
+    <span id="irodoriChapterTitle">Irodori Bab 9</span>
+  </div>
+
+
+  <!-- FLASHCARD -->
+  <div 
+    class="flashcard" 
+    id="irodoriCard" 
+    onclick="flipCard('irodoriCard')"
+  >
+
+    <div class="flash-inner">
+
+      <!-- DEPAN -->
+      <div class="flash-front">
+
+        <div class="word" id="irodoriWord">
+          高校
+        </div>
+
+        <div class="reading" id="irodoriReading">
+          こうこう
+        </div>
+
+        <small>tap to flip</small>
+
+      </div>
+
+
+      <!-- BELAKANG -->
+      <div class="flash-back">
+
+        <div class="meaning" id="irodoriMeaning">
+          SMA
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- CONTROL -->
+  <div class="controls">
+
+    <button onclick="previousIrodori()">
+      ←
+    </button>
+
+    <button onclick="shuffleIrodori()">
+      🔀 Shuffle
+    </button>
+
+    <button onclick="nextIrodori()">
+      →
+    </button>
+
+  </div>
+
+
+  <!-- PROGRESS -->
+  <p class="progress-text" id="irodoriProgress">
+    1 / 10
+  </p>
+
+</section>
+
+
 <!-- BUNPOU -->
 <section id="bunpou" class="page">
 
