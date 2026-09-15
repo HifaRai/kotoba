@@ -406,8 +406,8 @@ footer{
   <h3>Irodori Kanji</h3>
 
   <p>
-    Latihan Kanji Words Irodori Dasar 1,
-    Bab 9–18.
+    Latihan Kanji Words Irodori Dasar 
+  
   </p>
 
   <button class="btn secondary" onclick="showPageById('irodori')">
@@ -525,40 +525,71 @@ footer{
 </section>
 
 
-  <section id="irodori" class="page">
+  <!-- IRODORI -->
+<section id="irodori" class="page">
 
   <div class="hero">
     <h2>いろどり — Irodori</h2>
     <p>Kanji Words Irodori Dasar 1 — Bab 9–18.</p>
   </div>
 
+
   <!-- PILIH BAB -->
   <div class="chapter-buttons">
 
-    <button onclick="selectIrodoriChapter(9)">Bab 9</button>
-    <button onclick="selectIrodoriChapter(10)">Bab 10</button>
-    <button onclick="selectIrodoriChapter(11)">Bab 11</button>
-    <button onclick="selectIrodoriChapter(12)">Bab 12</button>
-    <button onclick="selectIrodoriChapter(13)">Bab 13</button>
-    <button onclick="selectIrodoriChapter(14)">Bab 14</button>
-    <button onclick="selectIrodoriChapter(15)">Bab 15</button>
-    <button onclick="selectIrodoriChapter(16)">Bab 16</button>
-    <button onclick="selectIrodoriChapter(17)">Bab 17</button>
-    <button onclick="selectIrodoriChapter(18)">Bab 18</button>
+    <button class="btn secondary" onclick="selectIrodoriChapter(9)">
+      Bab 9
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(10)">
+      Bab 10
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(11)">
+      Bab 11
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(12)">
+      Bab 12
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(13)">
+      Bab 13
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(14)">
+      Bab 14
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(15)">
+      Bab 15
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(16)">
+      Bab 16
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(17)">
+      Bab 17
+    </button>
+
+    <button class="btn secondary" onclick="selectIrodoriChapter(18)">
+      Bab 18
+    </button>
 
   </div>
 
 
   <!-- JUDUL BAB -->
-  <div class="irodori-title">
+  <div class="irodori-chapter">
     <span id="irodoriChapterTitle">Irodori Bab 9</span>
   </div>
 
 
   <!-- FLASHCARD -->
-  <div 
-    class="flashcard" 
-    id="irodoriCard" 
+  <div
+    class="flashcard"
+    id="irodoriCard"
     onclick="flipCard('irodoriCard')"
   >
 
@@ -594,18 +625,34 @@ footer{
   </div>
 
 
-  <!-- CONTROL -->
-  <div class="controls">
+  <!-- BUTTON -->
+  <div class="flash-actions">
 
-    <button onclick="previousIrodori()">
+    <button
+      class="btn secondary"
+      onclick="previousIrodori()"
+    >
       ←
     </button>
 
-    <button onclick="shuffleIrodori()">
-      🔀 Shuffle
+    <button
+      class="btn"
+      onclick="flipCard('irodoriCard')"
+    >
+      Flip
     </button>
 
-    <button onclick="nextIrodori()">
+    <button
+      class="btn purple"
+      onclick="shuffleIrodori()"
+    >
+      🔀
+    </button>
+
+    <button
+      class="btn green"
+      onclick="nextIrodori()"
+    >
       →
     </button>
 
@@ -613,7 +660,7 @@ footer{
 
 
   <!-- PROGRESS -->
-  <p class="progress-text" id="irodoriProgress">
+  <p class="irodori-progress" id="irodoriProgress">
     1 / 10
   </p>
 
