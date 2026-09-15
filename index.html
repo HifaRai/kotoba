@@ -3496,6 +3496,7 @@ function flipCard(id){
 
 const irodoriKanji = {
 
+  dasar1: {
   9: [
     {kanji:"高校", reading:"こうこう", meaning:"SMA"},
     {kanji:"大学", reading:"だいがく", meaning:"universitas"},
@@ -3628,8 +3629,12 @@ const irodoriKanji = {
     {kanji:"思う", reading:"おもう", meaning:"berpikir; merasa"},
     {kanji:"選ぶ", reading:"えらぶ", meaning:"memilih"},
     {kanji:"合格する", reading:"ごうかくする", meaning:"lulus"}
-  ],
+  ]
 
+  },
+    
+dasar2: {
+  
   1: [
 
     {kanji:"予定", reading:"よてい", meaning:"rencana; jadwal"},
@@ -3749,6 +3754,7 @@ const irodoriKanji = {
     {kanji:"美味しい", reading:"おいしい", meaning:"enak; lezat"}
 
   ]
+}
 
 
 
@@ -3758,69 +3764,149 @@ const irodoriKanji = {
 // IRODORI SYSTEM
 // ================================
 
-let selectedIrodoriChapter = 1;
+let selectedIrodoriLevel = "dasar1";
+let selectedIrodoriChapter = 9;
 let irodoriIndex = 0;
+
 
 const irodoriChapterContainer =
   document.getElementById("irodoriChapters");
 
-for(let i = 1; i <= 18; i++){
 
-  const btn = document.createElement("button");
+// ==========================
+// PILIH LEVEL
+// ==========================
 
-  btn.textContent = "Bab " + i;
+function selectIrodoriLevel(level, button) {
 
-  btn.onclick = () => {
+  selectedIrodoriLevel = level;
 
-    selectedIrodoriChapter = i;
-    irodoriIndex = 0;
+  // reset chapter
+  if (level === "dasar1") {
+    selectedIrodoriChapter = 9;
+  } else {
+    selectedIrodoriChapter = 1;
+  }
 
-    document.querySelectorAll("#irodoriChapters button")
-      .forEach(x => x.classList.remove("selected"));
+  irodoriIndex = 0;
 
-    btn.classList.add("selected");
+  // active button
+  document
+    .querySelectorAll(".level-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
 
-    updateIrodori();
-  };
+  button.classList.add("active");
 
-  irodoriChapterContainer.appendChild(btn);
+  // buat ulang tombol chapter
+  createIrodoriChapters();
+
+  updateIrodori();
 }
 
-irodoriChapterContainer.children[0]
-  .classList.add("selected");
+
+// ==========================
+// BUAT BUTTON CHAPTER
+// ==========================
+
+function createIrodoriChapters() {
+
+  irodoriChapterContainer.innerHTML = "";
+
+  const chapters =
+    Object.keys(
+      irodoriKanji[selectedIrodoriLevel]
+    );
+
+  chapters.forEach(chapter => {
+
+    const btn =
+      document.createElement("button");
+
+    btn.textContent = "Bab " + chapter;
+
+    btn.onclick = () => {
+
+      selectedIrodoriChapter =
+        Number(chapter);
+
+      irodoriIndex = 0;
+
+      document
+        .querySelectorAll("#irodoriChapters button")
+        .forEach(x => {
+          x.classList.remove("selected");
+        });
+
+      btn.classList.add("selected");
+
+      updateIrodori();
+    };
+
+    irodoriChapterContainer.appendChild(btn);
+
+  });
+
+  // chapter pertama aktif
+  if (irodoriChapterContainer.children.length > 0) {
+    irodoriChapterContainer.children[0]
+      .classList.add("selected");
+  }
+}
 
 
-function updateIrodori(){
+// ==========================
+// UPDATE FLASHCARD
+// ==========================
+
+function updateIrodori() {
+
+  const data =
+    irodoriKanji[selectedIrodoriLevel]
+      [selectedIrodoriChapter];
+
+  if (!data || data.length === 0) return;
 
   const item =
-    irodoriKanji[selectedIrodoriChapter][irodoriIndex];
+    data[irodoriIndex];
 
-  document.getElementById("irodoriWord")
+  document
+    .getElementById("irodoriWord")
     .textContent = item.kanji;
 
-  document.getElementById("irodoriReading")
+  document
+    .getElementById("irodoriReading")
     .textContent = item.reading;
 
-  document.getElementById("irodoriMeaning")
+  document
+    .getElementById("irodoriMeaning")
     .textContent = item.meaning;
 
-  document.getElementById("irodoriProgress")
+  document
+    .getElementById("irodoriProgress")
     .textContent =
-      `${irodoriIndex + 1} / ${irodoriKanji[selectedIrodoriChapter].length}`;
+      `${irodoriIndex + 1} / ${data.length}`;
 
-  document.getElementById("irodoriCard")
+  document
+    .getElementById("irodoriCard")
     .classList.remove("flipped");
 }
 
 
-function nextIrodori(){
+// ==========================
+// NEXT
+// ==========================
+
+function nextIrodori() {
+
+  const data =
+    irodoriKanji[selectedIrodoriLevel]
+      [selectedIrodoriChapter];
 
   irodoriIndex++;
 
-  if(
-    irodoriIndex >=
-    irodoriKanji[selectedIrodoriChapter].length
-  ){
+  if (irodoriIndex >= data.length) {
     irodoriIndex = 0;
   }
 
@@ -3828,41 +3914,61 @@ function nextIrodori(){
 }
 
 
-function previousIrodori(){
+// ==========================
+// PREVIOUS
+// ==========================
+
+function previousIrodori() {
+
+  const data =
+    irodoriKanji[selectedIrodoriLevel]
+      [selectedIrodoriChapter];
 
   irodoriIndex--;
 
-  if(irodoriIndex < 0){
-
-    irodoriIndex =
-      irodoriKanji[selectedIrodoriChapter].length - 1;
-
+  if (irodoriIndex < 0) {
+    irodoriIndex = data.length - 1;
   }
 
   updateIrodori();
 }
 
 
-function shuffleIrodori(){
+// ==========================
+// SHUFFLE
+// ==========================
+
+function shuffleIrodori() {
 
   const data =
-    irodoriKanji[selectedIrodoriChapter];
+    irodoriKanji[selectedIrodoriLevel]
+      [selectedIrodoriChapter];
 
-  if(!data || data.length <= 1) return;
+  if (!data || data.length <= 1) return;
 
   let randomIndex;
 
-  do{
+  do {
 
     randomIndex =
       Math.floor(Math.random() * data.length);
 
-  }while(randomIndex === irodoriIndex);
+  } while (
+    randomIndex === irodoriIndex
+  );
 
   irodoriIndex = randomIndex;
 
   updateIrodori();
 }
+
+
+// ==========================
+// INITIALIZE
+// ==========================
+
+createIrodoriChapters();
+updateIrodori();
   
 /* =========================
    BUNPOU
