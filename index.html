@@ -4449,6 +4449,651 @@ function generateKanjiQuiz() {
   return createMultipleChoice(pool);
 }
 
+  // ======================================
+// GENERATE KOTOBA QUIZ
+// ======================================
+
+function generateKotobaQuiz() {
+
+  let pool = [];
+
+
+  Object
+    .values(kotoba)
+    .forEach(chapter => {
+
+      chapter.forEach(item => {
+
+        pool.push({
+
+          question:
+            item.word,
+
+          subQuestion:
+            item.reading,
+
+          answer:
+            item.meaning,
+
+          explanation:
+            item.word +
+            " (" +
+            item.reading +
+            ") = " +
+            item.meaning
+
+        });
+
+      });
+
+    });
+
+
+  return createMultipleChoice(pool);
+}
+
+const bunpouQuizData = [
+
+  {
+    sentence:"私は毎日コーヒー＿飲みます。",
+    choices:["が","を","に","で"],
+    answer:"を",
+    explanation:"「コーヒーを飲みます」 → を digunakan untuk objek langsung."
+  },
+
+  {
+    sentence:"学校＿日本語を勉強します。",
+    choices:["で","に","を","が"],
+    answer:"で",
+    explanation:"「学校で勉強します」 → で menunjukkan tempat melakukan aktivitas."
+  },
+
+  {
+    sentence:"日本＿行きたいです。",
+    choices:["を","が","に","で"],
+    answer:"に",
+    explanation:"「日本に行きたいです」 → に digunakan untuk tujuan/pergerakan."
+  },
+
+  {
+    sentence:"私は猫＿好きです。",
+    choices:["を","が","に","で"],
+    answer:"が",
+    explanation:"「猫が好きです」 → が digunakan dengan 好きです."
+  },
+
+  {
+    sentence:"友達＿映画を見ました。",
+    choices:["と","が","を","で"],
+    answer:"と",
+    explanation:"「友達と映画を見ました」 → と berarti bersama/dengan."
+  },
+
+  {
+    sentence:"駅＿学校まで歩きます。",
+    choices:["から","を","が","に"],
+    answer:"から",
+    explanation:"「駅から学校まで」 → から menunjukkan titik awal."
+  },
+
+  {
+    sentence:"学校＿駅まで歩きます。",
+    choices:["から","まで","で","を"],
+    answer:"まで",
+    explanation:"「駅まで」 menunjukkan titik tujuan/batas."
+  },
+
+  {
+    sentence:"日本語＿話すことができます。",
+    choices:["を","が","に","で"],
+    answer:"を",
+    explanation:"Dalam pola 「～を話す」, 日本語 adalah objek yang dibicarakan."
+  },
+
+  {
+    sentence:"雨＿降っています。",
+    choices:["を","が","に","で"],
+    answer:"が",
+    explanation:"「雨が降っています」 adalah bentuk yang benar."
+  },
+
+  {
+    sentence:"日曜日＿映画を見ます。",
+    choices:["に","で","を","が"],
+    answer:"に",
+    explanation:"「日曜日に」 menunjukkan waktu tertentu."
+  },
+
+  {
+    sentence:"コーヒーを飲ん＿、勉強します。",
+    choices:["で","て","に","が"],
+    answer:"で",
+    explanation:"「飲んで、勉強します」 menggunakan bentuk て untuk menghubungkan aktivitas."
+  },
+
+  {
+    sentence:"日本へ行く＿、日本語を勉強しています。",
+    choices:["から","ので","なら","のに"],
+    answer:"ので",
+    explanation:"「ので」 digunakan untuk memberikan alasan dengan nuansa lebih halus."
+  },
+
+  {
+    sentence:"雨＿、出かけません。",
+    choices:["なので","なら","から","のに"],
+    answer:"なので",
+    explanation:"「雨なので」 = karena hujan."
+  },
+
+  {
+    sentence:"時間がない＿、急ぎましょう。",
+    choices:["から","なら","のに","ので"],
+    answer:"から",
+    explanation:"「から」 digunakan untuk menyatakan alasan."
+  },
+
+  {
+    sentence:"日本へ行く＿、何を持って行きますか。",
+    choices:["なら","ので","から","のに"],
+    answer:"なら",
+    explanation:"「～なら」 digunakan ketika mengambil suatu kondisi/topik sebagai dasar pembicaraan."
+  }
+
+];
+
+function generateBunpouQuiz() {
+
+  return bunpouQuizData.map(item => ({
+
+    question:
+      item.sentence,
+
+    subQuestion:
+      "Pilih partikel yang tepat.",
+
+    answer:
+      item.answer,
+
+    choices:
+      item.choices,
+
+    explanation:
+      item.explanation
+
+  }));
+
+}
+
+  
+
+
+  // ======================================
+// MULTIPLE CHOICE GENERATOR
+// ======================================
+
+function createMultipleChoice(pool) {
+
+  return pool.map(item => {
+
+    let choices = item.choices;
+
+
+    // Kalau belum punya choices,
+    // ambil jawaban dari item lain
+
+    if (!choices) {
+
+      const wrongAnswers =
+        pool
+          .filter(x =>
+            x.answer !== item.answer
+          )
+          .map(x => x.answer);
+
+
+      choices = shuffleArray(
+        [...new Set(wrongAnswers)]
+      ).slice(0, 3);
+
+
+      choices.push(item.answer);
+
+      choices =
+        shuffleArray(choices);
+
+    }
+
+
+    return {
+
+      ...item,
+
+      choices: choices
+
+    };
+
+  });
+
+}
+
+  
+
+// ======================================
+// SHOW QUESTION
+// ======================================
+
+function showQuizQuestion() {
+
+  answered = false;
+
+  const item =
+    quizQuestions[currentQuizIndex];
+
+
+  document
+    .getElementById("quizNumber")
+    .textContent =
+      `${currentQuizIndex + 1} / ${quizQuestions.length}`;
+
+
+  document
+    .getElementById("quizScore")
+    .textContent =
+      `Score: ${quizCorrect}`;
+
+
+  const progress =
+    (
+      currentQuizIndex /
+      quizQuestions.length
+    ) * 100;
+
+
+  document
+    .getElementById("quizProgressBar")
+    .style.width =
+      progress + "%";
+
+
+  document
+    .getElementById("quizQuestion")
+    .textContent =
+      item.question;
+
+
+  document
+    .getElementById("quizSubQuestion")
+    .textContent =
+      item.subQuestion || "";
+
+
+  const answers =
+    document.getElementById("quizAnswers");
+
+
+  answers.innerHTML = "";
+
+
+  item.choices.forEach(choice => {
+
+    const button =
+      document.createElement("button");
+
+
+    button.className =
+      "quiz-answer";
+
+
+    button.textContent =
+      choice;
+
+
+    button.onclick = () => {
+
+      answerQuiz(
+        choice,
+        button
+      );
+
+    };
+
+
+    answers.appendChild(button);
+
+  });
+
+
+  document
+    .getElementById("quizFeedback")
+    .textContent = "";
+
+
+  document
+    .getElementById("nextQuizBtn")
+    .style.display = "none";
+
+}
+  
+
+  
+// ======================================
+// ANSWER QUIZ
+// ======================================
+
+function answerQuiz(choice, button) {
+
+  if (answered) return;
+
+  answered = true;
+
+
+  const item =
+    quizQuestions[currentQuizIndex];
+
+
+  const buttons =
+    document
+      .querySelectorAll(".quiz-answer");
+
+
+  buttons.forEach(btn => {
+
+    if (
+      btn.textContent === item.answer
+    ) {
+
+      btn.classList.add("correct");
+
+    }
+
+  });
+
+
+  if (choice === item.answer) {
+
+    quizCorrect++;
+
+    button.classList.add("correct");
+
+
+    document
+      .getElementById("quizFeedback")
+      .innerHTML =
+        "✓ Correct!<br>" +
+        `<small>${item.explanation || ""}</small>`;
+
+
+    document
+      .getElementById("quizFeedback")
+      .className =
+        "quiz-feedback correct-text";
+
+  }
+
+  else {
+
+    quizWrong++;
+
+    button.classList.add("wrong");
+
+
+    wrongQuestions.push(item);
+
+
+    document
+      .getElementById("quizFeedback")
+      .innerHTML =
+        `✗ Salah.<br>` +
+        `Jawaban: <strong>${item.answer}</strong><br>` +
+        `<small>${item.explanation || ""}</small>`;
+
+
+    document
+      .getElementById("quizFeedback")
+      .className =
+        "quiz-feedback wrong-text";
+
+  }
+
+
+  document
+    .getElementById("quizScore")
+    .textContent =
+      `Score: ${quizCorrect}`;
+
+
+  document
+    .getElementById("nextQuizBtn")
+    .style.display = "inline-block";
+
+}
+
+
+
+
+// ======================================
+// NEXT QUESTION
+// ======================================
+
+function nextQuiz() {
+
+  currentQuizIndex++;
+
+
+  if (
+    currentQuizIndex >=
+    quizQuestions.length
+  ) {
+
+    finishQuiz();
+
+    return;
+
+  }
+
+
+  showQuizQuestion();
+
+}
+
+
+
+  // ======================================
+// FINISH QUIZ
+// ======================================
+
+function finishQuiz() {
+
+  document
+    .getElementById("quizGame")
+    .style.display = "none";
+
+
+  document
+    .getElementById("quizResult")
+    .style.display = "block";
+
+
+  const total =
+    quizQuestions.length;
+
+
+  const accuracy =
+    Math.round(
+      (quizCorrect / total) * 100
+    );
+
+
+  document
+    .getElementById("resultScore")
+    .textContent =
+      accuracy + "%";
+
+
+  document
+    .getElementById("resultDetail")
+    .textContent =
+      `${quizCorrect} / ${total} benar`;
+
+
+  document
+    .getElementById("correctCount")
+    .textContent =
+      quizCorrect;
+
+
+  document
+    .getElementById("wrongCount")
+    .textContent =
+      quizWrong;
+
+
+  document
+    .getElementById("accuracy")
+    .textContent =
+      accuracy + "%";
+
+
+  // TITLE
+
+  let title;
+
+  if (accuracy >= 90) {
+
+    title = "Perfect! ✨";
+
+  }
+
+  else if (accuracy >= 75) {
+
+    title = "Great job! 🌸";
+
+  }
+
+  else if (accuracy >= 60) {
+
+    title = "Good effort! 🌱";
+
+  }
+
+  else {
+
+    title = "Keep practicing! ☕";
+
+  }
+
+
+  document
+    .getElementById("resultTitle")
+    .textContent =
+      title;
+
+
+  // WRONG REVIEW
+
+  const review =
+    document.getElementById("wrongReview");
+
+
+  if (wrongQuestions.length === 0) {
+
+    review.innerHTML =
+      "<p>🎉 Semua jawaban benar!</p>";
+
+  }
+
+  else {
+
+    review.innerHTML =
+      "<h3>Review yang salah</h3>";
+
+
+    wrongQuestions.forEach(item => {
+
+      review.innerHTML += `
+
+        <div class="wrong-item">
+
+          <strong>
+            ${item.question}
+          </strong>
+
+          <br>
+
+          Jawaban:
+          <strong>
+            ${item.answer}
+          </strong>
+
+          <br>
+
+          <small>
+            ${item.explanation || ""}
+          </small>
+
+        </div>
+
+      `;
+
+    });
+
+  }
+}
+// ======================================
+// SHUFFLE ARRAY
+// ======================================
+
+function shuffleArray(array) {
+
+  return [...array].sort(
+    () => Math.random() - 0.5
+  );
+
+}
+
+// ======================================
+// RESTART
+// ======================================
+
+function restartQuiz() {
+
+  document
+    .getElementById("quizResult")
+    .style.display = "none";
+
+  document
+    .getElementById("quizGame")
+    .style.display = "block";
+
+  startQuiz();
+
+}
+
+
+// ======================================
+// BACK TO SETUP
+// ======================================
+
+function backToQuizSetup() {
+
+  document
+    .getElementById("quizResult")
+    .style.display = "none";
+
+  document
+    .getElementById("quizGame")
+    .style.display = "none";
+
+  document
+    .getElementById("quizSetup")
+    .style.display = "block";
+
+}
+  
+
+
+  
+                            
 
 /* =========================
    INITIALIZE
