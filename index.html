@@ -696,39 +696,240 @@ footer{
 
 
 <!-- QUIZ -->
+<!-- QUIZ -->
 <section id="quiz" class="page">
 
   <div class="hero">
-    <h2>✦ Quick Quiz</h2>
-    <p>Test your Japanese vocabulary.</p>
+    <h2>✦ Quiz</h2>
+    <p>Uji kemampuan Kanji, Kotoba, dan Bunpou.</p>
   </div>
 
-  <div class="quiz">
 
-    <div class="quiz-question">
+  <!-- QUIZ SETUP -->
+  <div id="quizSetup" class="quiz-box">
 
-      <p>Question <span id="quizNumber">1</span></p>
+    <h3>Choose your quiz</h3>
 
-      <div class="jp" id="question">
-        準備します
-      </div>
+    <div class="quiz-type">
 
-      <div class="answers" id="answers"></div>
+      <button
+        class="quiz-type-btn active"
+        onclick="selectQuizType('kanji', this)">
+        漢字<br>
+        <small>Kanji</small>
+      </button>
 
-      <div class="result" id="quizResult"></div>
+      <button
+        class="quiz-type-btn"
+        onclick="selectQuizType('kotoba', this)">
+        ことば<br>
+        <small>Kotoba</small>
+      </button>
 
-      <button class="btn" onclick="nextQuiz()">
-        Next question →
+      <button
+        class="quiz-type-btn"
+        onclick="selectQuizType('bunpou', this)">
+        文法<br>
+        <small>Bunpou</small>
       </button>
 
     </div>
 
-    <br>
 
-    <div class="card">
-      <p>Score</p>
-      <h2 id="score">0</h2>
+    <!-- KANJI SOURCE -->
+    <div id="kanjiQuizOptions">
+
+      <h4>Kanji source</h4>
+
+      <select id="kanjiSource">
+        <option value="all">
+          Semua Kanji
+        </option>
+
+        <option value="n4">
+          N4 Kanji
+        </option>
+
+        <option value="irodori1">
+          Irodori Dasar 1
+        </option>
+
+        <option value="irodori2">
+          Irodori Dasar 2
+        </option>
+      </select>
+
     </div>
+
+
+    <!-- NUMBER OF QUESTIONS -->
+
+    <h4>Jumlah soal</h4>
+
+    <div class="question-count">
+
+      <button onclick="setQuestionCount(10, this)"
+        class="count-btn active">
+        10
+      </button>
+
+      <button onclick="setQuestionCount(20, this)"
+        class="count-btn">
+        20
+      </button>
+
+      <button onclick="setQuestionCount(30, this)"
+        class="count-btn">
+        30
+      </button>
+
+    </div>
+
+
+    <button
+      class="btn quiz-start"
+      onclick="startQuiz()">
+
+      ✦ Start Quiz
+
+    </button>
+
+  </div>
+
+
+  <!-- QUIZ GAME -->
+
+  <div id="quizGame" class="quiz-box" style="display:none">
+
+    <div class="quiz-top">
+
+      <span id="quizNumber">
+        1 / 10
+      </span>
+
+      <span id="quizScore">
+        Score: 0
+      </span>
+
+    </div>
+
+
+    <div class="quiz-progress">
+
+      <div
+        id="quizProgressBar">
+      </div>
+
+    </div>
+
+
+    <div class="quiz-question">
+
+      <div
+        id="quizQuestion">
+        高校
+      </div>
+
+      <div
+        id="quizSubQuestion">
+        こうこう
+      </div>
+
+    </div>
+
+
+    <div
+      id="quizAnswers"
+      class="quiz-answers">
+    </div>
+
+
+    <div
+      id="quizFeedback"
+      class="quiz-feedback">
+    </div>
+
+
+    <button
+      id="nextQuizBtn"
+      class="btn green"
+      onclick="nextQuiz()"
+      style="display:none">
+
+      Next →
+
+    </button>
+
+  </div>
+
+
+  <!-- RESULT -->
+
+  <div
+    id="quizResult"
+    class="quiz-box"
+    style="display:none">
+
+    <div class="result-icon">
+      ✦
+    </div>
+
+    <h2 id="resultTitle">
+      Quiz Complete!
+    </h2>
+
+    <div
+      id="resultScore"
+      class="result-score">
+      80%
+    </div>
+
+    <p id="resultDetail">
+      8 / 10 benar
+    </p>
+
+
+    <div class="result-stats">
+
+      <div>
+        <strong id="correctCount">8</strong>
+        <span>Correct</span>
+      </div>
+
+      <div>
+        <strong id="wrongCount">2</strong>
+        <span>Wrong</span>
+      </div>
+
+      <div>
+        <strong id="accuracy">80%</strong>
+        <span>Accuracy</span>
+      </div>
+
+    </div>
+
+
+    <div
+      id="wrongReview"
+      class="wrong-review">
+    </div>
+
+
+    <button
+      class="btn"
+      onclick="restartQuiz()">
+
+      ↻ Try Again
+
+    </button>
+
+    <button
+      class="btn secondary"
+      onclick="backToQuizSetup()">
+
+      ← Quiz Menu
+
+    </button>
 
   </div>
 
