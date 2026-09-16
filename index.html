@@ -3701,6 +3701,7 @@ function renderGrammar(list = grammar){
 
     div.innerHTML = `
       <small>MINNA NO NIHONGO II • BAB ${g.chapter}</small>
+
       <br><br>
 
       <span class="pattern">${g.pattern}</span>
@@ -3708,7 +3709,17 @@ function renderGrammar(list = grammar){
       <p>${g.meaning}</p>
 
       <div class="example">
+
         🇯🇵 ${g.example}
+
+        <br>
+
+        🔤 ${g.reading || ""}
+
+        <br>
+
+        🇮🇩 ${g.translation || ""}
+
       </div>
     `;
 
@@ -3722,19 +3733,23 @@ function renderGrammar(list = grammar){
 function filterGrammar(chapter){
 
   if(chapter === "all"){
+
     renderGrammar();
-  } else {
-    renderGrammar(
-      grammar.filter(g => Number(g.chapter) === Number(chapter))
-    );
+
+    return;
+
   }
+
+  renderGrammar(
+    grammar.filter(
+      g => Number(g.chapter) === Number(chapter)
+    )
+  );
 
 }
 
 
 renderGrammar();
-
-
 /* =========================
    QUIZ
 ========================= */
