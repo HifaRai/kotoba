@@ -3687,23 +3687,26 @@ example:"私が説明いたします。"
 
 ];
 
-function renderGrammar(list=grammar){
+function renderGrammar(list = grammar){
 
-  const container=document.getElementById("grammarList");
+  const container = document.getElementById("grammarList");
 
-  container.innerHTML="";
+  container.innerHTML = "";
 
-  list.forEach(g=>{
+  list.forEach(g => {
 
-    const div=document.createElement("div");
+    const div = document.createElement("div");
 
-    div.className="grammar";
+    div.className = "grammar";
 
-    div.innerHTML=`
+    div.innerHTML = `
       <small>MINNA NO NIHONGO II • BAB ${g.chapter}</small>
       <br><br>
+
       <span class="pattern">${g.pattern}</span>
+
       <p>${g.meaning}</p>
+
       <div class="example">
         🇯🇵 ${g.example}
       </div>
@@ -3715,17 +3718,19 @@ function renderGrammar(list=grammar){
 
 }
 
+
 function filterGrammar(chapter){
 
-  if(chapter==="all"){
+  if(chapter === "all"){
     renderGrammar();
-    return;
+  } else {
+    renderGrammar(
+      grammar.filter(g => Number(g.chapter) === Number(chapter))
+    );
   }
 
-  renderGrammar(
-    grammar.filter(g=>g.chapter===chapter)
-  );
 }
+
 
 renderGrammar();
 
