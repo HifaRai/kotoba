@@ -4165,165 +4165,288 @@ renderGrammar();
    QUIZ
 ========================= */
 
-const quizData=[
+// ======================================
+// QUIZ SYSTEM
+// ======================================
 
-{
-q:"相談します",
-answers:["berkonsultasi","berlari","memasak","menunggu"],
-correct:"berkonsultasi"
-},
+let quizType = "kanji";
+let questionCount = 10;
 
-{
-q:"準備します",
-answers:["menjual","mempersiapkan","menghapus","membeli"],
-correct:"mempersiapkan"
-},
+let quizQuestions = [];
+let currentQuizIndex = 0;
+let quizCorrect = 0;
+let quizWrong = 0;
 
-{
-q:"経験",
-answers:["pengalaman","perusahaan","peraturan","perasaan"],
-correct:"pengalaman"
-},
+let answered = false;
 
-{
-q:"必要",
-answers:["bahaya","perlu","bebas","sulit"],
-correct:"perlu"
-},
+let wrongQuestions = [];
 
-{
-q:"参加します",
-answers:["berpartisipasi","berhenti","meminjam","mengirim"],
-correct:"berpartisipasi"
-},
 
-{
-q:"失敗します",
-answers:["berhasil","gagal","berubah","beristirahat"],
-correct:"gagal"
-},
+// ======================================
+// SELECT QUIZ TYPE
+// ======================================
 
-{
-q:"守ります",
-answers:["memuji","menaati","menghitung","membangun"],
-correct:"menaati"
-},
+function selectQuizType(type, button) {
 
-{
-q:"未来",
-answers:["masa lalu","masa depan","sekarang","kemarin"],
-correct:"masa depan"
-},
+  quizType = type;
 
-{
-q:"選びます",
-answers:["memilih","mengukur","menjelaskan","mengundang"],
-correct:"memilih"
-},
-
-{
-q:"謝ります",
-answers:["percaya","meminta maaf","melupakan","menjemput"],
-correct:"meminta maaf"
-}
-
-];
-
-let quizIndex=0;
-let score=0;
-let answered=false;
-
-function loadQuiz(){
-
-  answered=false;
-
-  const q=quizData[quizIndex];
-
-  document.getElementById("question").textContent=q.q;
-
-  document.getElementById("quizNumber").textContent=
-    quizIndex+1;
-
-  document.getElementById("quizResult").textContent="";
-
-  const answers=document.getElementById("answers");
-
-  answers.innerHTML="";
-
-  q.answers
-    .sort(()=>Math.random()-.5)
-    .forEach(answer=>{
-
-      const btn=document.createElement("button");
-
-      btn.textContent=answer;
-
-      btn.onclick=()=>checkAnswer(answer,btn);
-
-      answers.appendChild(btn);
-
+  document
+    .querySelectorAll(".quiz-type-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
     });
+
+  button.classList.add("active");
+
+
+  // hanya Kanji yang punya source selection
+  const kanjiOptions =
+    document.getElementById("kanjiQuizOptions");
+
+  if (type === "kanji") {
+    kanjiOptions.style.display = "block";
+  } else {
+    kanjiOptions.style.display = "none";
+  }
 }
 
-function checkAnswer(answer,button){
 
-  if(answered) return;
+// ======================================
+// QUESTION COUNT
+// ======================================
 
-  answered=true;
+function setQuestionCount(count, button) {
 
-  const correct=quizData[quizIndex].correct;
+  questionCount = count;
 
-  if(answer===correct){
+  document
+    .querySelectorAll(".count-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
 
-    score++;
+  button.classList.add("active");
+}
 
-    button.style.background="#dcebd8";
 
-    document.getElementById("quizResult")
-      .textContent="✓ Benar! よくできました！";
+// ======================================
+// START QUIZ
+// ======================================
 
-  }else{
+function startQuiz() {
 
-    button.style.background="#f7cfd8";
+  quizQuestions = [];
 
-    document.getElementById("quizResult")
-      .textContent="✗ Jawaban: "+correct;
+  currentQuizIndex = 0;
+  quizCorrect = 0;
+  quizWrong = 0;
+  wrongQuestions = [];
+
+  if (quizType === "kanji") {
+
+    quizQuestions =
+      generateKanjiQuiz();
 
   }
 
-  document.getElementById("score").textContent=score;
+  else if (quizType === "kotoba") {
 
-  updateProgress();
-}
-
-function nextQuiz(){
-
-  quizIndex++;
-
-  if(quizIndex>=quizData.length){
-
-    quizIndex=0;
-
-    alert("Quiz selesai! Score: "+score+"/"+quizData.length);
+    quizQuestions =
+      generateKotobaQuiz();
 
   }
 
-  loadQuiz();
-}
+  else if (quizType === "bunpou") {
 
-function updateProgress(){
+    quizQuestions =
+      generateBunpouQuiz();
 
-  const percentage=
-    Math.min(
-      (score/quizData.length)*100,
-      100
+  }
+
+
+  // shuffle questions
+
+  quizQuestions =
+    shuffleArray(quizQuestions);
+
+
+  // limit jumlah soal
+
+  quizQuestions =
+    quizQuestions.slice(
+      0,
+      Math.min(
+        questionCount,
+        quizQuestions.length
+      )
     );
 
-  document.getElementById("progressBar")
-    .style.width=percentage+"%";
 
-  document.getElementById("homeScore")
-    .textContent=score+" / "+quizData.length;
+  if (quizQuestions.length === 0) {
+
+    alert(
+      "Data quiz belum tersedia."
+    );
+
+    return;
+  }
+
+
+  document
+    .getElementById("quizSetup")
+    .style.display = "none";
+
+  document
+    .getElementById("quizResult")
+    .style.display = "none";
+
+  document
+    .getElementById("quizGame")
+    .style.display = "block";
+
+
+  showQuizQuestion();
+}
+
+
+// ======================================
+// GENERATE KANJI QUIZ
+// ======================================
+
+function generateKanjiQuiz() {
+
+  let pool = [];
+
+  const source =
+    document.getElementById("kanjiSource")
+      .value;
+
+
+  // N4
+
+  if (
+    source === "all" ||
+    source === "n4"
+  ) {
+
+    if (
+      typeof kanji !== "undefined"
+    ) {
+
+      kanji.forEach(item => {
+
+        pool.push({
+
+          question: item.word,
+          subQuestion: item.reading,
+
+          answer: item.meaning,
+
+          explanation:
+            item.word +
+            " = " +
+            item.meaning
+
+        });
+
+      });
+
+    }
+
+  }
+
+
+  // IRODORI DASAR 1
+
+  if (
+    source === "all" ||
+    source === "irodori1"
+  ) {
+
+    if (
+      typeof irodoriKanji !== "undefined"
+    ) {
+
+      Object
+        .values(irodoriKanji.dasar1)
+        .forEach(chapter => {
+
+          chapter.forEach(item => {
+
+            pool.push({
+
+              question: item.kanji,
+
+              subQuestion:
+                item.reading,
+
+              answer:
+                item.meaning,
+
+              explanation:
+                item.kanji +
+                " (" +
+                item.reading +
+                ") = " +
+                item.meaning
+
+            });
+
+          });
+
+        });
+
+    }
+
+  }
+
+
+  // IRODORI DASAR 2
+
+  if (
+    source === "all" ||
+    source === "irodori2"
+  ) {
+
+    if (
+      typeof irodoriKanji !== "undefined"
+    ) {
+
+      Object
+        .values(irodoriKanji.dasar2)
+        .forEach(chapter => {
+
+          chapter.forEach(item => {
+
+            pool.push({
+
+              question: item.kanji,
+
+              subQuestion:
+                item.reading,
+
+              answer:
+                item.meaning,
+
+              explanation:
+                item.kanji +
+                " (" +
+                item.reading +
+                ") = " +
+                item.meaning
+
+            });
+
+          });
+
+        });
+
+    }
+
+  }
+
+
+  return createMultipleChoice(pool);
 }
 
 
