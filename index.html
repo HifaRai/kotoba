@@ -9069,18 +9069,7 @@ const kanji=[
 ];
 
 
-const kanjiReadingMap = {};
 
-kanji.forEach(item => {
-
-  const chars = [...item.word];
-
-  /*
-   * Untuk kata yang sudah kita tahu pembagian bacaannya,
-   * data akan diambil dari dictionary manual di bawah.
-   */
-
-});
 
 
   const kanjiReadingMap = {
@@ -9369,6 +9358,20 @@ kanji.forEach(item => {
 };
 
 
+const kanjiReadingMap = {};
+
+kanji.forEach(item => {
+
+  const chars = [...item.word];
+
+  /*
+   * Untuk kata yang sudah kita tahu pembagian bacaannya,
+   * data akan diambil dari dictionary manual di bawah.
+   */
+
+});
+  
+
 // ==============================
 // KANJI FLASHCARD
 // ==============================
@@ -9650,7 +9653,8 @@ function updateRelatedKanji(currentWord){
 
   container.innerHTML = html;
 
-}
+};
+  
 
 
 /* =========================
