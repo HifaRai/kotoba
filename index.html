@@ -6182,9 +6182,11 @@ const relatedKanji = {
   ]
 
 };
-  
 
 
+// ==============================
+// KANJI FLASHCARD
+// ==============================
 
 let kanjiIndex = 0;
 
@@ -6205,62 +6207,24 @@ function updateKanji(){
   updateRelatedKanji(item.word);
 }
 
-  // ==============================
-  // RELATED KANJI
-  // ==============================
+
+// ==============================
+// RELATED KANJI
+// ==============================
+
+function updateRelatedKanji(currentWord){
 
   const container = document.getElementById("relatedKanjiList");
 
   if(!container) return;
 
-  // Ambil hanya karakter Kanji
-  const characters = [...currentWord].filter(char => {
 
-    const code = char.charCodeAt(0);
-
-    return code >= 0x4E00 && code <= 0x9FFF;
-
-  });
+  // Ambil data pembacaan Kanji dari kanjiReadingMap
+  const characters = kanjiReadingMap[currentWord];
 
 
-  // Buat daftar Kanji
-  const related = [];
-
-
-  characters.forEach(char => {
-
-    // Cari Kanji tersebut di database Kanji website
-    const kanjiData = kanji.find(k => {
-
-      const kChar = k.kanji || k.word;
-
-      return kChar === char;
-
-    });
-
-
-    if(kanjiData){
-
-      // Jangan duplikat
-      if(!related.some(item => item.kanji === char)){
-
-        related.push({
-          kanji: char,
-          reading: kanjiData.reading || ""
-        });
-
-      }
-
-    }
-
-  });
-
-
-  // ==============================
-  // TAMPILKAN
-  // ==============================
-
-  if(related.length === 0){
+  // Kalau belum ada data
+  if(!characters || characters.length === 0){
 
     container.innerHTML = `
       <div class="no-related">
@@ -6272,24 +6236,96 @@ function updateKanji(){
   }
 
 
-  container.innerHTML = related.map(item => `
+  // ==============================
+  // CARI KATA YANG MEMILIKI KANJI SAMA
+  // ==============================
 
-    <div class="related-kanji-card">
+  const related = [];
 
-      <div class="related-kanji-character">
-        ${item.kanji}
+
+  characters.forEach(charData => {
+
+    const targetKanji = charData.kanji;
+
+
+    // Cari semua kata di const kanji
+    // yang mengandung Kanji tersebut
+    const words = kanji.filter(item =>
+      item.word.includes(targetKanji) &&
+      item.word !== currentWord
+    );
+
+
+    related.push({
+
+      kanji: targetKanji,
+
+      reading: charData.reading,
+
+      words: words
+
+    });
+
+  });
+
+
+  // ==============================
+  // TAMPILKAN
+  // ==============================
+
+  container.innerHTML = related.map(group => {
+
+    return `
+
+      <div class="related-kanji-group">
+
+        <div class="related-kanji-character">
+
+          ${group.kanji}
+
+          <span>
+            ${group.reading}
+          </span>
+
+        </div>
+
+
+        <div class="related-kanji-words">
+
+          ${
+            group.words.length > 0
+
+            ?
+
+            group.words.map(item => `
+
+              <div class="related-word">
+
+                <strong>${item.word}</strong>
+
+                <span>${item.reading}</span>
+
+              </div>
+
+            `).join("")
+
+            :
+
+            `<div class="no-related-word">
+              Belum ada kata lain
+            </div>`
+
+          }
+
+        </div>
+
       </div>
 
-      <div class="related-kanji-info">
-        <strong>${item.reading}</strong>
-      </div>
+    `;
 
-    </div>
-
-  `).join("");
+  }).join("");
 
 }
-
 
 // ==============================
 // PREVIOUS
