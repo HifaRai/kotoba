@@ -6128,39 +6128,51 @@ function previousKanji(){
 
   if(!container) return;
 
-  const list = relatedKanji[currentKanji];
+  // Cari semua kosakata yang mengandung kanji ini
+  const relatedWords = [];
 
-  if(!list){
+  Object.values(kotoba).forEach(chapterData => {
+
+    chapterData.forEach(item => {
+
+      if(
+        item.word &&
+        item.word.includes(currentKanji) &&
+        item.word !== currentKanji &&
+        !relatedWords.some(x => x.word === item.word)
+      ){
+        relatedWords.push(item);
+      }
+
+    });
+
+  });
+
+  if(relatedWords.length === 0){
     container.innerHTML = `
       <div class="no-related">
-        Belum ada kelompok kanji untuk kata ini.
+        Belum ada kosakata lain dengan kanji ini.
       </div>
     `;
     return;
   }
 
-  container.innerHTML = "";
+  container.innerHTML = relatedWords.map(item => `
+    <div class="related-kanji-card">
 
-  list.forEach(item => {
-
-    const card = document.createElement("div");
-
-    card.className = "related-kanji-card";
-
-    card.innerHTML = `
       <div class="related-kanji-character">
-        ${item.kanji}
+        ${item.word}
       </div>
 
       <div class="related-kanji-info">
         <strong>${item.reading}</strong>
         <span>${item.meaning}</span>
       </div>
-    `;
 
-    container.appendChild(card);
-  });
+    </div>
+  `).join("");
 }
+
 
 /* =========================
    FLASHCARD
