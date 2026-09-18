@@ -6090,23 +6090,19 @@ function updateKanji(){
 
   const item = kanji[kanjiIndex];
 
-  document.getElementById("kanjiWord").textContent = item.kanji;
-  document.getElementById("kanjiReading").textContent = item.reading;
-  document.getElementById("kanjiMeaning").textContent = item.meaning;
+  document.getElementById("kanjiWord").textContent =
+    item.kanji;
 
-  document.getElementById("kanjiCard").classList.remove("flipped");
+  document.getElementById("kanjiReading").textContent =
+    item.reading;
+
+  document.getElementById("kanjiMeaning").textContent =
+    item.meaning;
+
+  document.getElementById("kanjiCard")
+    .classList.remove("flipped");
 
   updateRelatedKanji(item.kanji);
-}
-
-function nextKanji(){
-
-  kanjiIndex++;
-
-  if(kanjiIndex>=kanji.length)
-    kanjiIndex=0;
-
-  updateKanji();
 }
 
 function previousKanji(){
