@@ -4696,7 +4696,509 @@ const kanji=[
 
 ];
 
+
+const relatedGroups = {
+
+  // 🏢 PEKERJAAN & PERUSAHAAN
+  company: [
+    "会社",
+    "会社員",
+    "社員",
+    "社長",
+    "仕事",
+    "働きます",
+    "部長",
+    "課長",
+    "店長",
+    "工場"
+  ],
+
+  // 🏫 SEKOLAH
+  school: [
+    "学校",
+    "学生",
+    "大学",
+    "大学生",
+    "高校",
+    "高校生",
+    "先生",
+    "教室",
+    "授業",
+    "勉強"
+  ],
+
+  // 👨‍👩‍👧 KELUARGA
+  family: [
+    "家族",
+    "両親",
+    "父親",
+    "母親",
+    "父",
+    "母",
+    "兄弟",
+    "姉妹",
+    "夫",
+    "妻",
+    "子ども"
+  ],
+
+  // 🏠 RUMAH
+  house: [
+    "家",
+    "家族",
+    "部屋",
+    "台所",
+    "玄関",
+    "窓",
+    "階段",
+    "家具",
+    "庭",
+    "風呂"
+  ],
+
+  // 🚆 TRANSPORTASI
+  transportation: [
+    "電車",
+    "駅",
+    "地下鉄",
+    "新幹線",
+    "飛行機",
+    "空港",
+    "自転車",
+    "自動車",
+    "車",
+    "道",
+    "道路",
+    "バス"
+  ],
+
+  // 🏥 KESEHATAN
+  health: [
+    "病院",
+    "病気",
+    "医者",
+    "薬",
+    "薬局",
+    "入院",
+    "退院",
+    "健康",
+    "元気",
+    "体"
+  ],
+
+  // 🛒 BELANJA
+  shopping: [
+    "店",
+    "店員",
+    "店長",
+    "客",
+    "商品",
+    "値段",
+    "買い物",
+    "財布",
+    "お金",
+    "買います",
+    "売ります"
+  ],
+
+  // 💰 UANG
+  money: [
+    "お金",
+    "銀行",
+    "財布",
+    "値段",
+    "料金",
+    "お釣り",
+    "お金",
+    "払います",
+    "借ります",
+    "貸します"
+  ],
+
+  // 🍚 MAKANAN
+  food: [
+    "食事",
+    "料理",
+    "食べます",
+    "飲みます",
+    "朝ご飯",
+    "昼ご飯",
+    "晩ご飯",
+    "野菜",
+    "果物",
+    "肉",
+    "魚",
+    "米",
+    "ご飯"
+  ],
+
+  // 🍳 MEMASAK
+  cooking: [
+    "料理",
+    "台所",
+    "食事",
+    "野菜",
+    "肉",
+    "魚",
+    "焼きます",
+    "切ります",
+    "作ります",
+    "洗います"
+  ],
+
+  // 🌤️ CUACA
+  weather: [
+    "天気",
+    "雨",
+    "雪",
+    "風",
+    "台風",
+    "晴れ",
+    "曇り",
+    "暑い",
+    "寒い",
+    "暖かい",
+    "涼しい"
+  ],
+
+  // 🌳 ALAM
+  nature: [
+    "山",
+    "川",
+    "海",
+    "森",
+    "木",
+    "花",
+    "自然",
+    "公園",
+    "空",
+    "星"
+  ],
+
+  // 🕐 WAKTU
+  time: [
+    "時間",
+    "時",
+    "今日",
+    "昨日",
+    "明日",
+    "毎日",
+    "毎週",
+    "毎月",
+    "毎年",
+    "今週",
+    "来週",
+    "今月",
+    "来月",
+    "今年",
+    "来年"
+  ],
+
+  // 🏃 AKTIVITAS
+  activity: [
+    "運動",
+    "走ります",
+    "歩きます",
+    "泳ぎます",
+    "休みます",
+    "働きます",
+    "遊びます",
+    "寝ます",
+    "起きます",
+    "旅行"
+  ],
+
+  // 🗣️ KOMUNIKASI
+  communication: [
+    "話します",
+    "聞きます",
+    "言います",
+    "読みます",
+    "書きます",
+    "電話",
+    "質問",
+    "答え",
+    "会話",
+    "伝えます"
+  ],
+
+  // 📚 BELAJAR
+  study: [
+    "勉強",
+    "学校",
+    "学生",
+    "先生",
+    "教室",
+    "授業",
+    "宿題",
+    "試験",
+    "試験",
+    "漢字",
+    "日本語",
+    "辞書",
+    "問題",
+    "答え"
+  ],
+
+  // ✈️ PERJALANAN
+  travel: [
+    "旅行",
+    "外国",
+    "外国人",
+    "飛行機",
+    "空港",
+    "ホテル",
+    "地図",
+    "駅",
+    "電車",
+    "観光",
+    "写真"
+  ],
+
+  // 🌎 NEGARA & BAHASA
+  country: [
+    "国",
+    "外国",
+    "外国人",
+    "日本",
+    "日本人",
+    "日本語",
+    "英語",
+    "言葉",
+    "文化"
+  ],
+
+  // 📝 MASALAH & INFORMASI
+  information: [
+    "問題",
+    "質問",
+    "答え",
+    "回答",
+    "意味",
+    "理由",
+    "情報",
+    "説明",
+    "必要",
+    "方法"
+  ],
+
+  // 🧹 PEKERJAAN RUMAH
+  housework: [
+    "掃除",
+    "洗濯",
+    "料理",
+    "家事",
+    "台所",
+    "部屋",
+    "風呂",
+    "洗います",
+    "掃除します"
+  ],
+
+  // 📅 RENCANA & JANJI
+  schedule: [
+    "予定",
+    "約束",
+    "時間",
+    "旅行",
+    "仕事",
+    "休み",
+    "会います",
+    "予約",
+    "計画"
+  ],
+
+  // 👥 TEMAN & HUBUNGAN
+  people: [
+    "友達",
+    "友人",
+    "家族",
+    "先生",
+    "学生",
+    "会社員",
+    "社員",
+    "客",
+    "人",
+    "男",
+    "女",
+    "子ども"
+  ],
+
+  // 📦 PENGIRIMAN
+  delivery: [
+    "荷物",
+    "宅配便",
+    "郵便局",
+    "手紙",
+    "送ります",
+    "届きます",
+    "住所",
+    "名前",
+    "電話番号"
+  ],
+
+  // 📞 KONTAK / DATA PRIBADI
+  contact: [
+    "名前",
+    "住所",
+    "電話",
+    "電話番号",
+    "番号",
+    "国",
+    "外国",
+    "会社",
+    "学校"
+  ],
+
+  // ❤️ PERASAAN
+  feelings: [
+    "楽しい",
+    "嬉しい",
+    "悲しい",
+    "寂しい",
+    "怖い",
+    "安心",
+    "心配",
+    "大丈夫",
+    "好き",
+    "嫌い"
+  ],
+
+  // 🏃 PERGERAKAN
+  movement: [
+    "行きます",
+    "来ます",
+    "帰ります",
+    "出ます",
+    "入ります",
+    "歩きます",
+    "走ります",
+    "乗ります",
+    "降ります",
+    "渡ります"
+  ],
+
+  // 🛏️ KEHIDUPAN SEHARI-HARI
+  dailyLife: [
+    "生活",
+    "毎日",
+    "朝",
+    "昼",
+    "夜",
+    "起きます",
+    "寝ます",
+    "食事",
+    "仕事",
+    "学校",
+    "休み"
+  ],
+
+  // 🏙️ KOTA
+  city: [
+    "町",
+    "市",
+    "駅",
+    "店",
+    "銀行",
+    "病院",
+    "学校",
+    "公園",
+    "郵便局",
+    "道路",
+    "交番"
+  ],
+
+  // 🏢 FASILITAS / TEMPAT
+  places: [
+    "学校",
+    "病院",
+    "銀行",
+    "郵便局",
+    "駅",
+    "空港",
+    "公園",
+    "図書館",
+    "店",
+    "会社",
+    "工場"
+  ],
+
+  // 📖 MEMBACA & MENULIS
+  readingWriting: [
+    "読みます",
+    "書きます",
+    "本",
+    "新聞",
+    "漢字",
+    "文字",
+    "名前",
+    "手紙",
+    "意味",
+    "辞書"
+  ],
+
+  // 📦 BARANG
+  things: [
+    "物",
+    "荷物",
+    "商品",
+    "本",
+    "服",
+    "靴",
+    "鞄",
+    "財布",
+    "時計",
+    "写真"
+  ],
+
+  // 👕 PAKAIAN
+  clothes: [
+    "服",
+    "靴",
+    "帽子",
+    "鞄",
+    "着ます",
+    "脱ぎます",
+    "洗濯",
+    "洗います",
+    "買い物",
+    "店"
+  ],
+
+  // 🏖️ LIBURAN
+  holiday: [
+    "休み",
+    "旅行",
+    "海",
+    "山",
+    "公園",
+    "映画",
+    "写真",
+    "遊びます",
+    "泳ぎます",
+    "買い物"
+  ],
+
+  // 💼 PEKERJAAN
+  work: [
+    "仕事",
+    "働きます",
+    "会社",
+    "社員",
+    "会社員",
+    "社長",
+    "部長",
+    "課長",
+    "工場",
+    "仕事"
+  ]
+
+};
+
+
   
+
+
 const relatedKanji = {
 
   // =========================
@@ -5596,6 +6098,7 @@ function updateKanji(){
   document.getElementById("kanjiCard")
     .classList.remove("flipped");
   updateRelatedKanji(item.kanji);
+  updateRelatedKanji(item.word);
 }
 
 function nextKanji(){
@@ -5670,6 +6173,104 @@ function flipCard(id){
 }
 
 
+function updateRelatedKanji(currentKanji){
+
+  const container = document.getElementById("relatedKanjiList");
+
+  if(!container) return;
+
+  // Cari semua group yang memiliki kanji ini
+  const groups = Object.entries(relatedGroups)
+    .filter(([groupName, words]) => words.includes(currentKanji));
+
+  // Tidak ditemukan
+  if(groups.length === 0){
+
+    container.innerHTML = `
+      <div class="no-related">
+        Belum ada kanji yang berhubungan.
+      </div>
+    `;
+
+    return;
+  }
+
+  // Gabungkan semua kata dari group
+  let relatedWords = [];
+
+  groups.forEach(([groupName, words]) => {
+
+    words.forEach(word => {
+
+      if(!relatedWords.includes(word)){
+        relatedWords.push(word);
+      }
+
+    });
+
+  });
+
+  // Jangan tampilkan kata yang sedang dibuka
+  relatedWords = relatedWords.filter(
+    word => word !== currentKanji
+  );
+
+  // Cari data lengkap dari database kanji
+  const result = relatedWords
+    .map(word => {
+
+      const item = kanji.find(k => {
+
+        return (
+          k.kanji === word ||
+          k.word === word
+        );
+
+      });
+
+      return item;
+
+    })
+    .filter(item => item);
+
+  // Tampilkan
+  if(result.length === 0){
+
+    container.innerHTML = `
+      <div class="no-related">
+        Belum ada data kanji terkait.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = result.map(item => `
+
+    <div class="related-kanji-card">
+
+      <div class="related-kanji-character">
+        ${item.kanji || item.word}
+      </div>
+
+      <div class="related-kanji-info">
+
+        <strong>
+          ${item.reading || ""}
+        </strong>
+
+        <span>
+          ${item.meaning || ""}
+        </span>
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+  
 // ================================
 // IRODORI KANJI WORDS
 // ================================
