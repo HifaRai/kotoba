@@ -6143,6 +6143,45 @@ const relatedKanji = {
 
 };
 
+
+  const kanjiReadingMap = {
+
+  "会社": [
+    {kanji:"会", reading:"かい"},
+    {kanji:"社", reading:"しゃ"}
+  ],
+
+  "社員": [
+    {kanji:"社", reading:"しゃ"},
+    {kanji:"員", reading:"いん"}
+  ],
+
+  "社長": [
+    {kanji:"社", reading:"しゃ"},
+    {kanji:"長", reading:"ちょう"}
+  ],
+
+  "経験": [
+    {kanji:"経", reading:"けい"},
+    {kanji:"験", reading:"けん"}
+  ],
+
+  "必要": [
+    {kanji:"必", reading:"ひつ"},
+    {kanji:"要", reading:"よう"}
+  ],
+
+  "準備": [
+    {kanji:"準", reading:"じゅん"},
+    {kanji:"備", reading:"び"}
+  ],
+
+  "説明": [
+    {kanji:"説", reading:"せつ"},
+    {kanji:"明", reading:"めい"}
+  ]
+
+};
   
 
 
@@ -6155,15 +6194,16 @@ function updateKanji(){
 
   if(!item) return;
 
-  const currentWord = item.kanji || item.word;
+  document.getElementById("kanjiWord").textContent = item.word;
+  document.getElementById("kanjiReading").textContent = item.reading;
+  document.getElementById("kanjiMeaning").textContent = item.meaning;
 
-  // Kartu utama
-  document.getElementById("kanjiWord").textContent = currentWord;
-  document.getElementById("kanjiReading").textContent = item.reading || "";
-  document.getElementById("kanjiMeaning").textContent = item.meaning || "";
+  document
+    .getElementById("kanjiCard")
+    .classList.remove("flipped");
 
-  document.getElementById("kanjiCard").classList.remove("flipped");
-
+  updateRelatedKanji(item.word);
+}
 
   // ==============================
   // RELATED KANJI
@@ -6295,102 +6335,122 @@ function flipCard(id){
 }
 
 
-function updateRelatedKanji(currentKanji){
+function updateRelatedKanji(currentWord){
 
   const container = document.getElementById("relatedKanjiList");
 
   if(!container) return;
 
-  // Cari semua group yang memiliki kanji ini
-  const groups = Object.entries(relatedGroups)
-    .filter(([groupName, words]) => words.includes(currentKanji));
+  // Ambil data pembagian kanji dari kata
+  const kanjiParts = kanjiReadingMap[currentWord];
 
-  // Tidak ditemukan
-  if(groups.length === 0){
+  if(!kanjiParts || kanjiParts.length === 0){
 
     container.innerHTML = `
       <div class="no-related">
-        Belum ada kanji yang berhubungan.
+        Data bacaan kanji belum tersedia.
       </div>
     `;
 
     return;
   }
 
-  // Gabungkan semua kata dari group
-  let relatedWords = [];
+  let html = "";
 
-  groups.forEach(([groupName, words]) => {
+  kanjiParts.forEach(part => {
 
-    words.forEach(word => {
+    const targetKanji = part.kanji;
 
-      if(!relatedWords.includes(word)){
-        relatedWords.push(word);
-      }
+    // Cari semua kata di database kanji
+    // yang mempunyai kanji yang sama
+    const relatedWords = kanji.filter(item => {
+
+      const word = item.word || "";
+
+      return (
+        word.includes(targetKanji) &&
+        word !== currentWord
+      );
 
     });
 
-  });
 
-  // Jangan tampilkan kata yang sedang dibuka
-  relatedWords = relatedWords.filter(
-    word => word !== currentKanji
-  );
+    html += `
+      <div class="related-kanji-group">
 
-  // Cari data lengkap dari database kanji
-  const result = relatedWords
-    .map(word => {
+        <div class="related-kanji-title">
 
-      const item = kanji.find(k => {
+          <span class="related-target-kanji">
+            ${targetKanji}
+          </span>
 
-        return (
-          k.kanji === word ||
-          k.word === word
+          <span class="related-target-reading">
+            ${part.reading}
+          </span>
+
+        </div>
+    `;
+
+
+    if(relatedWords.length === 0){
+
+      html += `
+        <div class="no-related">
+          Belum ada kata lain.
+        </div>
+      `;
+
+    } else {
+
+      html += `
+        <div class="related-kanji-list">
+      `;
+
+
+      relatedWords.forEach(item => {
+
+        const word = item.word;
+        const reading = item.reading || "";
+
+        // Highlight kanji yang sama
+        const highlightedWord = word.replace(
+          new RegExp(targetKanji, "g"),
+          `<span class="kanji-highlight">${targetKanji}</span>`
         );
+
+
+        html += `
+          <div class="related-kanji-card">
+
+            <div class="related-kanji-character">
+              ${highlightedWord}
+            </div>
+
+            <div class="related-kanji-info">
+              <strong>${reading}</strong>
+            </div>
+
+          </div>
+        `;
 
       });
 
-      return item;
 
-    })
-    .filter(item => item);
+      html += `
+        </div>
+      `;
 
-  // Tampilkan
-  if(result.length === 0){
+    }
 
-    container.innerHTML = `
-      <div class="no-related">
-        Belum ada data kanji terkait.
+
+    html += `
       </div>
     `;
 
-    return;
-  }
+  });
 
-  container.innerHTML = result.map(item => `
 
-    <div class="related-kanji-card">
-
-      <div class="related-kanji-character">
-        ${item.kanji || item.word}
-      </div>
-
-      <div class="related-kanji-info">
-
-        <strong>
-          ${item.reading || ""}
-        </strong>
-
-        <span>
-          ${item.meaning || ""}
-        </span>
-
-      </div>
-
-    </div>
-
-  `).join("");
-
+  container.innerHTML = html;
 }
   
 // ================================
