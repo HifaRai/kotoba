@@ -562,6 +562,74 @@ main{
   background: #faf4f4;
 }
 
+.related-kanji{
+  margin-top:35px;
+  padding:20px;
+  background:#fff;
+  border-radius:20px;
+  border:1px solid #eee;
+}
+
+.related-kanji h3{
+  margin:0;
+  font-size:18px;
+}
+
+.related-subtitle{
+  margin:6px 0 18px;
+  color:#888;
+  font-size:13px;
+}
+
+.related-kanji-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
+}
+
+.related-kanji-card{
+  padding:14px 10px;
+  border-radius:15px;
+  background:#fafafa;
+  border:1px solid #eee;
+  text-align:center;
+  transition:.2s;
+}
+
+.related-kanji-card:hover{
+  transform:translateY(-2px);
+}
+
+.related-kanji-character{
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.related-kanji-info{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.related-kanji-info strong{
+  font-size:13px;
+}
+
+.related-kanji-info span{
+  font-size:12px;
+  color:#777;
+}
+
+.no-related{
+  text-align:center;
+  color:#aaa;
+  padding:15px;
+  font-size:13px;
+}
+
+  
+
 @media(max-width:500px) {
 
   .quiz-type {
@@ -770,6 +838,17 @@ footer{
     <button class="btn" onclick="flipCard('kanjiCard')">Flip</button>
     <button class="btn green" onclick="nextKanji()">→</button>
   </div>
+
+
+  <!-- RELATED KANJI -->
+<div class="related-kanji">
+  <h3>🔗 Kanji yang berhubungan</h3>
+  <p class="related-subtitle">
+    Kata lain yang berhubungan dengan kanji ini
+  </p>
+
+  <div id="relatedKanjiList" class="related-kanji-list"></div>
+</div>
 
 </section>
 
@@ -4617,6 +4696,299 @@ const kanji=[
 
 ];
 
+  
+const relatedKanji = {
+
+  "会社": [
+    {
+      kanji: "会社",
+      reading: "かいしゃ",
+      meaning: "perusahaan"
+    },
+    {
+      kanji: "社員",
+      reading: "しゃいん",
+      meaning: "karyawan"
+    },
+    {
+      kanji: "社長",
+      reading: "しゃちょう",
+      meaning: "direktur / presiden perusahaan"
+    },
+    {
+      kanji: "会社員",
+      reading: "かいしゃいん",
+      meaning: "pegawai perusahaan"
+    },
+    {
+      kanji: "仕事",
+      reading: "しごと",
+      meaning: "pekerjaan"
+    }
+  ],
+
+  "社員": [
+    {
+      kanji: "会社",
+      reading: "かいしゃ",
+      meaning: "perusahaan"
+    },
+    {
+      kanji: "社員",
+      reading: "しゃいん",
+      meaning: "karyawan"
+    },
+    {
+      kanji: "社長",
+      reading: "しゃちょう",
+      meaning: "direktur / presiden perusahaan"
+    },
+    {
+      kanji: "会社員",
+      reading: "かいしゃいん",
+      meaning: "pegawai perusahaan"
+    },
+    {
+      kanji: "仕事",
+      reading: "しごと",
+      meaning: "pekerjaan"
+    }
+  ],
+
+  "社長": [
+    {
+      kanji: "会社",
+      reading: "かいしゃ",
+      meaning: "perusahaan"
+    },
+    {
+      kanji: "社員",
+      reading: "しゃいん",
+      meaning: "karyawan"
+    },
+    {
+      kanji: "社長",
+      reading: "しゃちょう",
+      meaning: "direktur / presiden perusahaan"
+    },
+    {
+      kanji: "会社員",
+      reading: "かいしゃいん",
+      meaning: "pegawai perusahaan"
+    },
+    {
+      kanji: "仕事",
+      reading: "しごと",
+      meaning: "pekerjaan"
+    }
+  ],
+
+  "学校": [
+    {
+      kanji: "学校",
+      reading: "がっこう",
+      meaning: "sekolah"
+    },
+    {
+      kanji: "学生",
+      reading: "がくせい",
+      meaning: "pelajar / mahasiswa"
+    },
+    {
+      kanji: "先生",
+      reading: "せんせい",
+      meaning: "guru"
+    },
+    {
+      kanji: "大学",
+      reading: "だいがく",
+      meaning: "universitas"
+    },
+    {
+      kanji: "高校",
+      reading: "こうこう",
+      meaning: "SMA"
+    },
+    {
+      kanji: "教室",
+      reading: "きょうしつ",
+      meaning: "ruang kelas"
+    }
+  ],
+
+  "学生": [
+    {
+      kanji: "学校",
+      reading: "がっこう",
+      meaning: "sekolah"
+    },
+    {
+      kanji: "学生",
+      reading: "がくせい",
+      meaning: "pelajar / mahasiswa"
+    },
+    {
+      kanji: "先生",
+      reading: "せんせい",
+      meaning: "guru"
+    },
+    {
+      kanji: "大学生",
+      reading: "だいがくせい",
+      meaning: "mahasiswa"
+    },
+    {
+      kanji: "高校生",
+      reading: "こうこうせい",
+      meaning: "siswa SMA"
+    }
+  ],
+
+  "病院": [
+    {
+      kanji: "病院",
+      reading: "びょういん",
+      meaning: "rumah sakit"
+    },
+    {
+      kanji: "病気",
+      reading: "びょうき",
+      meaning: "penyakit"
+    },
+    {
+      kanji: "医者",
+      reading: "いしゃ",
+      meaning: "dokter"
+    },
+    {
+      kanji: "薬",
+      reading: "くすり",
+      meaning: "obat"
+    },
+    {
+      kanji: "入院",
+      reading: "にゅういん",
+      meaning: "rawat inap"
+    },
+    {
+      kanji: "退院",
+      reading: "たいいん",
+      meaning: "keluar dari rumah sakit"
+    }
+  ],
+
+  "電車": [
+    {
+      kanji: "電車",
+      reading: "でんしゃ",
+      meaning: "kereta"
+    },
+    {
+      kanji: "駅",
+      reading: "えき",
+      meaning: "stasiun"
+    },
+    {
+      kanji: "地下鉄",
+      reading: "ちかてつ",
+      meaning: "kereta bawah tanah"
+    },
+    {
+      kanji: "新幹線",
+      reading: "しんかんせん",
+      meaning: "shinkansen"
+    },
+    {
+      kanji: "空港",
+      reading: "くうこう",
+      meaning: "bandara"
+    },
+    {
+      kanji: "飛行機",
+      reading: "ひこうき",
+      meaning: "pesawat"
+    }
+  ],
+
+  "家族": [
+    {
+      kanji: "家族",
+      reading: "かぞく",
+      meaning: "keluarga"
+    },
+    {
+      kanji: "両親",
+      reading: "りょうしん",
+      meaning: "kedua orang tua"
+    },
+    {
+      kanji: "父親",
+      reading: "ちちおや",
+      meaning: "ayah"
+    },
+    {
+      kanji: "母親",
+      reading: "ははおや",
+      meaning: "ibu"
+    },
+    {
+      kanji: "兄弟",
+      reading: "きょうだい",
+      meaning: "saudara kandung"
+    },
+    {
+      kanji: "姉妹",
+      reading: "しまい",
+      meaning: "saudara perempuan"
+    }
+  ],
+
+  "買い物": [
+    {
+      kanji: "買い物",
+      reading: "かいもの",
+      meaning: "belanja"
+    },
+    {
+      kanji: "店",
+      reading: "みせ",
+      meaning: "toko"
+    },
+    {
+      kanji: "店員",
+      reading: "てんいん",
+      meaning: "pegawai toko"
+    },
+    {
+      kanji: "客",
+      reading: "きゃく",
+      meaning: "pelanggan"
+    },
+    {
+      kanji: "商品",
+      reading: "しょうひん",
+      meaning: "barang dagangan"
+    },
+    {
+      kanji: "値段",
+      reading: "ねだん",
+      meaning: "harga"
+    },
+    {
+      kanji: "財布",
+      reading: "さいふ",
+      meaning: "dompet"
+    }
+  ]
+
+};
+  
+
+
+  
+
+
+
 let kanjiIndex=0;
 
 function updateKanji(){
@@ -4630,6 +5002,7 @@ function updateKanji(){
 
   document.getElementById("kanjiCard")
     .classList.remove("flipped");
+  updateRelatedKanji(item.kanji);
 }
 
 function nextKanji(){
@@ -4652,6 +5025,46 @@ function previousKanji(){
   updateKanji();
 }
 
+
+  function updateRelatedKanji(currentKanji){
+
+  const container = document.getElementById("relatedKanjiList");
+
+  if(!container) return;
+
+  const list = relatedKanji[currentKanji];
+
+  if(!list){
+    container.innerHTML = `
+      <div class="no-related">
+        Belum ada kelompok kanji untuk kata ini.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = "";
+
+  list.forEach(item => {
+
+    const card = document.createElement("div");
+
+    card.className = "related-kanji-card";
+
+    card.innerHTML = `
+      <div class="related-kanji-character">
+        ${item.kanji}
+      </div>
+
+      <div class="related-kanji-info">
+        <strong>${item.reading}</strong>
+        <span>${item.meaning}</span>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
 
 /* =========================
    FLASHCARD
