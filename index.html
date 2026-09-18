@@ -306,6 +306,69 @@ main{
   margin-bottom:10px;
 }
 
+.related-kanji-group{
+  margin-bottom:25px;
+}
+
+.related-kanji-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.related-target-kanji{
+  font-size:28px;
+  font-weight:800;
+}
+
+.related-target-label{
+  font-size:13px;
+  color:#888;
+}
+
+.related-kanji-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:10px;
+}
+
+.related-kanji-card{
+  padding:14px 10px;
+  border-radius:15px;
+  background:#fafafa;
+  border:1px solid #eee;
+  text-align:center;
+  transition:.2s;
+}
+
+.related-kanji-card:hover{
+  transform:translateY(-2px);
+}
+
+.related-kanji-character{
+  font-size:24px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.related-kanji-info strong{
+  font-size:13px;
+  color:#777;
+}
+
+.kanji-highlight{
+  color:#8b6fb3;
+  font-weight:800;
+}
+
+.no-related{
+  text-align:center;
+  color:#aaa;
+  padding:12px;
+  font-size:13px;
+}
+  
 .grammar .example{
   margin-top:12px;
   padding:14px;
@@ -6092,15 +6155,16 @@ function updateKanji(){
 
   if(!item) return;
 
-  // Ambil data kanji
-  const currentKanji = item.kanji || item.word;
+  // ==============================
+  // KANJI UTAMA
+  // ==============================
 
-  // Update kartu utama
-  document.getElementById("kanjiWord").textContent = currentKanji;
+  const currentWord = item.kanji || item.word;
+
+  document.getElementById("kanjiWord").textContent = currentWord;
   document.getElementById("kanjiReading").textContent = item.reading || "";
   document.getElementById("kanjiMeaning").textContent = item.meaning || "";
 
-  // Balik kartu ke depan
   document
     .getElementById("kanjiCard")
     .classList.remove("flipped");
@@ -6114,97 +6178,162 @@ function updateKanji(){
 
   if(!container) return;
 
-  const relatedWords = [];
+  /*
+    Ambil hanya karakter Kanji dari kata utama.
+    Contoh:
+    会社 → 会 + 社
+    日本 → 日 + 本
+    学生 → 学 + 生
+  */
 
+  const kanjiCharacters = [...currentWord].filter(char => {
 
-  // Cari semua Kotoba dari semua chapter
-  Object.values(kotoba).forEach(chapterData => {
+    const code = char.charCodeAt(0);
 
-    if(!Array.isArray(chapterData)) return;
-
-    chapterData.forEach(kotobaItem => {
-
-      if(!kotobaItem || !kotobaItem.word) return;
-
-
-      // Cek apakah kata tersebut
-      // mengandung kanji yang sedang dipelajari
-      if(
-        kotobaItem.word.includes(currentKanji) &&
-        kotobaItem.word !== currentKanji
-      ){
-
-        // Jangan tampilkan kata yang sama dua kali
-        const alreadyExists = relatedWords.some(
-          item => item.word === kotobaItem.word
-        );
-
-        if(!alreadyExists){
-          relatedWords.push(kotobaItem);
-        }
-
-      }
-
-    });
+    return (
+      code >= 0x4E00 &&
+      code <= 0x9FFF
+    );
 
   });
 
 
+  // Hindari kanji yang sama muncul dua kali
+  const uniqueKanji = [...new Set(kanjiCharacters)];
+
+
   // ==============================
-  // JIKA TIDAK ADA RELATED WORD
+  // BUAT SECTION PER KANJI
   // ==============================
 
-  if(relatedWords.length === 0){
+  let html = "";
 
-    container.innerHTML = `
-      <div class="no-related">
-        Belum ada kosakata dengan kanji
-        「${currentKanji}」.
+
+  uniqueKanji.forEach(targetKanji => {
+
+    const relatedWords = [];
+
+
+    // Cari dari semua chapter Kotoba
+    Object.values(kotoba).forEach(chapterData => {
+
+      if(!Array.isArray(chapterData)) return;
+
+
+      chapterData.forEach(kotobaItem => {
+
+        if(!kotobaItem || !kotobaItem.word) return;
+
+
+        // Cari kata yang mengandung kanji ini
+        if(
+          kotobaItem.word.includes(targetKanji) &&
+          kotobaItem.word !== currentWord
+        ){
+
+          // Hindari duplikat
+          const exists = relatedWords.some(
+            item => item.word === kotobaItem.word
+          );
+
+          if(!exists){
+            relatedWords.push(kotobaItem);
+          }
+
+        }
+
+      });
+
+    });
+
+
+    // ==============================
+    // SECTION KANJI
+    // ==============================
+
+    html += `
+      <div class="related-kanji-group">
+
+        <div class="related-kanji-title">
+          <span class="related-target-kanji">
+            ${targetKanji}
+          </span>
+
+          <span class="related-target-label">
+            kata dengan kanji ini
+          </span>
+        </div>
+    `;
+
+
+    // Kalau tidak ada kata lain
+    if(relatedWords.length === 0){
+
+      html += `
+        <div class="no-related">
+          Belum ada kosakata lain.
+        </div>
+      `;
+
+    } else {
+
+      html += `
+        <div class="related-kanji-list">
+      `;
+
+
+      relatedWords.forEach(kotobaItem => {
+
+        const word = kotobaItem.word;
+        const reading = kotobaItem.reading || "";
+
+
+        // Highlight kanji target
+        const highlightedWord = word.replace(
+          new RegExp(targetKanji, "g"),
+          `<span class="kanji-highlight">${targetKanji}</span>`
+        );
+
+
+        html += `
+          <div class="related-kanji-card">
+
+            <div class="related-kanji-character">
+              ${highlightedWord}
+            </div>
+
+            <div class="related-kanji-info">
+              <strong>${reading}</strong>
+            </div>
+
+          </div>
+        `;
+
+      });
+
+
+      html += `
+        </div>
+      `;
+
+    }
+
+
+    html += `
       </div>
     `;
 
-    return;
-  }
+  });
 
 
-  // ==============================
-  // TAMPILKAN RELATED WORD
-  // ==============================
-
-  container.innerHTML = relatedWords.map(item => {
-
-    const word = item.word || "";
-    const reading = item.reading || "";
-
-
-    // Highlight kanji yang sedang dipelajari
-    const highlightedWord = word.replace(
-      new RegExp(currentKanji, "g"),
-      `<span class="kanji-highlight">${currentKanji}</span>`
-    );
-
-
-    return `
-      <div class="related-kanji-card">
-
-        <div class="related-kanji-character">
-          ${highlightedWord}
-        </div>
-
-        <div class="related-kanji-info">
-          <strong>${reading}</strong>
-        </div>
-
-      </div>
-    `;
-
-  }).join("");
+  // Tampilkan semuanya
+  container.innerHTML = html;
 
 }
 
 
 // ==============================
-// PREVIOUS KANJI
+// PREVIOUS
 // ==============================
 
 function previousKanji(){
@@ -6221,7 +6350,7 @@ function previousKanji(){
 
 
 // ==============================
-// NEXT KANJI
+// NEXT
 // ==============================
 
 function nextKanji(){
