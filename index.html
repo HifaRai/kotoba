@@ -663,6 +663,98 @@ main{
   transform:translateY(-2px);
 }
 
+  .related-kanji{
+  margin-top:30px;
+  padding:20px;
+  background:#fff;
+  border-radius:20px;
+}
+
+.related-kanji h3{
+  margin:0;
+}
+
+.related-subtitle{
+  color:#888;
+  font-size:14px;
+  margin-top:6px;
+}
+
+.related-kanji-list{
+  margin-top:20px;
+}
+
+.kanji-character-group{
+  margin-bottom:24px;
+  padding-bottom:20px;
+  border-bottom:1px solid #eee;
+}
+
+.kanji-character-group:last-child{
+  border-bottom:none;
+}
+
+.kanji-character-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.big-kanji{
+  font-size:32px;
+  font-weight:700;
+}
+
+.character-reading{
+  color:#888;
+  font-size:15px;
+}
+
+.kanji-related-words{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding-left:15px;
+}
+
+.kanji-related-word{
+  display:grid;
+  grid-template-columns:100px 100px 1fr;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  background:#fafafa;
+  border-radius:12px;
+}
+
+.related-word{
+  font-size:18px;
+  font-weight:600;
+}
+
+.related-reading{
+  font-size:14px;
+  color:#888;
+}
+
+.related-meaning{
+  font-size:14px;
+  color:#555;
+}
+
+@media(max-width:600px){
+
+  .kanji-related-word{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .related-meaning{
+    grid-column:1 / -1;
+  }
+
+}
+
 .related-kanji-character{
   font-size:28px;
   font-weight:bold;
@@ -740,7 +832,9 @@ footer{
 <nav class="nav">
   <button class="active" onclick="showPage('home',this)">⌂ Home</button>
   <button onclick="showPage('kotoba',this)">ことば Kotoba</button>
-  <button onclick="showPage('kanji',this)">漢字 Kanji</button>
+<button onclick="showPage('kanji',this); showAllKanji()">
+  漢字 Kanji
+</button>
   <button onclick="showPage('irodori',this)">いろどり Irodori</button>
   <button onclick="showPage('bunpou',this)">文法 Bunpou</button>
   <button onclick="showPage('quiz',this)">✦ Quiz</button>
@@ -874,9 +968,10 @@ footer{
 
   <div class="hero">
     <h2>漢字 — N4 Kanji</h2>
-    <p>Flashcard kanji dengan reading dan arti.</p>
+    <p>Belajar kanji melalui kosakata yang menggunakan kanji tersebut.</p>
   </div>
 
+  <!-- KANJI UTAMA -->
   <div class="flashcard" id="kanjiCard" onclick="flipCard('kanjiCard')">
 
     <div class="flash-inner">
@@ -896,26 +991,35 @@ footer{
 
   </div>
 
+  <!-- NAVIGASI -->
   <div class="flash-actions">
     <button class="btn secondary" onclick="previousKanji()">←</button>
-    <button class="btn" onclick="flipCard('kanjiCard')">Flip</button>
+
+    <button class="btn" onclick="flipCard('kanjiCard')">
+      Flip
+    </button>
+
     <button class="btn green" onclick="nextKanji()">→</button>
   </div>
 
 
-  <!-- RELATED KANJI -->
-<div class="related-kanji">
-  <h3>🔗 Kanji yang berhubungan</h3>
-  <p class="related-subtitle">
-    Kata lain yang berhubungan dengan kanji ini
-  </p>
+  <!-- KOSAKATA DARI KANJI YANG SAMA -->
+  <div class="related-kanji">
 
-  <div id="relatedKanjiList" class="related-kanji-list"></div>
-</div>
+    <h3>🔗 Kosakata dengan Kanji yang Sama</h3>
+
+    <p class="related-subtitle">
+      Kanji yang sama digunakan dalam berbagai kosakata
+    </p>
+
+    <div id="relatedKanjiList" class="related-kanji-list"></div>
+
+  </div>
 
 </section>
 
 
+  
 <!-- IRODORI -->
 <section id="irodori" class="page">
 
@@ -5182,1388 +5286,7 @@ const kanji=[
 ];
 
 
-const relatedGroups = {
 
-  // 🏢 PEKERJAAN & PERUSAHAAN
-  company: [
-    "会社",
-    "会社員",
-    "社員",
-    "社長",
-    "仕事",
-    "働きます",
-    "部長",
-    "課長",
-    "店長",
-    "工場"
-  ],
-
-  // 🏫 SEKOLAH
-  school: [
-    "学校",
-    "学生",
-    "大学",
-    "大学生",
-    "高校",
-    "高校生",
-    "先生",
-    "教室",
-    "授業",
-    "勉強"
-  ],
-
-  // 👨‍👩‍👧 KELUARGA
-  family: [
-    "家族",
-    "両親",
-    "父親",
-    "母親",
-    "父",
-    "母",
-    "兄弟",
-    "姉妹",
-    "夫",
-    "妻",
-    "子ども"
-  ],
-
-  // 🏠 RUMAH
-  house: [
-    "家",
-    "家族",
-    "部屋",
-    "台所",
-    "玄関",
-    "窓",
-    "階段",
-    "家具",
-    "庭",
-    "風呂"
-  ],
-
-  // 🚆 TRANSPORTASI
-  transportation: [
-    "電車",
-    "駅",
-    "地下鉄",
-    "新幹線",
-    "飛行機",
-    "空港",
-    "自転車",
-    "自動車",
-    "車",
-    "道",
-    "道路",
-    "バス"
-  ],
-
-  // 🏥 KESEHATAN
-  health: [
-    "病院",
-    "病気",
-    "医者",
-    "薬",
-    "薬局",
-    "入院",
-    "退院",
-    "健康",
-    "元気",
-    "体"
-  ],
-
-  // 🛒 BELANJA
-  shopping: [
-    "店",
-    "店員",
-    "店長",
-    "客",
-    "商品",
-    "値段",
-    "買い物",
-    "財布",
-    "お金",
-    "買います",
-    "売ります"
-  ],
-
-  // 💰 UANG
-  money: [
-    "お金",
-    "銀行",
-    "財布",
-    "値段",
-    "料金",
-    "お釣り",
-    "お金",
-    "払います",
-    "借ります",
-    "貸します"
-  ],
-
-  // 🍚 MAKANAN
-  food: [
-    "食事",
-    "料理",
-    "食べます",
-    "飲みます",
-    "朝ご飯",
-    "昼ご飯",
-    "晩ご飯",
-    "野菜",
-    "果物",
-    "肉",
-    "魚",
-    "米",
-    "ご飯"
-  ],
-
-  // 🍳 MEMASAK
-  cooking: [
-    "料理",
-    "台所",
-    "食事",
-    "野菜",
-    "肉",
-    "魚",
-    "焼きます",
-    "切ります",
-    "作ります",
-    "洗います"
-  ],
-
-  // 🌤️ CUACA
-  weather: [
-    "天気",
-    "雨",
-    "雪",
-    "風",
-    "台風",
-    "晴れ",
-    "曇り",
-    "暑い",
-    "寒い",
-    "暖かい",
-    "涼しい"
-  ],
-
-  // 🌳 ALAM
-  nature: [
-    "山",
-    "川",
-    "海",
-    "森",
-    "木",
-    "花",
-    "自然",
-    "公園",
-    "空",
-    "星"
-  ],
-
-  // 🕐 WAKTU
-  time: [
-    "時間",
-    "時",
-    "今日",
-    "昨日",
-    "明日",
-    "毎日",
-    "毎週",
-    "毎月",
-    "毎年",
-    "今週",
-    "来週",
-    "今月",
-    "来月",
-    "今年",
-    "来年"
-  ],
-
-  // 🏃 AKTIVITAS
-  activity: [
-    "運動",
-    "走ります",
-    "歩きます",
-    "泳ぎます",
-    "休みます",
-    "働きます",
-    "遊びます",
-    "寝ます",
-    "起きます",
-    "旅行"
-  ],
-
-  // 🗣️ KOMUNIKASI
-  communication: [
-    "話します",
-    "聞きます",
-    "言います",
-    "読みます",
-    "書きます",
-    "電話",
-    "質問",
-    "答え",
-    "会話",
-    "伝えます"
-  ],
-
-  // 📚 BELAJAR
-  study: [
-    "勉強",
-    "学校",
-    "学生",
-    "先生",
-    "教室",
-    "授業",
-    "宿題",
-    "試験",
-    "試験",
-    "漢字",
-    "日本語",
-    "辞書",
-    "問題",
-    "答え"
-  ],
-
-  // ✈️ PERJALANAN
-  travel: [
-    "旅行",
-    "外国",
-    "外国人",
-    "飛行機",
-    "空港",
-    "ホテル",
-    "地図",
-    "駅",
-    "電車",
-    "観光",
-    "写真"
-  ],
-
-  // 🌎 NEGARA & BAHASA
-  country: [
-    "国",
-    "外国",
-    "外国人",
-    "日本",
-    "日本人",
-    "日本語",
-    "英語",
-    "言葉",
-    "文化"
-  ],
-
-  // 📝 MASALAH & INFORMASI
-  information: [
-    "問題",
-    "質問",
-    "答え",
-    "回答",
-    "意味",
-    "理由",
-    "情報",
-    "説明",
-    "必要",
-    "方法"
-  ],
-
-  // 🧹 PEKERJAAN RUMAH
-  housework: [
-    "掃除",
-    "洗濯",
-    "料理",
-    "家事",
-    "台所",
-    "部屋",
-    "風呂",
-    "洗います",
-    "掃除します"
-  ],
-
-  // 📅 RENCANA & JANJI
-  schedule: [
-    "予定",
-    "約束",
-    "時間",
-    "旅行",
-    "仕事",
-    "休み",
-    "会います",
-    "予約",
-    "計画"
-  ],
-
-  // 👥 TEMAN & HUBUNGAN
-  people: [
-    "友達",
-    "友人",
-    "家族",
-    "先生",
-    "学生",
-    "会社員",
-    "社員",
-    "客",
-    "人",
-    "男",
-    "女",
-    "子ども"
-  ],
-
-  // 📦 PENGIRIMAN
-  delivery: [
-    "荷物",
-    "宅配便",
-    "郵便局",
-    "手紙",
-    "送ります",
-    "届きます",
-    "住所",
-    "名前",
-    "電話番号"
-  ],
-
-  // 📞 KONTAK / DATA PRIBADI
-  contact: [
-    "名前",
-    "住所",
-    "電話",
-    "電話番号",
-    "番号",
-    "国",
-    "外国",
-    "会社",
-    "学校"
-  ],
-
-  // ❤️ PERASAAN
-  feelings: [
-    "楽しい",
-    "嬉しい",
-    "悲しい",
-    "寂しい",
-    "怖い",
-    "安心",
-    "心配",
-    "大丈夫",
-    "好き",
-    "嫌い"
-  ],
-
-  // 🏃 PERGERAKAN
-  movement: [
-    "行きます",
-    "来ます",
-    "帰ります",
-    "出ます",
-    "入ります",
-    "歩きます",
-    "走ります",
-    "乗ります",
-    "降ります",
-    "渡ります"
-  ],
-
-  // 🛏️ KEHIDUPAN SEHARI-HARI
-  dailyLife: [
-    "生活",
-    "毎日",
-    "朝",
-    "昼",
-    "夜",
-    "起きます",
-    "寝ます",
-    "食事",
-    "仕事",
-    "学校",
-    "休み"
-  ],
-
-  // 🏙️ KOTA
-  city: [
-    "町",
-    "市",
-    "駅",
-    "店",
-    "銀行",
-    "病院",
-    "学校",
-    "公園",
-    "郵便局",
-    "道路",
-    "交番"
-  ],
-
-  // 🏢 FASILITAS / TEMPAT
-  places: [
-    "学校",
-    "病院",
-    "銀行",
-    "郵便局",
-    "駅",
-    "空港",
-    "公園",
-    "図書館",
-    "店",
-    "会社",
-    "工場"
-  ],
-
-  // 📖 MEMBACA & MENULIS
-  readingWriting: [
-    "読みます",
-    "書きます",
-    "本",
-    "新聞",
-    "漢字",
-    "文字",
-    "名前",
-    "手紙",
-    "意味",
-    "辞書"
-  ],
-
-  // 📦 BARANG
-  things: [
-    "物",
-    "荷物",
-    "商品",
-    "本",
-    "服",
-    "靴",
-    "鞄",
-    "財布",
-    "時計",
-    "写真"
-  ],
-
-  // 👕 PAKAIAN
-  clothes: [
-    "服",
-    "靴",
-    "帽子",
-    "鞄",
-    "着ます",
-    "脱ぎます",
-    "洗濯",
-    "洗います",
-    "買い物",
-    "店"
-  ],
-
-  // 🏖️ LIBURAN
-  holiday: [
-    "休み",
-    "旅行",
-    "海",
-    "山",
-    "公園",
-    "映画",
-    "写真",
-    "遊びます",
-    "泳ぎます",
-    "買い物"
-  ],
-
-  // 💼 PEKERJAAN
-  work: [
-    "仕事",
-    "働きます",
-    "会社",
-    "社員",
-    "会社員",
-    "社長",
-    "部長",
-    "課長",
-    "工場",
-    "仕事"
-  ]
-
-};
-
-
-  
-
-
-const relatedKanji = {
-
-  // =========================
-  // 🏢 PEKERJAAN / PERUSAHAAN
-  // =========================
-
-  "会社": [
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"社員", reading:"しゃいん", meaning:"karyawan"},
-    {kanji:"社長", reading:"しゃちょう", meaning:"direktur / presiden perusahaan"},
-    {kanji:"会社員", reading:"かいしゃいん", meaning:"pegawai perusahaan"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"働きます", reading:"はたらきます", meaning:"bekerja"}
-  ],
-
-  "社員": [
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"社員", reading:"しゃいん", meaning:"karyawan"},
-    {kanji:"社長", reading:"しゃちょう", meaning:"direktur / presiden perusahaan"},
-    {kanji:"会社員", reading:"かいしゃいん", meaning:"pegawai perusahaan"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"働きます", reading:"はたらきます", meaning:"bekerja"}
-  ],
-
-  "社長": [
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"社員", reading:"しゃいん", meaning:"karyawan"},
-    {kanji:"社長", reading:"しゃちょう", meaning:"direktur / presiden perusahaan"},
-    {kanji:"会社員", reading:"かいしゃいん", meaning:"pegawai perusahaan"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"}
-  ],
-
-  "仕事": [
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"社員", reading:"しゃいん", meaning:"karyawan"},
-    {kanji:"社長", reading:"しゃちょう", meaning:"direktur / presiden perusahaan"},
-    {kanji:"働きます", reading:"はたらきます", meaning:"bekerja"},
-    {kanji:"休み", reading:"やすみ", meaning:"libur / istirahat"}
-  ],
-
-  "働きます": [
-    {kanji:"働きます", reading:"はたらきます", meaning:"bekerja"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"社員", reading:"しゃいん", meaning:"karyawan"},
-    {kanji:"休みます", reading:"やすみます", meaning:"beristirahat / libur"}
-  ],
-
-
-  // =========================
-  // 🏫 SEKOLAH
-  // =========================
-
-  "学校": [
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar / mahasiswa"},
-    {kanji:"先生", reading:"せんせい", meaning:"guru"},
-    {kanji:"大学", reading:"だいがく", meaning:"universitas"},
-    {kanji:"高校", reading:"こうこう", meaning:"SMA"},
-    {kanji:"教室", reading:"きょうしつ", meaning:"ruang kelas"},
-    {kanji:"授業", reading:"じゅぎょう", meaning:"pelajaran"}
-  ],
-
-  "学生": [
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar / mahasiswa"},
-    {kanji:"大学生", reading:"だいがくせい", meaning:"mahasiswa"},
-    {kanji:"高校生", reading:"こうこうせい", meaning:"siswa SMA"},
-    {kanji:"先生", reading:"せんせい", meaning:"guru"},
-    {kanji:"大学", reading:"だいがく", meaning:"universitas"}
-  ],
-
-  "先生": [
-    {kanji:"先生", reading:"せんせい", meaning:"guru"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar / mahasiswa"},
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"教室", reading:"きょうしつ", meaning:"ruang kelas"},
-    {kanji:"授業", reading:"じゅぎょう", meaning:"pelajaran"}
-  ],
-
-  "大学": [
-    {kanji:"大学", reading:"だいがく", meaning:"universitas"},
-    {kanji:"大学生", reading:"だいがくせい", meaning:"mahasiswa"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar / mahasiswa"},
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"先生", reading:"せんせい", meaning:"guru"}
-  ],
-
-  "高校": [
-    {kanji:"高校", reading:"こうこう", meaning:"SMA"},
-    {kanji:"高校生", reading:"こうこうせい", meaning:"siswa SMA"},
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar"},
-    {kanji:"大学", reading:"だいがく", meaning:"universitas"}
-  ],
-
-  "教室": [
-    {kanji:"教室", reading:"きょうしつ", meaning:"ruang kelas"},
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"先生", reading:"せんせい", meaning:"guru"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar"},
-    {kanji:"授業", reading:"じゅぎょう", meaning:"pelajaran"}
-  ],
-
-
-  // =========================
-  // 👨‍👩‍👧 KELUARGA
-  // =========================
-
-  "家族": [
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"両親", reading:"りょうしん", meaning:"kedua orang tua"},
-    {kanji:"父親", reading:"ちちおや", meaning:"ayah"},
-    {kanji:"母親", reading:"ははおや", meaning:"ibu"},
-    {kanji:"兄弟", reading:"きょうだい", meaning:"saudara kandung"},
-    {kanji:"姉妹", reading:"しまい", meaning:"saudara perempuan"}
-  ],
-
-  "両親": [
-    {kanji:"両親", reading:"りょうしん", meaning:"kedua orang tua"},
-    {kanji:"父親", reading:"ちちおや", meaning:"ayah"},
-    {kanji:"母親", reading:"ははおや", meaning:"ibu"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"兄弟", reading:"きょうだい", meaning:"saudara kandung"}
-  ],
-
-  "父親": [
-    {kanji:"父親", reading:"ちちおや", meaning:"ayah"},
-    {kanji:"母親", reading:"ははおや", meaning:"ibu"},
-    {kanji:"両親", reading:"りょうしん", meaning:"kedua orang tua"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"兄弟", reading:"きょうだい", meaning:"saudara kandung"}
-  ],
-
-  "母親": [
-    {kanji:"母親", reading:"ははおや", meaning:"ibu"},
-    {kanji:"父親", reading:"ちちおや", meaning:"ayah"},
-    {kanji:"両親", reading:"りょうしん", meaning:"kedua orang tua"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"兄弟", reading:"きょうだい", meaning:"saudara kandung"}
-  ],
-
-  "兄弟": [
-    {kanji:"兄弟", reading:"きょうだい", meaning:"saudara kandung"},
-    {kanji:"姉妹", reading:"しまい", meaning:"saudara perempuan"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"両親", reading:"りょうしん", meaning:"kedua orang tua"},
-    {kanji:"父親", reading:"ちちおや", meaning:"ayah"},
-    {kanji:"母親", reading:"ははおや", meaning:"ibu"}
-  ],
-
-
-  // =========================
-  // 🏠 RUMAH
-  // =========================
-
-  "家": [
-    {kanji:"家", reading:"いえ", meaning:"rumah"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"部屋", reading:"へや", meaning:"kamar"},
-    {kanji:"台所", reading:"だいどころ", meaning:"dapur"},
-    {kanji:"玄関", reading:"げんかん", meaning:"pintu masuk"},
-    {kanji:"家具", reading:"かぐ", meaning:"perabot rumah"}
-  ],
-
-  "部屋": [
-    {kanji:"部屋", reading:"へや", meaning:"kamar"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"},
-    {kanji:"玄関", reading:"げんかん", meaning:"pintu masuk"},
-    {kanji:"台所", reading:"だいどころ", meaning:"dapur"},
-    {kanji:"窓", reading:"まど", meaning:"jendela"},
-    {kanji:"家具", reading:"かぐ", meaning:"perabot rumah"}
-  ],
-
-  "台所": [
-    {kanji:"台所", reading:"だいどころ", meaning:"dapur"},
-    {kanji:"料理", reading:"りょうり", meaning:"masakan / memasak"},
-    {kanji:"食事", reading:"しょくじ", meaning:"makan / makanan"},
-    {kanji:"冷蔵庫", reading:"れいぞうこ", meaning:"kulkas"},
-    {kanji:"電子レンジ", reading:"でんしレンジ", meaning:"microwave"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"}
-  ],
-
-  "玄関": [
-    {kanji:"玄関", reading:"げんかん", meaning:"pintu masuk"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"},
-    {kanji:"部屋", reading:"へや", meaning:"kamar"},
-    {kanji:"靴", reading:"くつ", meaning:"sepatu"},
-    {kanji:"階段", reading:"かいだん", meaning:"tangga"}
-  ],
-
-
-  // =========================
-  // 🚆 TRANSPORTASI
-  // =========================
-
-  "電車": [
-    {kanji:"電車", reading:"でんしゃ", meaning:"kereta"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"},
-    {kanji:"地下鉄", reading:"ちかてつ", meaning:"kereta bawah tanah"},
-    {kanji:"新幹線", reading:"しんかんせん", meaning:"shinkansen"},
-    {kanji:"電気", reading:"でんき", meaning:"listrik"},
-    {kanji:"自転車", reading:"じてんしゃ", meaning:"sepeda"}
-  ],
-
-  "駅": [
-    {kanji:"駅", reading:"えき", meaning:"stasiun"},
-    {kanji:"電車", reading:"でんしゃ", meaning:"kereta"},
-    {kanji:"地下鉄", reading:"ちかてつ", meaning:"kereta bawah tanah"},
-    {kanji:"新幹線", reading:"しんかんせん", meaning:"shinkansen"},
-    {kanji:"駅員", reading:"えきいん", meaning:"petugas stasiun"},
-    {kanji:"電車", reading:"でんしゃ", meaning:"kereta"}
-  ],
-
-  "飛行機": [
-    {kanji:"飛行機", reading:"ひこうき", meaning:"pesawat"},
-    {kanji:"空港", reading:"くうこう", meaning:"bandara"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"},
-    {kanji:"電車", reading:"でんしゃ", meaning:"kereta"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"},
-    {kanji:"外国", reading:"がいこく", meaning:"luar negeri"}
-  ],
-
-  "自転車": [
-    {kanji:"自転車", reading:"じてんしゃ", meaning:"sepeda"},
-    {kanji:"自動車", reading:"じどうしゃ", meaning:"mobil"},
-    {kanji:"電車", reading:"でんしゃ", meaning:"kereta"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"},
-    {kanji:"道", reading:"みち", meaning:"jalan"}
-  ],
-
-
-  // =========================
-  // 🏥 KESEHATAN
-  // =========================
-
-  "病院": [
-    {kanji:"病院", reading:"びょういん", meaning:"rumah sakit"},
-    {kanji:"病気", reading:"びょうき", meaning:"penyakit"},
-    {kanji:"医者", reading:"いしゃ", meaning:"dokter"},
-    {kanji:"薬", reading:"くすり", meaning:"obat"},
-    {kanji:"入院", reading:"にゅういん", meaning:"rawat inap"},
-    {kanji:"退院", reading:"たいいん", meaning:"keluar dari rumah sakit"}
-  ],
-
-  "病気": [
-    {kanji:"病気", reading:"びょうき", meaning:"penyakit"},
-    {kanji:"病院", reading:"びょういん", meaning:"rumah sakit"},
-    {kanji:"医者", reading:"いしゃ", meaning:"dokter"},
-    {kanji:"薬", reading:"くすり", meaning:"obat"},
-    {kanji:"入院", reading:"にゅういん", meaning:"rawat inap"},
-    {kanji:"退院", reading:"たいいん", meaning:"keluar dari rumah sakit"},
-    {kanji:"健康", reading:"けんこう", meaning:"kesehatan"}
-  ],
-
-  "医者": [
-    {kanji:"医者", reading:"いしゃ", meaning:"dokter"},
-    {kanji:"病院", reading:"びょういん", meaning:"rumah sakit"},
-    {kanji:"病気", reading:"びょうき", meaning:"penyakit"},
-    {kanji:"薬", reading:"くすり", meaning:"obat"},
-    {kanji:"患者", reading:"かんじゃ", meaning:"pasien"}
-  ],
-
-  "薬": [
-    {kanji:"薬", reading:"くすり", meaning:"obat"},
-    {kanji:"病気", reading:"びょうき", meaning:"penyakit"},
-    {kanji:"病院", reading:"びょういん", meaning:"rumah sakit"},
-    {kanji:"医者", reading:"いしゃ", meaning:"dokter"},
-    {kanji:"薬局", reading:"やっきょく", meaning:"apotek"}
-  ],
-
-
-  // =========================
-  // 🛒 BELANJA
-  // =========================
-
-  "店": [
-    {kanji:"店", reading:"みせ", meaning:"toko"},
-    {kanji:"店員", reading:"てんいん", meaning:"pegawai toko"},
-    {kanji:"店長", reading:"てんちょう", meaning:"kepala toko"},
-    {kanji:"客", reading:"きゃく", meaning:"pelanggan"},
-    {kanji:"商品", reading:"しょうひん", meaning:"barang dagangan"},
-    {kanji:"買い物", reading:"かいもの", meaning:"belanja"}
-  ],
-
-  "店員": [
-    {kanji:"店員", reading:"てんいん", meaning:"pegawai toko"},
-    {kanji:"店", reading:"みせ", meaning:"toko"},
-    {kanji:"店長", reading:"てんちょう", meaning:"kepala toko"},
-    {kanji:"客", reading:"きゃく", meaning:"pelanggan"},
-    {kanji:"商品", reading:"しょうひん", meaning:"barang dagangan"}
-  ],
-
-  "買い物": [
-    {kanji:"買い物", reading:"かいもの", meaning:"belanja"},
-    {kanji:"店", reading:"みせ", meaning:"toko"},
-    {kanji:"店員", reading:"てんいん", meaning:"pegawai toko"},
-    {kanji:"商品", reading:"しょうひん", meaning:"barang dagangan"},
-    {kanji:"値段", reading:"ねだん", meaning:"harga"},
-    {kanji:"財布", reading:"さいふ", meaning:"dompet"},
-    {kanji:"お金", reading:"おかね", meaning:"uang"}
-  ],
-
-  "商品": [
-    {kanji:"商品", reading:"しょうひん", meaning:"barang dagangan"},
-    {kanji:"店", reading:"みせ", meaning:"toko"},
-    {kanji:"店員", reading:"てんいん", meaning:"pegawai toko"},
-    {kanji:"客", reading:"きゃく", meaning:"pelanggan"},
-    {kanji:"値段", reading:"ねだん", meaning:"harga"},
-    {kanji:"買い物", reading:"かいもの", meaning:"belanja"}
-  ],
-
-  "値段": [
-    {kanji:"値段", reading:"ねだん", meaning:"harga"},
-    {kanji:"商品", reading:"しょうひん", meaning:"barang dagangan"},
-    {kanji:"店", reading:"みせ", meaning:"toko"},
-    {kanji:"お金", reading:"おかね", meaning:"uang"},
-    {kanji:"財布", reading:"さいふ", meaning:"dompet"},
-    {kanji:"買い物", reading:"かいもの", meaning:"belanja"}
-  ],
-
-
-  // =========================
-  // 💰 UANG / BANK
-  // =========================
-
-  "お金": [
-    {kanji:"お金", reading:"おかね", meaning:"uang"},
-    {kanji:"財布", reading:"さいふ", meaning:"dompet"},
-    {kanji:"銀行", reading:"ぎんこう", meaning:"bank"},
-    {kanji:"お金", reading:"おかね", meaning:"uang"},
-    {kanji:"値段", reading:"ねだん", meaning:"harga"},
-    {kanji:"買い物", reading:"かいもの", meaning:"belanja"}
-  ],
-
-  "銀行": [
-    {kanji:"銀行", reading:"ぎんこう", meaning:"bank"},
-    {kanji:"お金", reading:"おかね", meaning:"uang"},
-    {kanji:"財布", reading:"さいふ", meaning:"dompet"},
-    {kanji:"会社", reading:"かいしゃ", meaning:"perusahaan"},
-    {kanji:"働きます", reading:"はたらきます", meaning:"bekerja"}
-  ],
-
-
-  // =========================
-  // 🍚 MAKANAN
-  // =========================
-
-  "食事": [
-    {kanji:"食事", reading:"しょくじ", meaning:"makan / makanan"},
-    {kanji:"料理", reading:"りょうり", meaning:"masakan / memasak"},
-    {kanji:"食べます", reading:"たべます", meaning:"makan"},
-    {kanji:"飲みます", reading:"のみます", meaning:"minum"},
-    {kanji:"朝ご飯", reading:"あさごはん", meaning:"sarapan"},
-    {kanji:"昼ご飯", reading:"ひるごはん", meaning:"makan siang"},
-    {kanji:"晩ご飯", reading:"ばんごはん", meaning:"makan malam"}
-  ],
-
-  "料理": [
-    {kanji:"料理", reading:"りょうり", meaning:"masakan / memasak"},
-    {kanji:"食事", reading:"しょくじ", meaning:"makan / makanan"},
-    {kanji:"食べます", reading:"たべます", meaning:"makan"},
-    {kanji:"台所", reading:"だいどころ", meaning:"dapur"},
-    {kanji:"野菜", reading:"やさい", meaning:"sayuran"},
-    {kanji:"肉", reading:"にく", meaning:"daging"},
-    {kanji:"魚", reading:"さかな", meaning:"ikan"}
-  ],
-
-  "野菜": [
-    {kanji:"野菜", reading:"やさい", meaning:"sayuran"},
-    {kanji:"果物", reading:"くだもの", meaning:"buah"},
-    {kanji:"料理", reading:"りょうり", meaning:"masakan / memasak"},
-    {kanji:"食事", reading:"しょくじ", meaning:"makan / makanan"},
-    {kanji:"肉", reading:"にく", meaning:"daging"},
-    {kanji:"魚", reading:"さかな", meaning:"ikan"}
-  ],
-
-  "果物": [
-    {kanji:"果物", reading:"くだもの", meaning:"buah"},
-    {kanji:"野菜", reading:"やさい", meaning:"sayuran"},
-    {kanji:"料理", reading:"りょうり", meaning:"masakan / memasak"},
-    {kanji:"食事", reading:"しょくじ", meaning:"makan / makanan"},
-    {kanji:"店", reading:"みせ", meaning:"toko"}
-  ],
-
-
-  // =========================
-  // 🌤️ CUACA / ALAM
-  // =========================
-
-  "天気": [
-    {kanji:"天気", reading:"てんき", meaning:"cuaca"},
-    {kanji:"晴れ", reading:"はれ", meaning:"cerah"},
-    {kanji:"雨", reading:"あめ", meaning:"hujan"},
-    {kanji:"雪", reading:"ゆき", meaning:"salju"},
-    {kanji:"風", reading:"かぜ", meaning:"angin"},
-    {kanji:"台風", reading:"たいふう", meaning:"topan"}
-  ],
-
-  "雨": [
-    {kanji:"雨", reading:"あめ", meaning:"hujan"},
-    {kanji:"天気", reading:"てんき", meaning:"cuaca"},
-    {kanji:"雪", reading:"ゆき", meaning:"salju"},
-    {kanji:"風", reading:"かぜ", meaning:"angin"},
-    {kanji:"台風", reading:"たいふう", meaning:"topan"},
-    {kanji:"晴れ", reading:"はれ", meaning:"cerah"}
-  ],
-
-  "雪": [
-    {kanji:"雪", reading:"ゆき", meaning:"salju"},
-    {kanji:"雨", reading:"あめ", meaning:"hujan"},
-    {kanji:"天気", reading:"てんき", meaning:"cuaca"},
-    {kanji:"風", reading:"かぜ", meaning:"angin"},
-    {kanji:"冬", reading:"ふゆ", meaning:"musim dingin"}
-  ],
-
-  "台風": [
-    {kanji:"台風", reading:"たいふう", meaning:"topan"},
-    {kanji:"雨", reading:"あめ", meaning:"hujan"},
-    {kanji:"風", reading:"かぜ", meaning:"angin"},
-    {kanji:"天気", reading:"てんき", meaning:"cuaca"},
-    {kanji:"夏", reading:"なつ", meaning:"musim panas"}
-  ],
-
-
-  // =========================
-  // 🏔️ ALAM
-  // =========================
-
-  "山": [
-    {kanji:"山", reading:"やま", meaning:"gunung"},
-    {kanji:"川", reading:"かわ", meaning:"sungai"},
-    {kanji:"海", reading:"うみ", meaning:"laut"},
-    {kanji:"森", reading:"もり", meaning:"hutan"},
-    {kanji:"公園", reading:"こうえん", meaning:"taman"},
-    {kanji:"自然", reading:"しぜん", meaning:"alam"}
-  ],
-
-  "海": [
-    {kanji:"海", reading:"うみ", meaning:"laut"},
-    {kanji:"山", reading:"やま", meaning:"gunung"},
-    {kanji:"川", reading:"かわ", meaning:"sungai"},
-    {kanji:"魚", reading:"さかな", meaning:"ikan"},
-    {kanji:"泳ぎます", reading:"およぎます", meaning:"berenang"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"}
-  ],
-
-  "川": [
-    {kanji:"川", reading:"かわ", meaning:"sungai"},
-    {kanji:"山", reading:"やま", meaning:"gunung"},
-    {kanji:"海", reading:"うみ", meaning:"laut"},
-    {kanji:"水", reading:"みず", meaning:"air"},
-    {kanji:"橋", reading:"はし", meaning:"jembatan"}
-  ],
-
-
-  // =========================
-  // 🕐 WAKTU
-  // =========================
-
-  "時間": [
-    {kanji:"時間", reading:"じかん", meaning:"waktu / jam"},
-    {kanji:"時", reading:"とき", meaning:"waktu / saat"},
-    {kanji:"毎日", reading:"まいにち", meaning:"setiap hari"},
-    {kanji:"今日", reading:"きょう", meaning:"hari ini"},
-    {kanji:"明日", reading:"あした", meaning:"besok"},
-    {kanji:"昨日", reading:"きのう", meaning:"kemarin"}
-  ],
-
-  "今日": [
-    {kanji:"今日", reading:"きょう", meaning:"hari ini"},
-    {kanji:"昨日", reading:"きのう", meaning:"kemarin"},
-    {kanji:"明日", reading:"あした", meaning:"besok"},
-    {kanji:"毎日", reading:"まいにち", meaning:"setiap hari"},
-    {kanji:"今週", reading:"こんしゅう", meaning:"minggu ini"},
-    {kanji:"来週", reading:"らいしゅう", meaning:"minggu depan"}
-  ],
-
-  "明日": [
-    {kanji:"明日", reading:"あした", meaning:"besok"},
-    {kanji:"今日", reading:"きょう", meaning:"hari ini"},
-    {kanji:"昨日", reading:"きのう", meaning:"kemarin"},
-    {kanji:"今週", reading:"こんしゅう", meaning:"minggu ini"},
-    {kanji:"来週", reading:"らいしゅう", meaning:"minggu depan"},
-    {kanji:"来月", reading:"らいげつ", meaning:"bulan depan"}
-  ],
-
-
-  // =========================
-  // 🏃 AKTIVITAS
-  // =========================
-
-  "運動": [
-    {kanji:"運動", reading:"うんどう", meaning:"olahraga"},
-    {kanji:"走ります", reading:"はしります", meaning:"berlari"},
-    {kanji:"歩きます", reading:"あるきます", meaning:"berjalan"},
-    {kanji:"泳ぎます", reading:"およぎます", meaning:"berenang"},
-    {kanji:"スポーツ", reading:"スポーツ", meaning:"olahraga"},
-    {kanji:"休みます", reading:"やすみます", meaning:"beristirahat"}
-  ],
-
-  "走ります": [
-    {kanji:"走ります", reading:"はしります", meaning:"berlari"},
-    {kanji:"歩きます", reading:"あるきます", meaning:"berjalan"},
-    {kanji:"運動", reading:"うんどう", meaning:"olahraga"},
-    {kanji:"泳ぎます", reading:"およぎます", meaning:"berenang"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"}
-  ],
-
-  "歩きます": [
-    {kanji:"歩きます", reading:"あるきます", meaning:"berjalan"},
-    {kanji:"走ります", reading:"はしります", meaning:"berlari"},
-    {kanji:"運動", reading:"うんどう", meaning:"olahraga"},
-    {kanji:"道", reading:"みち", meaning:"jalan"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"}
-  ],
-
-
-  // =========================
-  // 🗣️ KOMUNIKASI
-  // =========================
-
-  "話します": [
-    {kanji:"話します", reading:"はなします", meaning:"berbicara"},
-    {kanji:"聞きます", reading:"ききます", meaning:"mendengar / bertanya"},
-    {kanji:"言います", reading:"いいます", meaning:"mengatakan"},
-    {kanji:"読みます", reading:"よみます", meaning:"membaca"},
-    {kanji:"書きます", reading:"かきます", meaning:"menulis"},
-    {kanji:"電話", reading:"でんわ", meaning:"telepon"}
-  ],
-
-  "聞きます": [
-    {kanji:"聞きます", reading:"ききます", meaning:"mendengar / bertanya"},
-    {kanji:"話します", reading:"はなします", meaning:"berbicara"},
-    {kanji:"言います", reading:"いいます", meaning:"mengatakan"},
-    {kanji:"質問", reading:"しつもん", meaning:"pertanyaan"},
-    {kanji:"答え", reading:"こたえ", meaning:"jawaban"}
-  ],
-
-  "電話": [
-    {kanji:"電話", reading:"でんわ", meaning:"telepon"},
-    {kanji:"話します", reading:"はなします", meaning:"berbicara"},
-    {kanji:"聞きます", reading:"ききます", meaning:"mendengar / bertanya"},
-    {kanji:"番号", reading:"ばんごう", meaning:"nomor"},
-    {kanji:"携帯電話", reading:"けいたいでんわ", meaning:"telepon genggam"}
-  ],
-
-
-  // =========================
-  // 📚 BACA / TULIS
-  // =========================
-
-  "読みます": [
-    {kanji:"読みます", reading:"よみます", meaning:"membaca"},
-    {kanji:"書きます", reading:"かきます", meaning:"menulis"},
-    {kanji:"本", reading:"ほん", meaning:"buku"},
-    {kanji:"新聞", reading:"しんぶん", meaning:"koran"},
-    {kanji:"漢字", reading:"かんじ", meaning:"kanji"},
-    {kanji:"日本語", reading:"にほんご", meaning:"bahasa Jepang"}
-  ],
-
-  "書きます": [
-    {kanji:"書きます", reading:"かきます", meaning:"menulis"},
-    {kanji:"読みます", reading:"よみます", meaning:"membaca"},
-    {kanji:"漢字", reading:"かんじ", meaning:"kanji"},
-    {kanji:"名前", reading:"なまえ", meaning:"nama"},
-    {kanji:"手紙", reading:"てがみ", meaning:"surat"},
-    {kanji:"文字", reading:"もじ", meaning:"huruf / karakter"}
-  ],
-
-  "漢字": [
-    {kanji:"漢字", reading:"かんじ", meaning:"kanji"},
-    {kanji:"日本語", reading:"にほんご", meaning:"bahasa Jepang"},
-    {kanji:"文字", reading:"もじ", meaning:"huruf / karakter"},
-    {kanji:"読みます", reading:"よみます", meaning:"membaca"},
-    {kanji:"書きます", reading:"かきます", meaning:"menulis"},
-    {kanji:"意味", reading:"いみ", meaning:"arti / makna"}
-  ],
-
-
-  // =========================
-  // ✈️ PERJALANAN
-  // =========================
-
-  "旅行": [
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan / wisata"},
-    {kanji:"外国", reading:"がいこく", meaning:"luar negeri"},
-    {kanji:"飛行機", reading:"ひこうき", meaning:"pesawat"},
-    {kanji:"空港", reading:"くうこう", meaning:"bandara"},
-    {kanji:"ホテル", reading:"ホテル", meaning:"hotel"},
-    {kanji:"地図", reading:"ちず", meaning:"peta"}
-  ],
-
-  "外国": [
-    {kanji:"外国", reading:"がいこく", meaning:"luar negeri"},
-    {kanji:"外国人", reading:"がいこくじん", meaning:"orang asing"},
-    {kanji:"日本", reading:"にほん", meaning:"Jepang"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"},
-    {kanji:"国", reading:"くに", meaning:"negara"}
-  ],
-
-  "空港": [
-    {kanji:"空港", reading:"くうこう", meaning:"bandara"},
-    {kanji:"飛行機", reading:"ひこうき", meaning:"pesawat"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"},
-    {kanji:"外国", reading:"がいこく", meaning:"luar negeri"}
-  ],
-
-
-  // =========================
-  // 🌳 LINGKUNGAN
-  // =========================
-
-  "公園": [
-    {kanji:"公園", reading:"こうえん", meaning:"taman"},
-    {kanji:"自然", reading:"しぜん", meaning:"alam"},
-    {kanji:"山", reading:"やま", meaning:"gunung"},
-    {kanji:"川", reading:"かわ", meaning:"sungai"},
-    {kanji:"花", reading:"はな", meaning:"bunga"},
-    {kanji:"木", reading:"き", meaning:"pohon"}
-  ],
-
-  "自然": [
-    {kanji:"自然", reading:"しぜん", meaning:"alam"},
-    {kanji:"公園", reading:"こうえん", meaning:"taman"},
-    {kanji:"山", reading:"やま", meaning:"gunung"},
-    {kanji:"川", reading:"かわ", meaning:"sungai"},
-    {kanji:"海", reading:"うみ", meaning:"laut"},
-    {kanji:"森", reading:"もり", meaning:"hutan"}
-  ],
-
-
-  // =========================
-  // 🧳 KEHIDUPAN SEHARI-HARI
-  // =========================
-
-  "生活": [
-    {kanji:"生活", reading:"せいかつ", meaning:"kehidupan / kehidupan sehari-hari"},
-    {kanji:"毎日", reading:"まいにち", meaning:"setiap hari"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"学校", reading:"がっこう", meaning:"sekolah"},
-    {kanji:"休み", reading:"やすみ", meaning:"libur / istirahat"}
-  ],
-
-  "毎日": [
-    {kanji:"毎日", reading:"まいにち", meaning:"setiap hari"},
-    {kanji:"毎週", reading:"まいしゅう", meaning:"setiap minggu"},
-    {kanji:"毎月", reading:"まいつき", meaning:"setiap bulan"},
-    {kanji:"毎年", reading:"まいとし", meaning:"setiap tahun"},
-    {kanji:"今日", reading:"きょう", meaning:"hari ini"},
-    {kanji:"生活", reading:"せいかつ", meaning:"kehidupan sehari-hari"}
-  ],
-
-
-  // =========================
-  // 🚪 PERGI / PULANG
-  // =========================
-
-  "行きます": [
-    {kanji:"行きます", reading:"いきます", meaning:"pergi"},
-    {kanji:"来ます", reading:"きます", meaning:"datang"},
-    {kanji:"帰ります", reading:"かえります", meaning:"pulang"},
-    {kanji:"出ます", reading:"でます", meaning:"keluar / berangkat"},
-    {kanji:"入ります", reading:"はいります", meaning:"masuk"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"}
-  ],
-
-  "来ます": [
-    {kanji:"来ます", reading:"きます", meaning:"datang"},
-    {kanji:"行きます", reading:"いきます", meaning:"pergi"},
-    {kanji:"帰ります", reading:"かえります", meaning:"pulang"},
-    {kanji:"出ます", reading:"でます", meaning:"keluar / berangkat"},
-    {kanji:"入ります", reading:"はいります", meaning:"masuk"}
-  ],
-
-  "帰ります": [
-    {kanji:"帰ります", reading:"かえります", meaning:"pulang"},
-    {kanji:"行きます", reading:"いきます", meaning:"pergi"},
-    {kanji:"来ます", reading:"きます", meaning:"datang"},
-    {kanji:"出ます", reading:"でます", meaning:"keluar / berangkat"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"}
-  ],
-
-
-  // =========================
-  // ❤️ PERASAAN / KONDISI
-  // =========================
-
-  "楽しい": [
-    {kanji:"楽しい", reading:"たのしい", meaning:"menyenangkan"},
-    {kanji:"嬉しい", reading:"うれしい", meaning:"senang / gembira"},
-    {kanji:"悲しい", reading:"かなしい", meaning:"sedih"},
-    {kanji:"寂しい", reading:"さびしい", meaning:"kesepian"},
-    {kanji:"怖い", reading:"こわい", meaning:"takut / menakutkan"},
-    {kanji:"安心", reading:"あんしん", meaning:"tenang / lega"}
-  ],
-
-  "嬉しい": [
-    {kanji:"嬉しい", reading:"うれしい", meaning:"senang / gembira"},
-    {kanji:"楽しい", reading:"たのしい", meaning:"menyenangkan"},
-    {kanji:"悲しい", reading:"かなしい", meaning:"sedih"},
-    {kanji:"寂しい", reading:"さびしい", meaning:"kesepian"},
-    {kanji:"安心", reading:"あんしん", meaning:"tenang / lega"}
-  ],
-
-  "悲しい": [
-    {kanji:"悲しい", reading:"かなしい", meaning:"sedih"},
-    {kanji:"嬉しい", reading:"うれしい", meaning:"senang"},
-    {kanji:"楽しい", reading:"たのしい", meaning:"menyenangkan"},
-    {kanji:"寂しい", reading:"さびしい", meaning:"kesepian"},
-    {kanji:"心配", reading:"しんぱい", meaning:"khawatir"}
-  ],
-
-
-  // =========================
-  // 📝 MASALAH / PERTANYAAN
-  // =========================
-
-  "問題": [
-    {kanji:"問題", reading:"もんだい", meaning:"masalah / soal"},
-    {kanji:"質問", reading:"しつもん", meaning:"pertanyaan"},
-    {kanji:"答え", reading:"こたえ", meaning:"jawaban"},
-    {kanji:"回答", reading:"かいとう", meaning:"jawaban"},
-    {kanji:"意味", reading:"いみ", meaning:"arti / makna"},
-    {kanji:"理由", reading:"りゆう", meaning:"alasan"}
-  ],
-
-  "質問": [
-    {kanji:"質問", reading:"しつもん", meaning:"pertanyaan"},
-    {kanji:"問題", reading:"もんだい", meaning:"masalah / soal"},
-    {kanji:"答え", reading:"こたえ", meaning:"jawaban"},
-    {kanji:"回答", reading:"かいとう", meaning:"jawaban"},
-    {kanji:"聞きます", reading:"ききます", meaning:"bertanya / mendengar"}
-  ],
-
-  "答え": [
-    {kanji:"答え", reading:"こたえ", meaning:"jawaban"},
-    {kanji:"質問", reading:"しつもん", meaning:"pertanyaan"},
-    {kanji:"問題", reading:"もんだい", meaning:"masalah / soal"},
-    {kanji:"回答", reading:"かいとう", meaning:"jawaban"},
-    {kanji:"理由", reading:"りゆう", meaning:"alasan"}
-  ],
-
-
-  // =========================
-  // 🧹 PEKERJAAN RUMAH
-  // =========================
-
-  "掃除": [
-    {kanji:"掃除", reading:"そうじ", meaning:"bersih-bersih"},
-    {kanji:"洗濯", reading:"せんたく", meaning:"mencuci pakaian"},
-    {kanji:"料理", reading:"りょうり", meaning:"memasak"},
-    {kanji:"台所", reading:"だいどころ", meaning:"dapur"},
-    {kanji:"部屋", reading:"へや", meaning:"kamar"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"}
-  ],
-
-  "洗濯": [
-    {kanji:"洗濯", reading:"せんたく", meaning:"mencuci pakaian"},
-    {kanji:"掃除", reading:"そうじ", meaning:"bersih-bersih"},
-    {kanji:"家事", reading:"かじ", meaning:"pekerjaan rumah tangga"},
-    {kanji:"服", reading:"ふく", meaning:"pakaian"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"}
-  ],
-
-
-  // =========================
-  // 📅 TANGGAL / JADWAL
-  // =========================
-
-  "予定": [
-    {kanji:"予定", reading:"よてい", meaning:"rencana / jadwal"},
-    {kanji:"約束", reading:"やくそく", meaning:"janji"},
-    {kanji:"時間", reading:"じかん", meaning:"waktu"},
-    {kanji:"旅行", reading:"りょこう", meaning:"perjalanan"},
-    {kanji:"仕事", reading:"しごと", meaning:"pekerjaan"},
-    {kanji:"休み", reading:"やすみ", meaning:"libur"}
-  ],
-
-  "約束": [
-    {kanji:"約束", reading:"やくそく", meaning:"janji"},
-    {kanji:"予定", reading:"よてい", meaning:"rencana / jadwal"},
-    {kanji:"友達", reading:"ともだち", meaning:"teman"},
-    {kanji:"時間", reading:"じかん", meaning:"waktu"},
-    {kanji:"会います", reading:"あいます", meaning:"bertemu"}
-  ],
-
-
-  // =========================
-  // 👥 ORANG / TEMAN
-  // =========================
-
-  "友達": [
-    {kanji:"友達", reading:"ともだち", meaning:"teman"},
-    {kanji:"友人", reading:"ゆうじん", meaning:"teman"},
-    {kanji:"家族", reading:"かぞく", meaning:"keluarga"},
-    {kanji:"学生", reading:"がくせい", meaning:"pelajar"},
-    {kanji:"会社員", reading:"かいしゃいん", meaning:"pegawai perusahaan"},
-    {kanji:"人", reading:"ひと", meaning:"orang"}
-  ],
-
-  "会います": [
-    {kanji:"会います", reading:"あいます", meaning:"bertemu"},
-    {kanji:"友達", reading:"ともだち", meaning:"teman"},
-    {kanji:"約束", reading:"やくそく", meaning:"janji"},
-    {kanji:"話します", reading:"はなします", meaning:"berbicara"},
-    {kanji:"電話", reading:"でんわ", meaning:"telepon"}
-  ],
-
-
-  // =========================
-  // 📞 INFORMASI
-  // =========================
-
-  "電話番号": [
-    {kanji:"電話番号", reading:"でんわばんごう", meaning:"nomor telepon"},
-    {kanji:"電話", reading:"でんわ", meaning:"telepon"},
-    {kanji:"番号", reading:"ばんごう", meaning:"nomor"},
-    {kanji:"名前", reading:"なまえ", meaning:"nama"},
-    {kanji:"住所", reading:"じゅうしょ", meaning:"alamat"}
-  ],
-
-  "名前": [
-    {kanji:"名前", reading:"なまえ", meaning:"nama"},
-    {kanji:"住所", reading:"じゅうしょ", meaning:"alamat"},
-    {kanji:"電話番号", reading:"でんわばんごう", meaning:"nomor telepon"},
-    {kanji:"国", reading:"くに", meaning:"negara"},
-    {kanji:"人", reading:"ひと", meaning:"orang"}
-  ],
-
-  "住所": [
-    {kanji:"住所", reading:"じゅうしょ", meaning:"alamat"},
-    {kanji:"名前", reading:"なまえ", meaning:"nama"},
-    {kanji:"電話番号", reading:"でんわばんごう", meaning:"nomor telepon"},
-    {kanji:"家", reading:"いえ", meaning:"rumah"},
-    {kanji:"駅", reading:"えき", meaning:"stasiun"}
-  ],
-
-
-  // =========================
-  // 📦 BARANG / PENGIRIMAN
-  // =========================
-
-  "荷物": [
-    {kanji:"荷物", reading:"にもつ", meaning:"barang / bagasi"},
-    {kanji:"宅配便", reading:"たくはいびん", meaning:"layanan pengiriman"},
-    {kanji:"郵便局", reading:"ゆうびんきょく", meaning:"kantor pos"},
-    {kanji:"手紙", reading:"てがみ", meaning:"surat"},
-    {kanji:"送ります", reading:"おくります", meaning:"mengirim"},
-    {kanji:"届きます", reading:"とどきます", meaning:"sampai / tiba"}
-  ],
-
-  "郵便局": [
-    {kanji:"郵便局", reading:"ゆうびんきょく", meaning:"kantor pos"},
-    {kanji:"手紙", reading:"てがみ", meaning:"surat"},
-    {kanji:"荷物", reading:"にもつ", meaning:"barang / bagasi"},
-    {kanji:"送ります", reading:"おくります", meaning:"mengirim"},
-    {kanji:"届きます", reading:"とどきます", meaning:"sampai / tiba"}
-  ],
-
-  "送ります": [
-    {kanji:"送ります", reading:"おくります", meaning:"mengirim"},
-    {kanji:"届きます", reading:"とどきます", meaning:"sampai / tiba"},
-    {kanji:"荷物", reading:"にもつ", meaning:"barang / bagasi"},
-    {kanji:"手紙", reading:"てがみ", meaning:"surat"},
-    {kanji:"郵便局", reading:"ゆうびんきょく", meaning:"kantor pos"}
-  ],
-
-  "届きます": [
-    {kanji:"届きます", reading:"とどきます", meaning:"sampai / tiba"},
-    {kanji:"送ります", reading:"おくります", meaning:"mengirim"},
-    {kanji:"荷物", reading:"にもつ", meaning:"barang / bagasi"},
-    {kanji:"郵便局", reading:"ゆうびんきょく", meaning:"kantor pos"},
-    {kanji:"宅配便", reading:"たくはいびん", meaning:"layanan pengiriman"}
-  ]
-
-};
 
 
   const kanjiReadingMap = {
@@ -6612,45 +5335,67 @@ const relatedKanji = {
 
 let kanjiIndex = 0;
 
+
+/* =========================
+   UPDATE KANJI
+========================= */
+
 function updateKanji(){
 
   const item = kanji[kanjiIndex];
 
   if(!item) return;
 
-  document.getElementById("kanjiWord").textContent = item.word;
-  document.getElementById("kanjiReading").textContent = item.reading;
-  document.getElementById("kanjiMeaning").textContent = item.meaning;
+  document.getElementById("kanjiWord").textContent =
+    item.word;
+
+  document.getElementById("kanjiReading").textContent =
+    item.reading;
+
+  document.getElementById("kanjiMeaning").textContent =
+    item.meaning;
+
+  document.getElementById("kanjiExample").textContent =
+    item.example || "";
 
   document
     .getElementById("kanjiCard")
     .classList.remove("flipped");
 
+  // Update kosakata yang memakai Kanji yang sama
   updateRelatedKanji(item.word);
 }
 
 
-// ==============================
-// RELATED KANJI
-// ==============================
+/* =========================
+   RELATED KANJI
+   Berdasarkan karakter Kanji
+   yang sama
+========================= */
 
 function updateRelatedKanji(currentWord){
 
-  const container = document.getElementById("relatedKanjiList");
+  const container =
+    document.getElementById("relatedKanjiList");
 
   if(!container) return;
 
 
-  // Ambil data pembacaan Kanji dari kanjiReadingMap
-  const characters = kanjiReadingMap[currentWord];
+  /*
+    Ambil pembagian Kanji + reading
+    dari kanjiReadingMap
+  */
+
+  const kanjiParts =
+    kanjiReadingMap[currentWord];
 
 
-  // Kalau belum ada data
-  if(!characters || characters.length === 0){
+  // Jika data reading belum tersedia
+  if(!kanjiParts || kanjiParts.length === 0){
 
     container.innerHTML = `
       <div class="no-related">
-        Kanji terkait belum tersedia.
+        Data bacaan Kanji belum tersedia.
       </div>
     `;
 
@@ -6658,100 +5403,137 @@ function updateRelatedKanji(currentWord){
   }
 
 
-  // ==============================
-  // CARI KATA YANG MEMILIKI KANJI SAMA
-  // ==============================
-
-  const related = [];
+  let html = "";
 
 
-  characters.forEach(charData => {
+  /*
+    Loop setiap karakter Kanji
+    dalam kata utama
+  */
 
-    const targetKanji = charData.kanji;
+  kanjiParts.forEach(part => {
 
-
-    // Cari semua kata di const kanji
-    // yang mengandung Kanji tersebut
-    const words = kanji.filter(item =>
-      item.word.includes(targetKanji) &&
-      item.word !== currentWord
-    );
+    const targetKanji = part.kanji;
+    const targetReading = part.reading;
 
 
-    related.push({
+    /*
+      Cari semua kosakata dalam database
+      yang mempunyai Kanji yang sama.
+    */
 
-      kanji: targetKanji,
+    const relatedWords = kanji.filter(item => {
 
-      reading: charData.reading,
+      const word = item.word || "";
 
-      words: words
+      return word.includes(targetKanji);
 
     });
 
-  });
 
+    /*
+      GROUP KANJI
+    */
 
-  // ==============================
-  // TAMPILKAN
-  // ==============================
-
-  container.innerHTML = related.map(group => {
-
-    return `
-
+    html += `
       <div class="related-kanji-group">
 
-        <div class="related-kanji-character">
+        <div class="related-kanji-title">
 
-          ${group.kanji}
+          <span class="related-target-kanji">
+            ${targetKanji}
+          </span>
 
-          <span>
-            ${group.reading}
+          <span class="related-target-reading">
+            ${targetReading}
           </span>
 
         </div>
 
 
-        <div class="related-kanji-words">
+        <div class="related-kanji-list">
+    `;
 
-          ${
-            group.words.length > 0
 
-            ?
+    /*
+      Tampilkan semua kata
+      yang menggunakan Kanji tersebut
+    */
 
-            group.words.map(item => `
+    if(relatedWords.length === 0){
 
-              <div class="related-word">
+      html += `
+        <div class="no-related">
+          Belum ada kata lain.
+        </div>
+      `;
 
-                <strong>${item.word}</strong>
+    } else {
 
-                <span>${item.reading}</span>
+      relatedWords.forEach(item => {
 
+        const word = item.word || "";
+        const reading = item.reading || "";
+        const meaning = item.meaning || "";
+
+
+        /*
+          Highlight karakter Kanji
+          yang sedang dipelajari
+        */
+
+        const highlightedWord = word.replace(
+          new RegExp(targetKanji, "g"),
+          `<span class="kanji-highlight">
+            ${targetKanji}
+          </span>`
+        );
+
+
+        html += `
+          <div class="related-kanji-card">
+
+            <div class="related-kanji-character">
+              ${highlightedWord}
+            </div>
+
+            <div class="related-kanji-info">
+
+              <div class="related-word-reading">
+                ${reading}
               </div>
 
-            `).join("")
+              <div class="related-word-meaning">
+                ${meaning}
+              </div>
 
-            :
+            </div>
 
-            `<div class="no-related-word">
-              Belum ada kata lain
-            </div>`
+          </div>
+        `;
 
-          }
+      });
 
+    }
+
+
+    html += `
         </div>
 
       </div>
-
     `;
 
-  }).join("");
+  });
+
+
+  container.innerHTML = html;
 
 }
 
-// ==============================
-// PREVIOUS
-// ==============================
+
+/* =========================
+   PREVIOUS
+========================= */
 
 function previousKanji(){
 
@@ -6766,9 +5548,9 @@ function previousKanji(){
 }
 
 
-// ==============================
-// NEXT
-// ==============================
+/* =========================
+   NEXT
+========================= */
 
 function nextKanji(){
 
@@ -6782,135 +5564,18 @@ function nextKanji(){
 
 }
 
+
 /* =========================
    FLASHCARD
 ========================= */
 
 function flipCard(id){
 
-  document.getElementById(id)
+  document
+    .getElementById(id)
     .classList.toggle("flipped");
+
 }
-
-
-function updateRelatedKanji(currentWord){
-
-  const container = document.getElementById("relatedKanjiList");
-
-  if(!container) return;
-
-  // Ambil data pembagian kanji dari kata
-  const kanjiParts = kanjiReadingMap[currentWord];
-
-  if(!kanjiParts || kanjiParts.length === 0){
-
-    container.innerHTML = `
-      <div class="no-related">
-        Data bacaan kanji belum tersedia.
-      </div>
-    `;
-
-    return;
-  }
-
-  let html = "";
-
-  kanjiParts.forEach(part => {
-
-    const targetKanji = part.kanji;
-
-    // Cari semua kata di database kanji
-    // yang mempunyai kanji yang sama
-    const relatedWords = kanji.filter(item => {
-
-      const word = item.word || "";
-
-      return (
-        word.includes(targetKanji) &&
-        word !== currentWord
-      );
-
-    });
-
-
-    html += `
-      <div class="related-kanji-group">
-
-        <div class="related-kanji-title">
-
-          <span class="related-target-kanji">
-            ${targetKanji}
-          </span>
-
-          <span class="related-target-reading">
-            ${part.reading}
-          </span>
-
-        </div>
-    `;
-
-
-    if(relatedWords.length === 0){
-
-      html += `
-        <div class="no-related">
-          Belum ada kata lain.
-        </div>
-      `;
-
-    } else {
-
-      html += `
-        <div class="related-kanji-list">
-      `;
-
-
-      relatedWords.forEach(item => {
-
-        const word = item.word;
-        const reading = item.reading || "";
-
-        // Highlight kanji yang sama
-        const highlightedWord = word.replace(
-          new RegExp(targetKanji, "g"),
-          `<span class="kanji-highlight">${targetKanji}</span>`
-        );
-
-
-        html += `
-          <div class="related-kanji-card">
-
-            <div class="related-kanji-character">
-              ${highlightedWord}
-            </div>
-
-            <div class="related-kanji-info">
-              <strong>${reading}</strong>
-            </div>
-
-          </div>
-        `;
-
-      });
-
-
-      html += `
-        </div>
-      `;
-
-    }
-
-
-    html += `
-      </div>
-    `;
-
-  });
-
-
-  container.innerHTML = html;
-}
-  
 // ================================
 // IRODORI KANJI WORDS
 // ================================
