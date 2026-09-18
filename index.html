@@ -6088,17 +6088,15 @@ let kanjiIndex=0;
 
 function updateKanji(){
 
-  const item=kanji[kanjiIndex];
+  const item = kanji[kanjiIndex];
 
-  document.getElementById("kanjiWord").textContent=item.word;
-  document.getElementById("kanjiReading").textContent=item.reading;
-  document.getElementById("kanjiMeaning").textContent=item.meaning;
-  document.getElementById("kanjiExample").textContent=item.example;
+  document.getElementById("kanjiWord").textContent = item.kanji;
+  document.getElementById("kanjiReading").textContent = item.reading;
+  document.getElementById("kanjiMeaning").textContent = item.meaning;
 
-  document.getElementById("kanjiCard")
-    .classList.remove("flipped");
+  document.getElementById("kanjiCard").classList.remove("flipped");
+
   updateRelatedKanji(item.kanji);
-  updateRelatedKanji(item.word);
 }
 
 function nextKanji(){
