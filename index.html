@@ -9424,12 +9424,52 @@ function updateRelatedKanji(currentWord){
   if(!container) return;
 
 
+  // Ambil data dari map jika tersedia
+  let kanjiParts =
+    kanjiReadingMap[currentWord];
+
+
   // =====================================
-  // AMBIL DATA KANJI DARI MAP
+  // FALLBACK
+  // Jika kata belum ada di map,
+  // ambil karakter Kanji langsung dari kata
   // =====================================
 
-  const kanjiParts =
-    kanjiReadingMap[currentWord];
+  if(!kanjiParts || kanjiParts.length === 0){
+
+    const characters = [...currentWord]
+      .filter(char => /[\u4E00-\u9FFF]/.test(char));
+
+
+    kanjiParts = characters.map(char => ({
+      kanji: char,
+      reading: ""
+    }));
+
+  }
+
+
+  // Jika benar-benar tidak ada Kanji
+  if(kanjiParts.length === 0){
+
+    container.innerHTML = `
+      <div class="related-kanji-header">
+
+        <h3>🔗 Kosakata dengan Kanji yang Sama</h3>
+
+        <p class="related-subtitle">
+          Kanji yang sama digunakan dalam berbagai kosakata
+        </p>
+
+      </div>
+
+      <div class="no-related">
+        Tidak ada Kanji pada kosakata ini.
+      </div>
+    `;
+
+    return;
+  }
 
 
   // =====================================
@@ -9452,29 +9492,7 @@ function updateRelatedKanji(currentWord){
 
 
   // =====================================
-  // JIKA DATA BELUM ADA
-  // =====================================
-
-  if(!kanjiParts || kanjiParts.length === 0){
-
-    html += `
-
-      <div class="no-related">
-
-        Data bacaan Kanji belum tersedia.
-
-      </div>
-
-    `;
-
-    container.innerHTML = html;
-
-    return;
-  }
-
-
-  // =====================================
-  // LOOP SETIAP KANJI
+  // LOOP KANJI
   // =====================================
 
   kanjiParts.forEach(part => {
@@ -9490,8 +9508,7 @@ function updateRelatedKanji(currentWord){
 
 
     // =====================================
-    // CARI SEMUA KOSAKATA
-    // YANG MENGGUNAKAN KANJI TERSEBUT
+    // CARI KOSAKATA YANG MEMAKAI KANJI SAMA
     // =====================================
 
     const relatedWords = kanji.filter(item => {
@@ -9505,15 +9522,12 @@ function updateRelatedKanji(currentWord){
 
 
     // =====================================
-    // GROUP KANJI
+    // JUDUL KANJI
     // =====================================
 
     html += `
 
       <div class="related-kanji-group">
-
-
-        <!-- KANJI + READING -->
 
         <div class="related-kanji-title">
 
@@ -9521,14 +9535,18 @@ function updateRelatedKanji(currentWord){
             ${targetKanji}
           </span>
 
-          <span class="related-target-reading">
-            ${targetReading}
-          </span>
+          ${
+            targetReading
+              ? `
+                <span class="related-target-reading">
+                  ${targetReading}
+                </span>
+              `
+              : ""
+          }
 
         </div>
 
-
-        <!-- KOSAKATA -->
 
         <div class="related-kanji-list">
 
@@ -9536,29 +9554,18 @@ function updateRelatedKanji(currentWord){
 
 
     // =====================================
-    // JIKA BELUM ADA KOSAKATA
+    // KOSAKATA
     // =====================================
 
     if(relatedWords.length === 0){
 
       html += `
-
         <div class="no-related">
-
           Belum ada kata lain.
-
         </div>
-
       `;
 
-    }
-
-
-    // =====================================
-    // TAMPILKAN KOSAKATA
-    // =====================================
-
-    else {
+    } else {
 
       relatedWords.forEach(item => {
 
@@ -9571,10 +9578,6 @@ function updateRelatedKanji(currentWord){
         const meaning =
           item.meaning || "";
 
-
-        // =================================
-        // HIGHLIGHT KANJI YANG SAMA
-        // =================================
 
         const escapedKanji =
           targetKanji.replace(
@@ -9593,39 +9596,25 @@ function updateRelatedKanji(currentWord){
           );
 
 
-        // =================================
-        // CARD KOSAKATA
-        // =================================
-
         html += `
 
           <div class="related-kanji-card">
 
-
             <div class="related-kanji-character">
-
               ${highlightedWord}
-
             </div>
-
 
             <div class="related-kanji-info">
 
               <div class="related-word-reading">
-
                 ${reading}
-
               </div>
 
-
               <div class="related-word-meaning">
-
                 ${meaning}
-
               </div>
 
             </div>
-
 
           </div>
 
@@ -9647,14 +9636,9 @@ function updateRelatedKanji(currentWord){
   });
 
 
-  // =====================================
-  // MASUKKAN KE HTML
-  // =====================================
-
   container.innerHTML = html;
 
-};
-  
+}
 
 
 /* =========================
