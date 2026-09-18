@@ -394,11 +394,19 @@ main{
 
 #kanjiQuizOptions select {
   width: 100%;
-  padding: 12px;
-  border: none;
+  padding: 12px 14px;
   border-radius: 12px;
-  background: #f2edf7;
-  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  background: white;
+  font-size: 15px;
+  color: #444;
+  cursor: pointer;
+  outline: none;
+}
+
+#kanjiQuizOptions select:focus {
+  border-color: #b9a3c6;
+  box-shadow: 0 0 0 3px rgba(185, 163, 198, 0.15);
 }
 
 .question-count {
