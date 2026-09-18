@@ -6084,84 +6084,157 @@ const relatedKanji = {
 
 
 
-let kanjiIndex=0;
+let kanjiIndex = 0;
 
 function updateKanji(){
 
   const item = kanji[kanjiIndex];
 
-  document.getElementById("kanjiWord").textContent = item.kanji;
-  document.getElementById("kanjiReading").textContent = item.reading;
-  document.getElementById("kanjiMeaning").textContent = item.meaning;
+  if(!item) return;
 
-  document.getElementById("kanjiCard").classList.remove("flipped");
+  // Ambil data kanji
+  const currentKanji = item.kanji || item.word;
 
-  // INI YANG PENTING
-  updateRelatedKanji(item.kanji);
-}
+  // Update kartu utama
+  document.getElementById("kanjiWord").textContent = currentKanji;
+  document.getElementById("kanjiReading").textContent = item.reading || "";
+  document.getElementById("kanjiMeaning").textContent = item.meaning || "";
 
-function previousKanji(){
-
-  kanjiIndex--;
-
-  if(kanjiIndex<0)
-    kanjiIndex=kanji.length-1;
-
-  updateKanji();
-}
+  // Balik kartu ke depan
+  document
+    .getElementById("kanjiCard")
+    .classList.remove("flipped");
 
 
-  function updateRelatedKanji(currentKanji){
+  // ==============================
+  // RELATED KANJI
+  // ==============================
 
   const container = document.getElementById("relatedKanjiList");
 
   if(!container) return;
 
-  // Cari semua kosakata yang mengandung kanji ini
   const relatedWords = [];
 
+
+  // Cari semua Kotoba dari semua chapter
   Object.values(kotoba).forEach(chapterData => {
 
-    chapterData.forEach(item => {
+    if(!Array.isArray(chapterData)) return;
 
+    chapterData.forEach(kotobaItem => {
+
+      if(!kotobaItem || !kotobaItem.word) return;
+
+
+      // Cek apakah kata tersebut
+      // mengandung kanji yang sedang dipelajari
       if(
-        item.word &&
-        item.word.includes(currentKanji) &&
-        item.word !== currentKanji &&
-        !relatedWords.some(x => x.word === item.word)
+        kotobaItem.word.includes(currentKanji) &&
+        kotobaItem.word !== currentKanji
       ){
-        relatedWords.push(item);
+
+        // Jangan tampilkan kata yang sama dua kali
+        const alreadyExists = relatedWords.some(
+          item => item.word === kotobaItem.word
+        );
+
+        if(!alreadyExists){
+          relatedWords.push(kotobaItem);
+        }
+
       }
 
     });
 
   });
 
+
+  // ==============================
+  // JIKA TIDAK ADA RELATED WORD
+  // ==============================
+
   if(relatedWords.length === 0){
+
     container.innerHTML = `
       <div class="no-related">
-        Belum ada kosakata lain dengan kanji ini.
+        Belum ada kosakata dengan kanji
+        「${currentKanji}」.
       </div>
     `;
+
     return;
   }
 
-  container.innerHTML = relatedWords.map(item => `
-    <div class="related-kanji-card">
 
-      <div class="related-kanji-character">
-        ${item.word}
+  // ==============================
+  // TAMPILKAN RELATED WORD
+  // ==============================
+
+  container.innerHTML = relatedWords.map(item => {
+
+    const word = item.word || "";
+    const reading = item.reading || "";
+
+
+    // Highlight kanji yang sedang dipelajari
+    const highlightedWord = word.replace(
+      new RegExp(currentKanji, "g"),
+      `<span class="kanji-highlight">${currentKanji}</span>`
+    );
+
+
+    return `
+      <div class="related-kanji-card">
+
+        <div class="related-kanji-character">
+          ${highlightedWord}
+        </div>
+
+        <div class="related-kanji-info">
+          <strong>${reading}</strong>
+        </div>
+
       </div>
+    `;
 
-      <div class="related-kanji-info">
-        <strong>${item.reading}</strong>
-        <span>${item.meaning}</span>
-      </div>
+  }).join("");
 
-    </div>
-  `).join("");
 }
 
+
+// ==============================
+// PREVIOUS KANJI
+// ==============================
+
+function previousKanji(){
+
+  kanjiIndex--;
+
+  if(kanjiIndex < 0){
+    kanjiIndex = kanji.length - 1;
+  }
+
+  updateKanji();
+
+}
+
+
+// ==============================
+// NEXT KANJI
+// ==============================
+
+function nextKanji(){
+
+  kanjiIndex++;
+
+  if(kanjiIndex >= kanji.length){
+    kanjiIndex = 0;
+  }
+
+  updateKanji();
+
+}
 
 /* =========================
    FLASHCARD
