@@ -306,81 +306,7 @@ main{
   margin-bottom:10px;
 }
 
-.related-kanji-group{
-  margin-bottom:25px;
-}
 
-.related-kanji-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
-}
-
-.related-target-kanji{
-  font-size:28px;
-  font-weight:800;
-}
-
-.related-target-label{
-  font-size:13px;
-  color:#888;
-}
-
-.related-kanji-list{
-  display:grid;
-  grid-template-columns:repeat(2, 1fr);
-  gap:16px;
-  margin-top:18px;
-}
-
-.related-kanji-card{
-  background:#fff;
-  border:1px solid #e8e8e8;
-  border-radius:18px;
-  padding:18px 12px;
-  text-align:center;
-  min-height:150px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  box-sizing:border-box;
-}
-
-.related-kanji-character{
-  font-size:28px;
-  font-weight:600;
-  line-height:1.3;
-}
-
-.related-word-reading{
-  margin-top:10px;
-  font-size:18px;
-}
-
-.related-word-meaning{
-  margin-top:8px;
-  font-size:15px;
-  line-height:1.4;
-  color:#555;
-}
-
-.related-kanji-info strong{
-  font-size:13px;
-  color:#777;
-}
-
-.kanji-highlight{
-  color:#8b6fb3;
-  font-weight:800;
-}
-
-.no-related{
-  text-align:center;
-  color:#aaa;
-  padding:12px;
-  font-size:13px;
-}
   
 .grammar .example{
   margin-top:12px;
@@ -638,163 +564,235 @@ main{
   background: #faf4f4;
 }
 
+
+/* =========================================
+   RELATED KANJI
+========================================= */
+
 .related-kanji{
   margin-top:35px;
-  padding:20px;
+  padding:22px;
   background:#fff;
   border-radius:20px;
   border:1px solid #eee;
 }
 
-.related-kanji h3{
+
+/* =========================================
+   HEADER
+========================================= */
+
+.related-kanji-header h3{
   margin:0;
-  font-size:18px;
+  font-size:20px;
+  line-height:1.4;
 }
 
 .related-subtitle{
-  margin:6px 0 18px;
+  margin:7px 0 22px;
   color:#888;
-  font-size:13px;
+  font-size:14px;
+  line-height:1.5;
 }
+
+
+/* =========================================
+   GROUP SETIAP KANJI
+========================================= */
+
+.related-kanji-group{
+  margin-bottom:28px;
+}
+
+.related-kanji-group:last-child{
+  margin-bottom:0;
+}
+
+
+/* =========================================
+   KANJI + READING
+   Contoh:
+   社 しゃ
+========================================= */
+
+.related-kanji-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.related-target-kanji{
+  font-size:34px;
+  font-weight:800;
+  line-height:1;
+}
+
+.related-target-reading{
+  font-size:18px;
+  color:#777;
+}
+
+
+/* =========================================
+   GRID KOSAKATA
+   2 KOLOM
+========================================= */
 
 .related-kanji-list{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
 }
 
+
+/* =========================================
+   CARD KOSAKATA
+========================================= */
+
 .related-kanji-card{
-  padding:14px 10px;
-  border-radius:15px;
+  min-width:0;
+  min-height:145px;
+
+  padding:18px 12px;
+
   background:#fafafa;
   border:1px solid #eee;
+  border-radius:17px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
   text-align:center;
-  transition:.2s;
+
+  box-sizing:border-box;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
 .related-kanji-card:hover{
   transform:translateY(-2px);
+  box-shadow:0 6px 18px rgba(100,80,120,.08);
 }
 
-  .related-kanji{
-  margin-top:30px;
-  padding:20px;
-  background:#fff;
-  border-radius:20px;
-}
 
-.related-kanji h3{
-  margin:0;
-}
+/* =========================================
+   KOSAKATA
+========================================= */
 
-.related-subtitle{
-  color:#888;
-  font-size:14px;
-  margin-top:6px;
-}
-
-.related-kanji-list{
-  margin-top:20px;
-}
-
-.kanji-character-group{
-  margin-bottom:24px;
-  padding-bottom:20px;
-  border-bottom:1px solid #eee;
-}
-
-.kanji-character-group:last-child{
-  border-bottom:none;
-}
-
-.kanji-character-title{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
-}
-
-.big-kanji{
-  font-size:32px;
+.related-kanji-character{
+  font-size:27px;
   font-weight:700;
+  line-height:1.3;
 }
 
-.character-reading{
-  color:#888;
-  font-size:15px;
+
+/* Kanji yang sedang dicari */
+
+.kanji-highlight{
+  color:#8b6fb3;
+  font-weight:800;
 }
 
-.kanji-related-words{
+
+/* =========================================
+   INFO KOSAKATA
+========================================= */
+
+.related-kanji-info{
+  margin-top:9px;
+
   display:flex;
   flex-direction:column;
-  gap:8px;
-  padding-left:15px;
-}
-
-.kanji-related-word{
-  display:grid;
-  grid-template-columns:100px 100px 1fr;
   align-items:center;
-  gap:10px;
-  padding:10px 12px;
-  background:#fafafa;
-  border-radius:12px;
+
+  gap:4px;
 }
 
-.related-word{
-  font-size:18px;
-  font-weight:600;
-}
-
-.related-reading{
-  font-size:14px;
-  color:#888;
-}
-
-.related-meaning{
-  font-size:14px;
+.related-word-reading{
+  font-size:17px;
   color:#555;
 }
 
-@media(max-width:600px){
-
-  .kanji-related-word{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .related-meaning{
-    grid-column:1 / -1;
-  }
-
-}
-
-.related-kanji-character{
-  font-size:28px;
-  font-weight:bold;
-  margin-bottom:5px;
-}
-
-.related-kanji-info{
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-}
-
-.related-kanji-info strong{
-  font-size:13px;
-}
-
-.related-kanji-info span{
-  font-size:12px;
+.related-word-meaning{
+  font-size:14px;
+  line-height:1.4;
   color:#777;
 }
+
+
+/* =========================================
+   JIKA DATA KOSONG
+========================================= */
 
 .no-related{
   text-align:center;
   color:#aaa;
-  padding:15px;
-  font-size:13px;
+  padding:18px 10px;
+  font-size:14px;
 }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:600px){
+
+  .related-kanji{
+    padding:18px;
+  }
+
+  .related-kanji-header h3{
+    font-size:19px;
+  }
+
+  .related-target-kanji{
+    font-size:32px;
+  }
+
+  .related-target-reading{
+    font-size:17px;
+  }
+
+  .related-kanji-list{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .related-kanji-card{
+    min-height:140px;
+    padding:15px 8px;
+  }
+
+  .related-kanji-character{
+    font-size:24px;
+  }
+
+  .related-word-reading{
+    font-size:16px;
+  }
+
+  .related-word-meaning{
+    font-size:13px;
+  }
+
+}
+
+
+
+  
+
+
+@media(max-width:600px){
+
+
+
+
 
   
 
