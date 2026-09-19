@@ -329,27 +329,40 @@ main{
 
 .related-kanji-list{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-  gap:10px;
+  grid-template-columns:repeat(2, 1fr);
+  gap:16px;
+  margin-top:18px;
 }
 
 .related-kanji-card{
-  padding:14px 10px;
-  border-radius:15px;
-  background:#fafafa;
-  border:1px solid #eee;
+  background:#fff;
+  border:1px solid #e8e8e8;
+  border-radius:18px;
+  padding:18px 12px;
   text-align:center;
-  transition:.2s;
-}
-
-.related-kanji-card:hover{
-  transform:translateY(-2px);
+  min-height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  box-sizing:border-box;
 }
 
 .related-kanji-character{
-  font-size:24px;
-  font-weight:bold;
-  margin-bottom:5px;
+  font-size:28px;
+  font-weight:600;
+  line-height:1.3;
+}
+
+.related-word-reading{
+  margin-top:10px;
+  font-size:18px;
+}
+
+.related-word-meaning{
+  margin-top:8px;
+  font-size:15px;
+  line-height:1.4;
+  color:#555;
 }
 
 .related-kanji-info strong{
