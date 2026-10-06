@@ -11308,48 +11308,536 @@ function updateRelatedKanji(currentWord){
    PREVIOUS
 ========================= */
 
-function previousKanji(){
+/* =====================================================
+   KANJI FLASHCARD
+   IRODORI + KOTOBA
+===================================================== */
 
-  kanjiIndex--;
+let kanjiFCSource = "irodori";
+let kanjiFCLevel = "dasar2";
+let kanjiFCChapter = null;
+let kanjiFCIndex = 0;
 
-  if(kanjiIndex < 0){
-    kanjiIndex = kanji.length - 1;
+
+/* -----------------------------------------------------
+   AMBIL DATA FLASHCARD
+----------------------------------------------------- */
+
+function getKanjiFCData(){
+
+  /* =========================
+     IRODORI
+  ========================= */
+
+  if(kanjiFCSource === "irodori"){
+
+    if(
+      typeof irodoriKanji === "undefined" ||
+      !irodoriKanji[kanjiFCLevel]
+    ){
+      return [];
+    }
+
+
+    /* Jika "semua bab" */
+    if(kanjiFCChapter === "all"){
+
+      let allData = [];
+
+      Object.values(
+        irodoriKanji[kanjiFCLevel]
+      ).forEach(chapter => {
+
+        if(Array.isArray(chapter)){
+          allData.push(...chapter);
+        }
+
+      });
+
+      return allData;
+    }
+
+
+    return (
+      irodoriKanji[kanjiFCLevel][kanjiFCChapter] || []
+    );
   }
 
-  updateKanji();
 
+  /* =========================
+     KOTOBA
+  ========================= */
+
+  if(kanjiFCSource === "kotoba"){
+
+    if(typeof kanji === "undefined"){
+      return [];
+    }
+
+    return kanji;
+  }
+
+
+  return [];
 }
 
 
-/* =========================
-   NEXT
-========================= */
+/* -----------------------------------------------------
+   PILIH SUMBER
+----------------------------------------------------- */
 
-function nextKanji(){
+function selectKanjiFCSource(source, button){
 
-  kanjiIndex++;
+  kanjiFCSource = source;
 
-  if(kanjiIndex >= kanji.length){
-    kanjiIndex = 0;
-  }
-
-  updateKanji();
-
-}
-
-
-/* =========================
-   FLASHCARD
-========================= */
-
-function flipCard(id){
+  kanjiFCIndex = 0;
 
   document
-    .getElementById(id)
-    .classList.toggle("flipped");
+    .querySelectorAll(".kanji-source-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+
+  if(button){
+    button.classList.add("active");
+  }
+
+
+  renderKanjiFCChapters();
 
 }
 
+
+/* -----------------------------------------------------
+   RENDER BAB
+----------------------------------------------------- */
+
+function renderKanjiFCChapters(){
+
+  const container =
+    document.getElementById("kanjiFCChapters");
+
+  if(!container) return;
+
+
+  /* =========================
+     KOTOBA
+  ========================= */
+
+  if(kanjiFCSource === "kotoba"){
+
+    kanjiFCChapter = "all";
+
+
+    container.innerHTML = `
+      <div class="kanji-fc-chapter active">
+        Semua Kotoba
+      </div>
+    `;
+
+
+    updateKanjiFC();
+
+    return;
+  }
+
+
+  /* =========================
+     IRODORI
+  ========================= */
+
+  if(
+    typeof irodoriKanji === "undefined" ||
+    !irodoriKanji[kanjiFCLevel]
+  ){
+
+    container.innerHTML = `
+      <div class="no-related">
+        Data Irodori belum tersedia.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  const chapters =
+    Object.keys(
+      irodoriKanji[kanjiFCLevel]
+    )
+    .map(Number)
+    .sort((a,b) => a-b);
+
+
+  if(!chapters.length){
+
+    container.innerHTML = `
+      <div class="no-related">
+        Bab Irodori belum tersedia.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  /* Kalau belum memilih bab */
+  if(
+    kanjiFCChapter === null ||
+    !chapters.includes(Number(kanjiFCChapter))
+  ){
+
+    kanjiFCChapter = chapters[0];
+
+  }
+
+
+  /* =========================
+     LEVEL BUTTON
+  ========================= */
+
+  container.innerHTML = `
+
+    <button
+      class="kanji-fc-chapter ${kanjiFCLevel === "dasar1" ? "active" : ""}"
+      onclick="selectKanjiFCLevel('dasar1')">
+
+      Dasar 1
+
+    </button>
+
+
+    <button
+      class="kanji-fc-chapter ${kanjiFCLevel === "dasar2" ? "active" : ""}"
+      onclick="selectKanjiFCLevel('dasar2')">
+
+      Dasar 2
+
+    </button>
+
+
+    <button
+      class="kanji-fc-chapter ${kanjiFCChapter === "all" ? "active" : ""}"
+      onclick="selectKanjiFCChapter('all')">
+
+      Semua
+
+    </button>
+
+  `;
+
+
+  /* =========================
+     BAB
+  ========================= */
+
+  chapters.forEach(chapter => {
+
+    container.innerHTML += `
+
+      <button
+        class="kanji-fc-chapter ${
+          Number(kanjiFCChapter) === chapter
+          ? "active"
+          : ""
+        }"
+        onclick="selectKanjiFCChapter(${chapter})">
+
+        Bab ${chapter}
+
+      </button>
+
+    `;
+
+  });
+
+
+  updateKanjiFC();
+
+}
+
+
+/* -----------------------------------------------------
+   PILIH DASAR 1 / DASAR 2
+----------------------------------------------------- */
+
+function selectKanjiFCLevel(level){
+
+  kanjiFCLevel = level;
+
+  kanjiFCChapter = null;
+
+  kanjiFCIndex = 0;
+
+  renderKanjiFCChapters();
+
+}
+
+
+/* -----------------------------------------------------
+   PILIH BAB
+----------------------------------------------------- */
+
+function selectKanjiFCChapter(chapter){
+
+  kanjiFCChapter = chapter;
+
+  kanjiFCIndex = 0;
+
+  renderKanjiFCChapters();
+
+}
+
+
+/* -----------------------------------------------------
+   UPDATE CARD
+----------------------------------------------------- */
+
+function updateKanjiFC(){
+
+  const data =
+    getKanjiFCData();
+
+
+  const word =
+    document.getElementById("kanjiFCWord");
+
+  const reading =
+    document.getElementById("kanjiFCReading");
+
+  const meaning =
+    document.getElementById("kanjiFCMeaning");
+
+  const progress =
+    document.getElementById("kanjiFCProgress");
+
+  const card =
+    document.getElementById("kanjiFCCard");
+
+
+  if(!word || !reading || !meaning){
+    return;
+  }
+
+
+  /* =========================
+     TIDAK ADA DATA
+  ========================= */
+
+  if(!data.length){
+
+    word.textContent = "—";
+
+    reading.textContent =
+      "Data belum tersedia";
+
+    meaning.textContent = "";
+
+    if(progress){
+      progress.textContent = "0 / 0";
+    }
+
+    return;
+  }
+
+
+  /* =========================
+     BATASI INDEX
+  ========================= */
+
+  if(kanjiFCIndex >= data.length){
+    kanjiFCIndex = 0;
+  }
+
+  if(kanjiFCIndex < 0){
+    kanjiFCIndex = data.length - 1;
+  }
+
+
+  const item =
+    data[kanjiFCIndex];
+
+
+  /* =========================
+     SUPPORT IRODORI + KOTOBA
+  ========================= */
+
+  const itemWord =
+    item.word ||
+    item.kanji ||
+    "";
+
+  const itemReading =
+    item.reading ||
+    "";
+
+  const itemMeaning =
+    item.meaning ||
+    "";
+
+
+  word.textContent =
+    itemWord;
+
+  reading.textContent =
+    itemReading;
+
+  meaning.textContent =
+    itemMeaning;
+
+
+  if(progress){
+
+    progress.textContent =
+      `${kanjiFCIndex + 1} / ${data.length}`;
+
+  }
+
+
+  /* kembali ke depan */
+  if(card){
+
+    card.classList.remove("flipped");
+
+  }
+
+}
+
+
+/* -----------------------------------------------------
+   FLIP
+----------------------------------------------------- */
+
+function flipKanjiFC(){
+
+  const card =
+    document.getElementById("kanjiFCCard");
+
+  if(!card) return;
+
+  card.classList.toggle("flipped");
+
+}
+
+
+/* -----------------------------------------------------
+   NEXT
+----------------------------------------------------- */
+
+function nextKanjiFC(){
+
+  const data =
+    getKanjiFCData();
+
+  if(!data.length) return;
+
+
+  kanjiFCIndex++;
+
+
+  if(kanjiFCIndex >= data.length){
+    kanjiFCIndex = 0;
+  }
+
+
+  updateKanjiFC();
+
+}
+
+
+/* -----------------------------------------------------
+   PREVIOUS
+----------------------------------------------------- */
+
+function previousKanjiFC(){
+
+  const data =
+    getKanjiFCData();
+
+  if(!data.length) return;
+
+
+  kanjiFCIndex--;
+
+
+  if(kanjiFCIndex < 0){
+    kanjiFCIndex = data.length - 1;
+  }
+
+
+  updateKanjiFC();
+
+}
+
+
+/* -----------------------------------------------------
+   SHUFFLE
+----------------------------------------------------- */
+
+function shuffleKanjiFC(){
+
+  const data =
+    getKanjiFCData();
+
+  if(data.length <= 1) return;
+
+
+  let randomIndex;
+
+
+  do{
+
+    randomIndex =
+      Math.floor(
+        Math.random() * data.length
+      );
+
+  }
+
+  while(randomIndex === kanjiFCIndex);
+
+
+  kanjiFCIndex =
+    randomIndex;
+
+
+  updateKanjiFC();
+
+}
+
+
+/* -----------------------------------------------------
+   INITIAL
+----------------------------------------------------- */
+
+function initializeKanjiFlashcard(){
+
+  kanjiFCSource = "irodori";
+
+  kanjiFCLevel = "dasar2";
+
+  kanjiFCChapter = null;
+
+  kanjiFCIndex = 0;
+
+  renderKanjiFCChapters();
+
+}
+
+
+/* -----------------------------------------------------
+   JALANKAN SAAT WEBSITE SELESAI LOAD
+----------------------------------------------------- */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    initializeKanjiFlashcard();
+
+  }
+);
 
 
 /* =====================================================
