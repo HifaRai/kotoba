@@ -1995,7 +1995,42 @@ footer{
   .radical-word-grid{
     grid-template-columns:1fr;
   }
+/* =====================================================
+   RADICAL FILTER
+   ===================================================== */
 
+.radical-filter-tabs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:14px 0;
+}
+
+.radical-filter-btn{
+  border:none;
+  padding:9px 15px;
+  border-radius:999px;
+  background:#fff;
+  cursor:pointer;
+  font-size:13px;
+  transition:.2s;
+  box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.radical-filter-btn:hover{
+  transform:translateY(-2px);
+}
+
+.radical-filter-btn.active{
+  background:rgba(145,120,190,.18);
+  font-weight:700;
+}
+
+.radical-stats{
+  margin:8px 0 14px;
+  font-size:12px;
+  opacity:.65;
+}
 }
 
 
@@ -2406,18 +2441,36 @@ footer{
     </div>
 
 
-    <div class="radical-search">
+<div class="radical-search">
+  <span>🔍</span>
+  <input type="text" id="radicalSearch"
+         placeholder="Cari radikal, nomor, arti, atau Kanji..."
+         oninput="filterRadicals()">
+</div>
 
-      <span>🔍</span>
+<div class="radical-filter-tabs">
 
-      <input
-        type="text"
-        id="radicalSearch"
-        placeholder="Cari radikal, contoh: 人 / 水 / 木..."
-        oninput="filterRadicals()"
-      >
+  <button
+    class="radical-filter-btn active"
+    onclick="setRadicalFilter('all', this)">
+    Semua
+  </button>
 
-    </div>
+  <button
+    class="radical-filter-btn"
+    onclick="setRadicalFilter('mapped', this)">
+    ✓ Ada Kanji
+  </button>
+
+  <button
+    class="radical-filter-btn"
+    onclick="setRadicalFilter('unmapped', this)">
+    ○ Belum Ada
+  </button>
+
+</div>
+
+<div id="radicalStats" class="radical-stats"></div>
 
 
     <div id="radicalList"
@@ -15143,26 +15196,106 @@ validateKanjiRadicalMap();
    RADICAL UI
 ===================================================== */
 
+let radicalFilterMode = "all";
+
+
+function radicalHasKanji(radicalNo){
+
+  if(typeof kanjiRadicalMap === "undefined"){
+    return false;
+  }
+
+  return Object.values(kanjiRadicalMap).some(data => {
+
+    if(!data) return false;
+
+    return data.radicalNo === radicalNo;
+
+  });
+
+}
+
+
 function renderRadicals(list = kanjiRadicals){
 
   const container = document.getElementById("radicalList");
 
   if(!container) return;
 
-  if(!list || !list.length){
+
+  /*
+   * FILTER BERDASARKAN STATUS
+   */
+
+  let filteredList = list.filter(item => {
+
+    const hasKanji = radicalHasKanji(item.no);
+
+    if(radicalFilterMode === "mapped"){
+      return hasKanji;
+    }
+
+    if(radicalFilterMode === "unmapped"){
+      return !hasKanji;
+    }
+
+    return true;
+
+  });
+
+
+  /*
+   * STATISTIK
+   */
+
+  const stats = document.getElementById("radicalStats");
+
+  if(stats){
+
+    const total = kanjiRadicals.length;
+
+    const mapped = kanjiRadicals.filter(item =>
+      radicalHasKanji(item.no)
+    ).length;
+
+    const unmapped = total - mapped;
+
+    stats.innerHTML = `
+      ${filteredList.length} radikal ditampilkan
+      · ${mapped} sudah memiliki Kanji
+      · ${unmapped} belum memiliki Kanji
+    `;
+
+  }
+
+
+  /*
+   * TIDAK ADA HASIL
+   */
+
+  if(!filteredList.length){
+
     container.innerHTML = `
       <div class="no-related">
         Radikal tidak ditemukan.
       </div>
     `;
+
     return;
   }
 
-  container.innerHTML = list.map(item => {
+
+  /*
+   * RENDER CARD
+   */
+
+  container.innerHTML = filteredList.map(item => {
 
     const variants = Array.isArray(item.variants)
       ? item.variants
       : [];
+
+    const hasKanji = radicalHasKanji(item.no);
 
     return `
       <button
@@ -15196,13 +15329,42 @@ function renderRadicals(list = kanjiRadicals){
           : ""
         }
 
+        <div class="radical-status">
+
+          ${
+            hasKanji
+            ? "✓ Ada Kanji"
+            : "○ Belum Ada Kanji"
+          }
+
+        </div>
+
       </button>
     `;
 
   }).join("");
+
 }
 
+function setRadicalFilter(mode, button){
 
+  radicalFilterMode = mode;
+
+
+  document.querySelectorAll(".radical-filter-btn")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+
+  if(button){
+    button.classList.add("active");
+  }
+
+
+  filterRadicals();
+
+}
 
 function filterRadicals(){
 
@@ -15210,34 +15372,90 @@ function filterRadicals(){
 
   if(!input) return;
 
-  const keyword = input.value.trim().toLowerCase();
+
+  const keyword = input.value
+    .trim()
+    .toLowerCase();
+
+
+  /*
+   * TANPA SEARCH
+   */
 
   if(!keyword){
-    renderRadicals();
+
+    renderRadicals(kanjiRadicals);
+
     return;
   }
 
+
+  /*
+   * SEARCH
+   */
+
   const result = kanjiRadicals.filter(item => {
 
-    const radical = String(item.radical || "").toLowerCase();
-    const meaning = String(item.meaning || "").toLowerCase();
-    const no = String(item.no || "");
+    const radical = String(
+      item.radical || ""
+    ).toLowerCase();
+
+    const meaning = String(
+      item.meaning || ""
+    ).toLowerCase();
+
+    const no = String(
+      item.no || ""
+    );
+
     const variants = Array.isArray(item.variants)
       ? item.variants.join(" ").toLowerCase()
       : "";
 
+
+    /*
+     * CARI KANJI YANG MENGGUNAKAN RADIKAL
+     */
+
+    let relatedKanji = "";
+
+    if(typeof kanjiRadicalMap !== "undefined"){
+
+      relatedKanji = Object.entries(
+        kanjiRadicalMap
+      )
+      .filter(([char, data]) => {
+
+        return data &&
+               data.radicalNo === item.no;
+
+      })
+      .map(([char]) => char)
+      .join("");
+
+    }
+
+
     return (
+
       radical.includes(keyword) ||
+
       meaning.includes(keyword) ||
+
       no.includes(keyword) ||
-      variants.includes(keyword)
+
+      variants.includes(keyword) ||
+
+      relatedKanji.includes(keyword)
+
     );
 
   });
 
-  renderRadicals(result);
-}
 
+  renderRadicals(result);
+
+}
 
 // =====================================================
 // RADIKAL → KANJI → KOTOBA
