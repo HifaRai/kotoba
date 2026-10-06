@@ -15260,55 +15260,21 @@ function showRadicalKanjiByChar(radicalChar){
   selectedRadicalChar = radicalChar;
   selectedRadicalKanji = null;
 
-  // Cari semua Kanji yang memiliki radikal tersebut
+
+  // ===================================================
+  // CARI INFORMASI RADIKAL
+  // ===================================================
+
   const radicalInfo = kanjiRadicals.find(
-  item => item.radical === radicalChar
-);
-
-if(!radicalInfo){
-  result.innerHTML = `
-    <div class="no-related">
-      Data radikal tidak ditemukan.
-    </div>
-  `;
-  return;
-}
-
-const radicalNo = radicalInfo.no;
-
-const matchedKanji = Object.entries(kanjiRadicalMap)
-  .filter(([kanjiChar, data]) => {
-
-    if(!data) return false;
-
-    return data.radicalNo === radicalNo;
-
-  })
-    .map(([kanjiChar]) => kanjiChar);
+    item => item.radical === radicalChar
+  );
 
 
-  // Hilangkan duplikat
-  const uniqueKanji = [...new Set(matchedKanji)];
-
-
-  // Jika tidak ditemukan
-  if(!uniqueKanji.length){
+  if(!radicalInfo){
 
     result.innerHTML = `
-      <div class="radical-result-header">
-        <div>
-          <span class="radical-result-symbol">
-            ${radicalChar}
-          </span>
-
-          <div>
-            <h3>Tidak ada Kanji</h3>
-            <p>
-              Belum ada Kanji yang terhubung
-              dengan radikal ini.
-            </p>
-          </div>
-        </div>
+      <div class="no-related">
+        Data radikal tidak ditemukan.
       </div>
     `;
 
@@ -15316,11 +15282,71 @@ const matchedKanji = Object.entries(kanjiRadicalMap)
   }
 
 
-  // Cari informasi radikal
-  const radicalInfo = kanjiRadicals.find(
-    item => item.radical === radicalChar
-  );
+  // Nomor radikal
+  const radicalNo = radicalInfo.no;
 
+
+  // ===================================================
+  // CARI SEMUA KANJI DENGAN RADIKAL TERSEBUT
+  // ===================================================
+
+  const matchedKanji = Object.entries(kanjiRadicalMap)
+    .filter(([kanjiChar, data]) => {
+
+      if(!data) return false;
+
+      return data.radicalNo === radicalNo;
+
+    })
+    .map(([kanjiChar]) => kanjiChar);
+
+
+  // Hilangkan duplikat
+  const uniqueKanji = [...new Set(matchedKanji)];
+
+
+  // ===================================================
+  // JIKA TIDAK ADA KANJI
+  // ===================================================
+
+  if(!uniqueKanji.length){
+
+    result.innerHTML = `
+
+      <div class="radical-result-header">
+
+        <div class="radical-result-title">
+
+          <div class="radical-result-symbol">
+            ${radicalChar}
+          </div>
+
+          <div>
+
+            <h3>
+              Tidak ada Kanji
+            </h3>
+
+            <p>
+              Belum ada Kanji yang terhubung
+              dengan radikal ini.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  // ===================================================
+  // TAMPILKAN HASIL
+  // ===================================================
 
   result.innerHTML = `
 
@@ -15335,11 +15361,12 @@ const matchedKanji = Object.entries(kanjiRadicalMap)
         <div>
 
           <h3>
-            ${radicalInfo?.meaning || "Radikal"}
+            ${radicalInfo.meaning || "Radikal"}
           </h3>
 
           <p>
-            ${radicalInfo?.strokes || "—"} coretan
+            Radikal ${radicalInfo.no}
+            · ${radicalInfo.strokes || "—"} coretan
             · ${uniqueKanji.length} Kanji
           </p>
 
@@ -15352,40 +15379,56 @@ const matchedKanji = Object.entries(kanjiRadicalMap)
 
     <div class="radical-kanji-grid">
 
-      ${uniqueKanji.map(char => {
+      ${
+        uniqueKanji.map(char => {
 
-        const info = kanjiRadicalMap[char];
+          const info = kanjiRadicalMap[char];
 
-        return `
 
-          <button
-            class="radical-kanji-card"
-            onclick="showRadicalKanjiDetail('${char}')"
-          >
+          // Cari simbol radikal berdasarkan nomor
+          const kanjiRadicalInfo = kanjiRadicals.find(
+            item => item.no === info?.radicalNo
+          );
 
-            <div class="radical-kanji-character">
-              ${char}
-            </div>
 
-            <div class="radical-kanji-info">
+          return `
 
-              <span>
-                Radikal ${info?.radical || "—"}
-              </span>
+            <button
+              class="radical-kanji-card"
+              onclick="showRadicalKanjiDetail('${char}')"
+            >
 
-              ${
-                info?.variant
-                ? `<small>${info.variant}</small>`
-                : ""
-              }
+              <div class="radical-kanji-character">
+                ${char}
+              </div>
 
-            </div>
 
-          </button>
+              <div class="radical-kanji-info">
 
-        `;
+                <span>
+                  Radikal
+                  ${kanjiRadicalInfo?.radical || "—"}
+                </span>
 
-      }).join("")}
+
+                ${
+                  info?.variant
+                  ? `
+                    <small>
+                      ${info.variant}
+                    </small>
+                  `
+                  : ""
+                }
+
+              </div>
+
+            </button>
+
+          `;
+
+        }).join("")
+      }
 
     </div>
 
@@ -15394,14 +15437,17 @@ const matchedKanji = Object.entries(kanjiRadicalMap)
 
   `;
 
-  // Scroll ke hasil
+
+  // ===================================================
+  // SCROLL KE HASIL
+  // ===================================================
+
   result.scrollIntoView({
-    behavior:"smooth",
-    block:"nearest"
+    behavior: "smooth",
+    block: "nearest"
   });
+
 }
-
-
 // =====================================================
 // KANJI → DETAIL + KOTOBA
 // =====================================================
