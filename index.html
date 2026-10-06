@@ -12587,6 +12587,820 @@ const kanjiRadicals = [
 
   console.log("Jumlah radikal:", kanjiRadicals.length);
 
+
+
+
+// =====================================================
+// KANJI → RADIKAL MAP
+// Hubungan setiap Kanji dengan radikal utamanya
+// =====================================================
+
+const kanjiRadicalMap = {
+
+  // =========================
+  // 人・亻
+  // =========================
+
+  "会": { radical:"人", variant:"" },
+  "休": { radical:"人", variant:"亻" },
+  "体": { radical:"人", variant:"亻" },
+  "何": { radical:"人", variant:"亻" },
+  "作": { radical:"人", variant:"亻" },
+  "住": { radical:"人", variant:"亻" },
+  "使": { radical:"人", variant:"亻" },
+  "仕": { radical:"人", variant:"亻" },
+  "他": { radical:"人", variant:"亻" },
+  "代": { radical:"人", variant:"亻" },
+  "化": { radical:"人", variant:"亻" },
+  "便": { radical:"人", variant:"亻" },
+  "係": { radical:"人", variant:"亻" },
+  "保": { radical:"人", variant:"亻" },
+  "信": { radical:"人", variant:"亻" },
+  "個": { radical:"人", variant:"亻" },
+  "借": { radical:"人", variant:"亻" },
+  "働": { radical:"人", variant:"亻" },
+
+  // =========================
+  // 口
+  // =========================
+
+  "口": { radical:"口", variant:"" },
+  "員": { radical:"口", variant:"" },
+  "問": { radical:"口", variant:"" },
+  "味": { radical:"口", variant:"" },
+  "和": { radical:"口", variant:"" },
+  "品": { radical:"口", variant:"" },
+  "唱": { radical:"口", variant:"" },
+  "告": { radical:"口", variant:"" },
+  "周": { radical:"口", variant:"" },
+
+  // =========================
+  // 土
+  // =========================
+
+  "場": { radical:"土", variant:"" },
+  "地": { radical:"土", variant:"" },
+  "域": { radical:"土", variant:"" },
+  "堂": { radical:"土", variant:"" },
+  "城": { radical:"土", variant:"" },
+  "基": { radical:"土", variant:"" },
+
+  // =========================
+  // 一
+  // =========================
+
+  "一": { radical:"一", variant:"" },
+  "世": { radical:"一", variant:"" },
+  "不": { radical:"一", variant:"" },
+  "事": { radical:"一", variant:"" },
+  "更": { radical:"曰", variant:"" },
+
+  // =========================
+  // 大
+  // =========================
+
+  "大": { radical:"大", variant:"" },
+  "太": { radical:"大", variant:"" },
+  "天": { radical:"大", variant:"" },
+  "夫": { radical:"大", variant:"" },
+  "央": { radical:"大", variant:"" },
+
+  // =========================
+  // 女
+  // =========================
+
+  "女": { radical:"女", variant:"" },
+  "好": { radical:"女", variant:"" },
+  "妹": { radical:"女", variant:"" },
+  "姉": { radical:"女", variant:"" },
+  "始": { radical:"女", variant:"" },
+  "婦": { radical:"女", variant:"" },
+
+  // =========================
+  // 子
+  // =========================
+
+  "子": { radical:"子", variant:"" },
+  "学": { radical:"子", variant:"" },
+  "字": { radical:"子", variant:"" },
+  "存": { radical:"子", variant:"" },
+  "定": { radical:"宀", variant:"" },
+
+  // =========================
+  // 宀
+  // =========================
+
+  "安": { radical:"宀", variant:"" },
+  "室": { radical:"宀", variant:"" },
+  "家": { radical:"宀", variant:"" },
+  "定": { radical:"宀", variant:"" },
+  "宿": { radical:"宀", variant:"" },
+  "客": { radical:"宀", variant:"" },
+  "実": { radical:"宀", variant:"" },
+  "官": { radical:"宀", variant:"" },
+
+  // =========================
+  // 山
+  // =========================
+
+  "山": { radical:"山", variant:"" },
+  "島": { radical:"山", variant:"" },
+  "岸": { radical:"山", variant:"" },
+
+  // =========================
+  // 川
+  // =========================
+
+  "川": { radical:"巛", variant:"川" },
+
+  // =========================
+  // 水・氵
+  // =========================
+
+  "水": { radical:"水", variant:"" },
+  "海": { radical:"水", variant:"氵" },
+  "池": { radical:"水", variant:"氵" },
+  "洗": { radical:"水", variant:"氵" },
+  "活": { radical:"水", variant:"氵" },
+  "消": { radical:"水", variant:"氵" },
+  "決": { radical:"水", variant:"氵" },
+  "流": { radical:"水", variant:"氵" },
+  "注": { radical:"水", variant:"氵" },
+  "深": { radical:"水", variant:"氵" },
+  "温": { radical:"水", variant:"氵" },
+  "港": { radical:"水", variant:"氵" },
+  "漢": { radical:"水", variant:"氵" },
+
+  // =========================
+  // 火・灬
+  // =========================
+
+  "火": { radical:"火", variant:"" },
+  "熱": { radical:"火", variant:"" },
+  "焼": { radical:"火", variant:"灬" },
+  "無": { radical:"火", variant:"灬" },
+  "然": { radical:"火", variant:"灬" },
+  "照": { radical:"火", variant:"灬" },
+  "点": { radical:"火", variant:"灬" },
+
+  // =========================
+  // 木
+  // =========================
+
+  "木": { radical:"木", variant:"" },
+  "本": { radical:"木", variant:"" },
+  "休": { radical:"人", variant:"亻" },
+  "林": { radical:"木", variant:"" },
+  "森": { radical:"木", variant:"" },
+  "校": { radical:"木", variant:"" },
+  "机": { radical:"木", variant:"" },
+  "材": { radical:"木", variant:"" },
+  "村": { radical:"木", variant:"" },
+  "板": { radical:"木", variant:"" },
+  "橋": { radical:"木", variant:"" },
+
+  // =========================
+  // 金・釒
+  // =========================
+
+  "金": { radical:"金", variant:"" },
+  "銀": { radical:"金", variant:"" },
+  "鉄": { radical:"金", variant:"" },
+  "銭": { radical:"金", variant:"" },
+  "銀行": { radical:"金", variant:"" },
+
+  // =========================
+  // 日
+  // =========================
+
+  "日": { radical:"日", variant:"" },
+  "時": { radical:"日", variant:"" },
+  "明": { radical:"日", variant:"" },
+  "曜": { radical:"日", variant:"" },
+  "早": { radical:"日", variant:"" },
+  "昔": { radical:"日", variant:"" },
+  "春": { radical:"日", variant:"" },
+  "暑": { radical:"日", variant:"" },
+  "暗": { radical:"日", variant:"" },
+  "昨": { radical:"日", variant:"" },
+  "昭": { radical:"日", variant:"" },
+  "最": { radical:"曰", variant:"" },
+
+  // =========================
+  // 月
+  // =========================
+
+  "月": { radical:"月", variant:"" },
+  "期": { radical:"月", variant:"" },
+  "朝": { radical:"月", variant:"" },
+  "服": { radical:"月", variant:"" },
+  "有": { radical:"月", variant:"" },
+
+  // =========================
+  // 目
+  // =========================
+
+  "目": { radical:"目", variant:"" },
+  "見": { radical:"見", variant:"" },
+  "県": { radical:"目", variant:"" },
+  "直": { radical:"目", variant:"" },
+
+  // =========================
+  // 田
+  // =========================
+
+  "田": { radical:"田", variant:"" },
+  "由": { radical:"田", variant:"" },
+  "界": { radical:"田", variant:"" },
+  "町": { radical:"田", variant:"" },
+  "男": { radical:"田", variant:"" },
+  "思": { radical:"心", variant:"" },
+
+  // =========================
+  // 心・忄
+  // =========================
+
+  "心": { radical:"心", variant:"" },
+  "思": { radical:"心", variant:"" },
+  "忘": { radical:"心", variant:"" },
+  "必": { radical:"心", variant:"" },
+  "意": { radical:"心", variant:"" },
+  "想": { radical:"心", variant:"" },
+  "感": { radical:"心", variant:"" },
+  "急": { radical:"心", variant:"" },
+  "情": { radical:"心", variant:"忄" },
+  "性": { radical:"心", variant:"忄" },
+  "悪": { radical:"心", variant:"" },
+  "慣": { radical:"心", variant:"忄" },
+  "忙": { radical:"心", variant:"忄" },
+  "怖": { radical:"心", variant:"忄" },
+  "悲": { radical:"心", variant:"" },
+  "愛": { radical:"心", variant:"" },
+
+  // =========================
+  // 手・扌
+  // =========================
+
+  "手": { radical:"手", variant:"" },
+  "持": { radical:"手", variant:"" },
+  "打": { radical:"手", variant:"扌" },
+  "払": { radical:"手", variant:"扌" },
+  "投": { radical:"手", variant:"扌" },
+  "押": { radical:"手", variant:"扌" },
+  "指": { radical:"手", variant:"扌" },
+  "拾": { radical:"手", variant:"扌" },
+  "探": { radical:"手", variant:"扌" },
+  "折": { radical:"手", variant:"" },
+  "接": { radical:"手", variant:"扌" },
+  "捨": { radical:"手", variant:"扌" },
+  "提": { radical:"手", variant:"扌" },
+  "扱": { radical:"手", variant:"扌" },
+  "払": { radical:"手", variant:"扌" },
+
+  // =========================
+  // 足・⻊
+  // =========================
+
+  "足": { radical:"足", variant:"" },
+  "路": { radical:"足", variant:"" },
+  "踊": { radical:"足", variant:"" },
+  "踏": { radical:"足", variant:"" },
+
+  // =========================
+  // 糸・糹
+  // =========================
+
+  "糸": { radical:"糸", variant:"" },
+  "経": { radical:"糸", variant:"" },
+  "線": { radical:"糸", variant:"" },
+  "紙": { radical:"糸", variant:"" },
+  "終": { radical:"糸", variant:"" },
+  "続": { radical:"糸", variant:"" },
+  "結": { radical:"糸", variant:"" },
+  "約": { radical:"糸", variant:"" },
+  "練": { radical:"糸", variant:"" },
+  "給": { radical:"糸", variant:"" },
+  "級": { radical:"糸", variant:"" },
+
+  // =========================
+  // 言・訁
+  // =========================
+
+  "言": { radical:"言", variant:"" },
+  "話": { radical:"言", variant:"" },
+  "語": { radical:"言", variant:"" },
+  "説": { radical:"言", variant:"" },
+  "記": { radical:"言", variant:"" },
+  "計": { radical:"言", variant:"" },
+  "読": { radical:"言", variant:"" },
+  "調": { radical:"言", variant:"" },
+  "議": { radical:"言", variant:"" },
+  "講": { radical:"言", variant:"" },
+  "許": { radical:"言", variant:"" },
+  "認": { radical:"言", variant:"" },
+  "証": { radical:"言", variant:"" },
+  "識": { radical:"言", variant:"" },
+  "訪": { radical:"言", variant:"" },
+  "訳": { radical:"言", variant:"" },
+
+  // =========================
+  // 貝
+  // =========================
+
+  "貝": { radical:"貝", variant:"" },
+  "買": { radical:"貝", variant:"" },
+  "費": { radical:"貝", variant:"" },
+  "貴": { radical:"貝", variant:"" },
+  "貨": { radical:"貝", variant:"" },
+  "資": { radical:"貝", variant:"" },
+  "賞": { radical:"貝", variant:"" },
+
+  // =========================
+  // 車
+  // =========================
+
+  "車": { radical:"車", variant:"" },
+  "電": { radical:"雨", variant:"" },
+  "軍": { radical:"車", variant:"" },
+  "転": { radical:"車", variant:"" },
+  "輸": { radical:"車", variant:"" },
+
+  // =========================
+  // 雨
+  // =========================
+
+  "雨": { radical:"雨", variant:"" },
+  "電": { radical:"雨", variant:"" },
+  "雪": { radical:"雨", variant:"" },
+  "雲": { radical:"雨", variant:"" },
+  "雷": { radical:"雨", variant:"" },
+  "静": { radical:"青", variant:"" },
+
+  // =========================
+  // 石
+  // =========================
+
+  "石": { radical:"石", variant:"" },
+  "研": { radical:"石", variant:"" },
+  "破": { radical:"石", variant:"" },
+  "確": { radical:"石", variant:"" },
+  "碑": { radical:"石", variant:"" },
+
+  // =========================
+  // 示・礻
+  // =========================
+
+  "示": { radical:"示", variant:"" },
+  "社": { radical:"示", variant:"礻" },
+  "神": { radical:"示", variant:"礻" },
+  "祝": { radical:"示", variant:"礻" },
+  "福": { radical:"示", variant:"礻" },
+  "礼": { radical:"示", variant:"礻" },
+
+  // =========================
+  // 衣・衤
+  // =========================
+
+  "衣": { radical:"衣", variant:"" },
+  "表": { radical:"衣", variant:"" },
+  "製": { radical:"衣", variant:"" },
+  "初": { radical:"刀", variant:"衤" },
+
+  // =========================
+  // 刀・刂
+  // =========================
+
+  "刀": { radical:"刀", variant:"" },
+  "分": { radical:"刀", variant:"" },
+  "切": { radical:"刀", variant:"" },
+  "別": { radical:"刀", variant:"" },
+  "初": { radical:"刀", variant:"" },
+  "利": { radical:"刀", variant:"刂" },
+  "列": { radical:"刀", variant:"刂" },
+  "則": { radical:"刀", variant:"刂" },
+
+  // =========================
+  // 力
+  // =========================
+
+  "力": { radical:"力", variant:"" },
+  "加": { radical:"力", variant:"" },
+  "動": { radical:"力", variant:"" },
+  "助": { radical:"力", variant:"" },
+  "勉": { radical:"力", variant:"" },
+  "務": { radical:"力", variant:"" },
+  "効": { radical:"力", variant:"" },
+
+  // =========================
+  // 馬
+  // =========================
+
+  "馬": { radical:"馬", variant:"" },
+  "験": { radical:"馬", variant:"" },
+  "駅": { radical:"馬", variant:"" },
+
+  // =========================
+  // 魚
+  // =========================
+
+  "魚": { radical:"魚", variant:"" },
+
+  // =========================
+  // 犬・犭
+  // =========================
+
+  "犬": { radical:"犬", variant:"" },
+  "犯": { radical:"犬", variant:"犭" },
+  "独": { radical:"犬", variant:"犭" },
+  "猫": { radical:"犬", variant:"犭" },
+
+  // =========================
+  // 艸・艹
+  // =========================
+
+  "花": { radical:"艸", variant:"艹" },
+  "草": { radical:"艸", variant:"艹" },
+  "茶": { radical:"艸", variant:"艹" },
+  "薬": { radical:"艸", variant:"艹" },
+  "英": { radical:"艸", variant:"艹" },
+  "苦": { radical:"艸", variant:"艹" },
+
+  // =========================
+  // 竹・⺮
+  // =========================
+
+  "竹": { radical:"竹", variant:"" },
+  "答": { radical:"竹", variant:"" },
+  "算": { radical:"竹", variant:"" },
+  "箱": { radical:"竹", variant:"" },
+  "筆": { radical:"竹", variant:"" },
+
+  // =========================
+  // 食・飠
+  // =========================
+
+  "食": { radical:"食", variant:"" },
+  "飲": { radical:"食", variant:"" },
+  "館": { radical:"食", variant:"" },
+  "飯": { radical:"食", variant:"" },
+  "養": { radical:"食", variant:"" },
+
+  // =========================
+  // 米
+  // =========================
+
+  "米": { radical:"米", variant:"" },
+  "料": { radical:"米", variant:"" },
+  "粉": { radical:"米", variant:"" },
+  "精": { radical:"米", variant:"" },
+
+  // =========================
+  // 玉・王
+  // =========================
+
+  "王": { radical:"玉", variant:"王" },
+  "玉": { radical:"玉", variant:"" },
+  "理": { radical:"玉", variant:"王" },
+  "現": { radical:"玉", variant:"王" },
+  "球": { radical:"玉", variant:"王" },
+
+  // =========================
+  // 白
+  // =========================
+
+  "白": { radical:"白", variant:"" },
+  "百": { radical:"白", variant:"" },
+  "的": { radical:"白", variant:"" },
+  "習": { radical:"羽", variant:"" },
+
+  // =========================
+  // 羽
+  // =========================
+
+  "羽": { radical:"羽", variant:"" },
+  "習": { radical:"羽", variant:"" },
+  "翌": { radical:"羽", variant:"" },
+
+  // =========================
+  // 走
+  // =========================
+
+  "走": { radical:"走", variant:"" },
+  "起": { radical:"走", variant:"" },
+  "越": { radical:"走", variant:"" },
+
+  // =========================
+  // 辶
+  // =========================
+
+  "近": { radical:"辵", variant:"辶" },
+  "週": { radical:"辵", variant:"辶" },
+  "送": { radical:"辵", variant:"辶" },
+  "進": { radical:"辵", variant:"辶" },
+  "過": { radical:"辵", variant:"辶" },
+  "返": { radical:"辵", variant:"辶" },
+  "通": { radical:"辵", variant:"辶" },
+  "道": { radical:"辵", variant:"辶" },
+  "達": { radical:"辵", variant:"辶" },
+  "運": { radical:"辵", variant:"辶" },
+  "連": { radical:"辵", variant:"辶" },
+  "選": { radical:"辵", variant:"辶" },
+  "遠": { radical:"辵", variant:"辶" },
+
+  // =========================
+  // 廴
+  // =========================
+
+  "建": { radical:"廴", variant:"" },
+  "延": { radical:"廴", variant:"" },
+
+  // =========================
+  // 广
+  // =========================
+
+  "広": { radical:"广", variant:"" },
+  "店": { radical:"广", variant:"" },
+  "度": { radical:"广", variant:"" },
+  "府": { radical:"广", variant:"" },
+  "庫": { radical:"广", variant:"" },
+
+  // =========================
+  // 門
+  // =========================
+
+  "門": { radical:"門", variant:"" },
+  "間": { radical:"門", variant:"" },
+  "開": { radical:"門", variant:"" },
+  "閉": { radical:"門", variant:"" },
+  "聞": { radical:"耳", variant:"" },
+
+  // =========================
+  // 耳
+  // =========================
+
+  "耳": { radical:"耳", variant:"" },
+  "聞": { radical:"耳", variant:"" },
+  "取": { radical:"耳", variant:"" },
+  "職": { radical:"耳", variant:"" },
+
+  // =========================
+  // 頁
+  // =========================
+
+  "頁": { radical:"頁", variant:"" },
+  "頭": { radical:"頁", variant:"" },
+  "題": { radical:"頁", variant:"" },
+  "顔": { radical:"頁", variant:"" },
+  "願": { radical:"頁", variant:"" },
+
+  // =========================
+  // 貝・見
+  // =========================
+
+  "現": { radical:"玉", variant:"王" },
+  "規": { radical:"見", variant:"" },
+  "親": { radical:"見", variant:"" },
+
+  // =========================
+  // 高
+  // =========================
+
+  "高": { radical:"高", variant:"" },
+
+  // =========================
+  // 長
+  // =========================
+
+  "長": { radical:"長", variant:"" },
+
+  // =========================
+  // 方
+  // =========================
+
+  "方": { radical:"方", variant:"" },
+  "放": { radical:"攴", variant:"攵" },
+  "旅": { radical:"方", variant:"" },
+
+  // =========================
+  // 攴・攵
+  // =========================
+
+  "教": { radical:"攴", variant:"攵" },
+  "数": { radical:"攴", variant:"攵" },
+  "改": { radical:"攴", variant:"攵" },
+  "故": { radical:"攴", variant:"攵" },
+  "敗": { radical:"攴", variant:"攵" },
+
+  // =========================
+  // 欠
+  // =========================
+
+  "欠": { radical:"欠", variant:"" },
+  "次": { radical:"欠", variant:"" },
+  "歌": { radical:"欠", variant:"" },
+  "飲": { radical:"食", variant:"" },
+
+  // =========================
+  // 疒
+  // =========================
+
+  "病": { radical:"疒", variant:"" },
+  "痛": { radical:"疒", variant:"" },
+  "疲": { radical:"疒", variant:"" },
+
+  // =========================
+  // 身
+  // =========================
+
+  "身": { radical:"身", variant:"" },
+
+  // =========================
+  // 目標など
+  // =========================
+
+  "目": { radical:"目", variant:"" },
+  "標": { radical:"木", variant:"" },
+  "標識": { radical:"木", variant:"" },
+
+  // =========================
+  // 難しい主要漢字
+  // =========================
+
+  "経": { radical:"糸", variant:"" },
+  "験": { radical:"馬", variant:"" },
+  "要": { radical:"襾", variant:"" },
+  "由": { radical:"田", variant:"" },
+  "理": { radical:"玉", variant:"王" },
+  "準": { radical:"水", variant:"氵" },
+  "備": { radical:"人", variant:"亻" },
+  "説": { radical:"言", variant:"" },
+  "連": { radical:"辵", variant:"辶" },
+  "絡": { radical:"糸", variant:"" },
+  "約": { radical:"糸", variant:"" },
+  "束": { radical:"木", variant:"" },
+  "参": { radical:"厶", variant:"" },
+  "加": { radical:"力", variant:"" },
+  "成": { radical:"戈", variant:"" },
+  "功": { radical:"力", variant:"" },
+  "失": { radical:"大", variant:"" },
+  "敗": { radical:"攴", variant:"攵" },
+  "注": { radical:"水", variant:"氵" },
+  "意": { radical:"心", variant:"" },
+  "危": { radical:"卩", variant:"" },
+  "険": { radical:"阜", variant:"阝" },
+  "世": { radical:"一", variant:"" },
+  "界": { radical:"田", variant:"" },
+  "由": { radical:"田", variant:"" },
+  "自": { radical:"自", variant:"" },
+  "由": { radical:"田", variant:"" },
+  "未": { radical:"木", variant:"" },
+  "来": { radical:"木", variant:"" },
+  "標": { radical:"木", variant:"" },
+  "電": { radical:"雨", variant:"" },
+  "国": { radical:"囗", variant:"" },
+  "外": { radical:"夕", variant:"" },
+  "人": { radical:"人", variant:"" },
+  "食": { radical:"食", variant:"" },
+  "品": { radical:"口", variant:"" },
+  "工": { radical:"工", variant:"" },
+  "場": { radical:"土", variant:"" },
+  "行": { radical:"行", variant:"" },
+  "新": { radical:"斤", variant:"" },
+  "聞": { radical:"耳", variant:"" },
+  "写": { radical:"宀", variant:"" },
+  "真": { radical:"目", variant:"" },
+  "家": { radical:"宀", variant:"" },
+  "族": { radical:"方", variant:"" },
+  "康": { radical:"广", variant:"" },
+  "健": { radical:"人", variant:"亻" },
+  "情": { radical:"心", variant:"忄" },
+  "報": { radical:"土", variant:"" },
+  "環": { radical:"玉", variant:"王" },
+  "境": { radical:"土", variant:"" },
+  "職": { radical:"耳", variant:"" },
+  "民": { radical:"氏", variant:"" },
+  "続": { radical:"糸", variant:"" },
+  "入": { radical:"入", variant:"" },
+  "出": { radical:"凵", variant:"" },
+  "発": { radical:"癶", variant:"" },
+  "着": { radical:"羊", variant:"" },
+  "料": { radical:"米", variant:"" },
+  "売": { radical:"士", variant:"" },
+  "円": { radical:"冂", variant:"" },
+  "運": { radical:"辵", variant:"辶" },
+  "動": { radical:"力", variant:"" },
+  "勉": { radical:"力", variant:"" },
+  "強": { radical:"弓", variant:"" },
+  "読": { radical:"言", variant:"" },
+  "書": { radical:"曰", variant:"" },
+  "試": { radical:"言", variant:"" },
+  "結": { radical:"糸", variant:"" },
+  "果": { radical:"木", variant:"" },
+  "表": { radical:"衣", variant:"" },
+  "見": { radical:"見", variant:"" },
+  "考": { radical:"老", variant:"" },
+  "思": { radical:"心", variant:"" },
+  "将": { radical:"寸", variant:"" },
+  "計": { radical:"言", variant:"" },
+  "画": { radical:"田", variant:"" },
+  "予": { radical:"亅", variant:"" },
+  "定": { radical:"宀", variant:"" },
+  "変": { radical:"夂", variant:"" },
+  "更": { radical:"曰", variant:"" },
+  "確": { radical:"石", variant:"" },
+  "認": { radical:"言", variant:"" },
+  "内": { radical:"入", variant:"" },
+  "容": { radical:"宀", variant:"" },
+  "集": { radical:"隹", variant:"" },
+  "合": { radical:"口", variant:"" },
+  "受": { radical:"爪", variant:"" },
+  "付": { radical:"人", variant:"亻" },
+  "申": { radical:"田", variant:"" },
+  "込": { radical:"辵", variant:"辶" },
+  "提": { radical:"手", variant:"扌" },
+  "期": { radical:"月", variant:"" },
+  "限": { radical:"阜", variant:"阝" },
+  "学": { radical:"子", variant:"" },
+  "体": { radical:"人", variant:"亻" },
+  "験": { radical:"馬", variant:"" },
+  "域": { radical:"土", variant:"" },
+  "路": { radical:"足", variant:"" },
+  "運": { radical:"辵", variant:"辶" },
+  "送": { radical:"辵", variant:"辶" },
+  "荷": { radical:"艸", variant:"艹" },
+  "配": { radical:"酉", variant:"" },
+  "達": { radical:"辵", variant:"辶" },
+  "的": { radical:"白", variant:"" },
+  "標": { radical:"木", variant:"" }
+};
+
+
+
+// =====================================================
+// VALIDASI KANJI RADIKAL
+// =====================================================
+
+function validateKanjiRadicalMap(){
+
+  const missing = [];
+  const invalid = [];
+
+  Object.entries(kanjiRadicalMap).forEach(([kanjiChar, data]) => {
+
+    if(!data || !data.radical){
+      missing.push(kanjiChar);
+      return;
+    }
+
+    const radicalExists = kanjiRadicals.some(
+      r => r.radical === data.radical
+    );
+
+    const variantExists = !data.variant ||
+      kanjiRadicals.some(r =>
+        Array.isArray(r.variants) &&
+        r.variants.includes(data.variant)
+      );
+
+    if(!radicalExists){
+      invalid.push(
+        `${kanjiChar} → radikal ${data.radical} tidak ditemukan`
+      );
+    }
+
+    if(data.variant && !variantExists){
+      invalid.push(
+        `${kanjiChar} → variant ${data.variant} tidak ditemukan`
+      );
+    }
+
+  });
+
+  console.log("===== KANJI RADICAL VALIDATION =====");
+
+  console.log(
+    "Total mapping:",
+    Object.keys(kanjiRadicalMap).length
+  );
+
+  if(missing.length){
+    console.warn("Missing:", missing);
+  }else{
+    console.log("✓ Semua mapping memiliki radikal");
+  }
+
+  if(invalid.length){
+    console.warn("Invalid:", invalid);
+  }else{
+    console.log("✓ Semua radikal ditemukan dalam database 214");
+  }
+}
+
+validateKanjiRadicalMap();
+
+
+
+      
 /* =====================================================
    RADICAL UI
 ===================================================== */
@@ -12687,39 +13501,99 @@ function filterRadicals(){
 }
 
 
-function showRadicalKanjiByChar(radical){
+// =====================================================
+// RADIKAL → KANJI → KOTOBA
+// =====================================================
 
-  const data =
-    kanjiRadicals.find(
-      item => item.radical === radical
-    );
-
-  if(!data) return;
+let selectedRadicalChar = null;
+let selectedRadicalKanji = null;
 
 
-  const container =
-    document.getElementById("radicalKanjiResult");
+// =====================================================
+// TAMPILKAN KANJI BERDASARKAN RADIKAL
+// =====================================================
 
-  if(!container) return;
+function showRadicalKanjiByChar(radicalChar){
+
+  const result = document.getElementById("radicalKanjiResult");
+
+  if(!result) return;
+
+  selectedRadicalChar = radicalChar;
+  selectedRadicalKanji = null;
+
+  // Cari semua Kanji yang memiliki radikal tersebut
+  const matchedKanji = Object.entries(kanjiRadicalMap)
+    .filter(([kanjiChar, data]) => {
+
+      if(!data) return false;
+
+      return (
+        data.radical === radicalChar ||
+        data.variant === radicalChar
+      );
+
+    })
+    .map(([kanjiChar]) => kanjiChar);
 
 
-  let html = `
+  // Hilangkan duplikat
+  const uniqueKanji = [...new Set(matchedKanji)];
+
+
+  // Jika tidak ditemukan
+  if(!uniqueKanji.length){
+
+    result.innerHTML = `
+      <div class="radical-result-header">
+        <div>
+          <span class="radical-result-symbol">
+            ${radicalChar}
+          </span>
+
+          <div>
+            <h3>Tidak ada Kanji</h3>
+            <p>
+              Belum ada Kanji yang terhubung
+              dengan radikal ini.
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    return;
+  }
+
+
+  // Cari informasi radikal
+  const radicalInfo = kanjiRadicals.find(
+    item => item.radical === radicalChar
+  );
+
+
+  result.innerHTML = `
 
     <div class="radical-result-header">
 
-      <div class="radical-big">
-        ${data.radical}
-      </div>
+      <div class="radical-result-title">
 
-      <div>
+        <div class="radical-result-symbol">
+          ${radicalChar}
+        </div>
 
-        <h3>
-          ${data.name}
-        </h3>
+        <div>
 
-        <p>
-          ${data.meaning}
-        </p>
+          <h3>
+            ${radicalInfo?.meaning || "Radikal"}
+          </h3>
+
+          <p>
+            ${radicalInfo?.strokes || "—"} coretan
+            · ${uniqueKanji.length} Kanji
+          </p>
+
+        </div>
 
       </div>
 
@@ -12728,48 +13602,275 @@ function showRadicalKanjiByChar(radical){
 
     <div class="radical-kanji-grid">
 
+      ${uniqueKanji.map(char => {
+
+        const info = kanjiRadicalMap[char];
+
+        return `
+
+          <button
+            class="radical-kanji-card"
+            onclick="showRadicalKanjiDetail('${char}')"
+          >
+
+            <div class="radical-kanji-character">
+              ${char}
+            </div>
+
+            <div class="radical-kanji-info">
+
+              <span>
+                Radikal ${info?.radical || "—"}
+              </span>
+
+              ${
+                info?.variant
+                ? `<small>${info.variant}</small>`
+                : ""
+              }
+
+            </div>
+
+          </button>
+
+        `;
+
+      }).join("")}
+
+    </div>
+
+
+    <div id="radicalKanjiDetail"></div>
+
   `;
 
+  // Scroll ke hasil
+  result.scrollIntoView({
+    behavior:"smooth",
+    block:"nearest"
+  });
+}
 
-  data.kanji.forEach(char => {
 
-    const safe =
-      char.replace(/'/g,"\\'");
+// =====================================================
+// KANJI → DETAIL + KOTOBA
+// =====================================================
+
+function showRadicalKanjiDetail(targetKanji){
+
+  const detail = document.getElementById("radicalKanjiDetail");
+
+  if(!detail) return;
+
+  selectedRadicalKanji = targetKanji;
 
 
-    html += `
+  // ===================================================
+  // CARI KOTOBA DARI DATABASE UTAMA
+  // ===================================================
 
-      <button
-        class="radical-kanji-card"
-        onclick="showKanjiFromRadical('${safe}')">
+  let relatedWords = [];
 
-        <div class="radical-kanji-character">
-          ${char}
+  if(typeof kanji !== "undefined" && Array.isArray(kanji)){
+
+    relatedWords = kanji.filter(item => {
+
+      if(!item || !item.word) return false;
+
+      return [...item.word].includes(targetKanji);
+
+    });
+
+  }
+
+
+  // ===================================================
+  // CARI READING KANJI
+  // ===================================================
+
+  let readings = [];
+
+  if(typeof kanjiReadingMap !== "undefined"){
+
+    Object.values(kanjiReadingMap).forEach(parts => {
+
+      if(!Array.isArray(parts)) return;
+
+      parts.forEach(part => {
+
+        if(
+          part &&
+          part.kanji === targetKanji &&
+          part.reading
+        ){
+
+          readings.push(part.reading);
+
+        }
+
+      });
+
+    });
+
+  }
+
+
+  readings = [...new Set(readings)];
+
+
+  // ===================================================
+  // TAMPILKAN DETAIL
+  // ===================================================
+
+  detail.innerHTML = `
+
+    <div class="radical-word-detail">
+
+      <div class="radical-word-detail-header">
+
+        <div class="radical-detail-kanji">
+          ${targetKanji}
         </div>
 
-      </button>
+        <div>
 
-    `;
+          <h3>
+            Kanji ${targetKanji}
+          </h3>
 
-  });
+          <p>
+            Radikal:
+            <strong>
+              ${kanjiRadicalMap[targetKanji]?.radical || "—"}
+            </strong>
+          </p>
+
+          ${
+            readings.length
+            ? `
+              <p>
+                Reading:
+                <strong>
+                  ${readings.join(" ・ ")}
+                </strong>
+              </p>
+            `
+            : ""
+          }
+
+        </div>
+
+      </div>
 
 
-  html += `
+      <div class="radical-word-section">
+
+        <div class="radical-word-section-title">
+
+          <span>ことば</span>
+
+          <small>
+            ${relatedWords.length} kosakata
+          </small>
+
+        </div>
+
+
+        ${
+          relatedWords.length
+          ? `
+
+            <div class="radical-word-grid">
+
+              ${relatedWords.map(item => `
+
+                <div class="radical-word-card">
+
+                  <div class="radical-word-main">
+                    ${highlightKanjiInWord(
+                      item.word,
+                      targetKanji
+                    )}
+                  </div>
+
+                  <div class="radical-word-reading">
+                    ${item.reading || ""}
+                  </div>
+
+                  <div class="radical-word-meaning">
+                    ${item.meaning || ""}
+                  </div>
+
+                  ${
+                    item.example
+                    ? `
+                      <div class="radical-word-example">
+                        ${item.example}
+                      </div>
+                    `
+                    : ""
+                  }
+
+                </div>
+
+              `).join("")}
+
+            </div>
+
+          `
+          : `
+
+            <div class="no-related">
+
+              Belum ada kosakata yang menggunakan
+              Kanji <strong>${targetKanji}</strong>
+              di database.
+
+            </div>
+
+          `
+        }
+
+      </div>
+
     </div>
+
   `;
 
 
-  container.innerHTML = html;
-
-
-  container.scrollIntoView({
+  detail.scrollIntoView({
     behavior:"smooth",
-    block:"start"
+    block:"nearest"
   });
 
 }
 
+// =====================================================
+// HIGHLIGHT KANJI DALAM KOTOBA
+// =====================================================
 
+function highlightKanjiInWord(word, targetKanji){
+
+  if(!word || !targetKanji){
+    return word || "";
+  }
+
+  const escaped = targetKanji.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    "\\$&"
+  );
+
+  return word.replace(
+    new RegExp(escaped, "g"),
+    `<span class="kanji-highlight">${targetKanji}</span>`
+  );
+
+}
+
+
+  
+
+  
 function showKanjiFromRadical(targetKanji){
 
   const container =
