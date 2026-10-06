@@ -625,6 +625,237 @@ main{
 
 /* HEADER KANJI */
 
+/* =========================================
+   RADICAL
+========================================= */
+
+.radical-panel {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.radical-header {
+  background: #fff;
+  padding: 18px;
+  border-radius: 18px;
+  margin-bottom: 14px;
+  border: 1px solid #eee8f0;
+}
+
+.radical-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #514755;
+}
+
+.radical-header p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #938995;
+  line-height: 1.5;
+}
+
+.radical-search {
+  margin-bottom: 15px;
+}
+
+.radical-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1px solid #e7e0e9;
+  border-radius: 14px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+}
+
+.radical-search input:focus {
+  border-color: #b9a2c5;
+}
+
+.radical-list {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px;
+}
+
+.radical-card {
+  border: 1px solid #ebe5ed;
+  background: #fff;
+  border-radius: 17px;
+  min-height: 105px;
+  padding: 12px 7px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: .2s ease;
+}
+
+.radical-card:hover {
+  transform: translateY(-3px);
+  background: #faf7fb;
+}
+
+.radical-symbol {
+  font-size: 35px;
+  font-weight: 700;
+  color: #514755;
+  line-height: 1;
+}
+
+.radical-name {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #806f88;
+}
+
+.radical-meaning {
+  margin-top: 3px;
+  font-size: 10px;
+  color: #a097a4;
+  text-align: center;
+}
+
+.radical-kanji-result {
+  margin-top: 22px;
+}
+
+.radical-result-header,
+.radical-selected-kanji {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid #eee8f0;
+  border-radius: 18px;
+  margin-bottom: 14px;
+}
+
+.radical-big,
+.radical-selected-character {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee5f2;
+  border-radius: 15px;
+  font-size: 35px;
+  font-weight: 700;
+  color: #66506f;
+}
+
+.radical-result-header h3,
+.radical-selected-kanji h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #514755;
+}
+
+.radical-result-header p,
+.radical-selected-kanji p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #99919c;
+}
+
+.radical-kanji-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(70px, 1fr));
+  gap: 9px;
+}
+
+.radical-kanji-card {
+  min-height: 75px;
+  border: 1px solid #ebe5ed;
+  border-radius: 15px;
+  background: #fff;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.radical-kanji-card:hover {
+  transform: translateY(-3px);
+  background: #faf7fb;
+}
+
+.radical-kanji-character {
+  font-size: 32px;
+  font-weight: 700;
+  color: #403945;
+}
+
+.radical-word-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.radical-word-card {
+  background: #fff;
+  border: 1px solid #ebe5ed;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.radical-word {
+  font-size: 23px;
+  font-weight: 700;
+  color: #403945;
+}
+
+.radical-reading {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #8c828f;
+}
+
+.radical-meaning {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #68606b;
+}
+
+.kanji-highlight {
+  color: #8a6ba0;
+  font-weight: 800;
+}
+
+@media (max-width: 360px) {
+
+  .radical-list {
+    grid-template-columns:
+      repeat(4, 1fr);
+    gap: 7px;
+  }
+
+  .radical-card {
+    min-height: 90px;
+  }
+
+  .radical-symbol {
+    font-size: 29px;
+  }
+
+  .radical-name {
+    font-size: 10px;
+  }
+
+  .radical-meaning {
+    font-size: 9px;
+  }
+
+}
+  
 .related-kanji-title{
   display:flex;
   align-items:center;
@@ -1077,6 +1308,38 @@ footer{
     <p>Belajar kanji melalui kosakata yang menggunakan kanji tersebut.</p>
   </div>
 
+
+<div id="radicalPanel" class="radical-panel">
+
+  <div class="radical-header">
+    <h3>部首 — Kanji Radikal</h3>
+    <p>
+      Pilih radikal untuk melihat kanji yang menggunakan radikal tersebut.
+    </p>
+  </div>
+
+  <div class="radical-search">
+    <input
+      type="text"
+      id="radicalSearch"
+      placeholder="Cari radikal, contoh: 人 / 水 / 木..."
+      oninput="filterRadicals()"
+    >
+  </div>
+
+  <div
+    id="radicalList"
+    class="radical-list">
+  </div>
+
+  <div
+    id="radicalKanjiResult"
+    class="radical-kanji-result">
+  </div>
+
+</div>
+
+  
   <!-- KANJI UTAMA -->
   <div class="flashcard" id="kanjiCard" onclick="flipCard('kanjiCard')">
 <button class="kanji-filter" onclick="showRadicals()">
@@ -1101,6 +1364,10 @@ footer{
 
   <!-- NAVIGASI -->
   <div class="flash-actions">
+
+    <button onclick="showPage('kanji',this); showRadicals()">
+  部首 Radikal
+</button>
     <button class="btn secondary" onclick="previousKanji()">←</button>
 
     <button class="btn" onclick="flipCard('kanjiCard')">
@@ -10342,6 +10609,507 @@ function flipCard(id){
     .classList.toggle("flipped");
 
 }
+
+
+
+const kanjiRadicals = [
+
+  {
+    radical: "人",
+    name: "ひと",
+    meaning: "orang",
+    variants: ["亻"],
+    kanji: ["休", "体", "住", "作", "使", "会", "何"]
+  },
+
+  {
+    radical: "亻",
+    name: "にんべん",
+    meaning: "orang",
+    variants: ["人"],
+    kanji: ["休", "体", "住", "作", "使", "代", "仕"]
+  },
+
+  {
+    radical: "口",
+    name: "くち",
+    meaning: "mulut",
+    variants: [],
+    kanji: ["口", "名", "古", "右", "聞", "問", "味"]
+  },
+
+  {
+    radical: "日",
+    name: "ひ",
+    meaning: "matahari; hari",
+    variants: [],
+    kanji: ["日", "明", "時", "曜", "早", "昨", "映"]
+  },
+
+  {
+    radical: "月",
+    name: "つき",
+    meaning: "bulan",
+    variants: [],
+    kanji: ["月", "明", "朝", "期", "服", "有"]
+  },
+
+  {
+    radical: "木",
+    name: "き",
+    meaning: "pohon",
+    variants: [],
+    kanji: ["木", "林", "森", "校", "机", "村", "休"]
+  },
+
+  {
+    radical: "水",
+    name: "みず",
+    meaning: "air",
+    variants: ["氵"],
+    kanji: ["水", "海", "池", "洗", "活", "酒", "泳"]
+  },
+
+  {
+    radical: "氵",
+    name: "さんずい",
+    meaning: "air",
+    variants: ["水"],
+    kanji: ["海", "池", "洗", "活", "酒", "湖", "温"]
+  },
+
+  {
+    radical: "火",
+    name: "ひ",
+    meaning: "api",
+    variants: [],
+    kanji: ["火", "炎", "焼", "燃", "灯", "熱"]
+  },
+
+  {
+    radical: "土",
+    name: "つち",
+    meaning: "tanah",
+    variants: [],
+    kanji: ["土", "地", "場", "堂", "坂", "寺"]
+  },
+
+  {
+    radical: "金",
+    name: "かね",
+    meaning: "emas; logam; uang",
+    variants: ["釒"],
+    kanji: ["金", "銀", "鉄", "銅", "針", "銀行"]
+  },
+
+  {
+    radical: "言",
+    name: "ことば",
+    meaning: "kata; bicara",
+    variants: [],
+    kanji: ["言", "話", "語", "読", "記", "計", "説"]
+  },
+
+  {
+    radical: "心",
+    name: "こころ",
+    meaning: "hati; perasaan",
+    variants: ["忄"],
+    kanji: ["心", "思", "忘", "急", "悪", "意", "感"]
+  },
+
+  {
+    radical: "忄",
+    name: "りっしんべん",
+    meaning: "hati; perasaan",
+    variants: ["心"],
+    kanji: ["性", "情", "怖", "忙", "快", "悲", "悩"]
+  },
+
+  {
+    radical: "手",
+    name: "て",
+    meaning: "tangan",
+    variants: ["扌"],
+    kanji: ["手", "持", "打", "投", "指", "拾", "押"]
+  },
+
+  {
+    radical: "扌",
+    name: "てへん",
+    meaning: "tangan",
+    variants: ["手"],
+    kanji: ["持", "打", "投", "指", "拾", "押", "探"]
+  },
+
+  {
+    radical: "足",
+    name: "あし",
+    meaning: "kaki",
+    variants: [],
+    kanji: ["足", "路", "距", "跳", "踏"]
+  },
+
+  {
+    radical: "雨",
+    name: "あめ",
+    meaning: "hujan",
+    variants: [],
+    kanji: ["雨", "雪", "電", "雲", "雷", "霧"]
+  },
+
+  {
+    radical: "糸",
+    name: "いと",
+    meaning: "benang",
+    variants: ["糹"],
+    kanji: ["糸", "紙", "細", "線", "組", "終", "結"]
+  },
+
+  {
+    radical: "食",
+    name: "しょく",
+    meaning: "makanan; makan",
+    variants: ["飠"],
+    kanji: ["食", "飲", "館", "飯", "養", "飼"]
+  },
+
+  {
+    radical: "車",
+    name: "くるま",
+    meaning: "kendaraan",
+    variants: [],
+    kanji: ["車", "駅", "転", "軽", "輪", "輸"]
+  },
+
+  {
+    radical: "門",
+    name: "もん",
+    meaning: "gerbang",
+    variants: [],
+    kanji: ["門", "間", "聞", "開", "閉", "問"]
+  },
+
+  {
+    radical: "辶",
+    name: "しんにょう",
+    meaning: "jalan; pergerakan",
+    variants: ["⻌"],
+    kanji: ["近", "週", "道", "通", "進", "送", "運"]
+  },
+
+  {
+    radical: "目",
+    name: "め",
+    meaning: "mata",
+    variants: [],
+    kanji: ["目", "見", "眠", "直", "県", "眼"]
+  },
+
+  {
+    radical: "耳",
+    name: "みみ",
+    meaning: "telinga",
+    variants: [],
+    kanji: ["耳", "聞", "職", "取", "聖"]
+  },
+
+  {
+    radical: "力",
+    name: "ちから",
+    meaning: "tenaga; kekuatan",
+    variants: [],
+    kanji: ["力", "男", "助", "動", "勉", "効"]
+  },
+
+  {
+    radical: "女",
+    name: "おんな",
+    meaning: "perempuan",
+    variants: [],
+    kanji: ["女", "好", "妹", "姉", "妻", "始"]
+  },
+
+  {
+    radical: "子",
+    name: "こ",
+    meaning: "anak",
+    variants: [],
+    kanji: ["子", "字", "学", "存", "好"]
+  },
+
+  {
+    radical: "山",
+    name: "やま",
+    meaning: "gunung",
+    variants: [],
+    kanji: ["山", "岩", "島", "岸", "出"]
+  },
+
+  {
+    radical: "石",
+    name: "いし",
+    meaning: "batu",
+    variants: [],
+    kanji: ["石", "研", "砂", "破", "碑"]
+  }
+
+];
+
+function showRadicals() {
+
+  const panel = document.getElementById("radicalPanel");
+
+  if (!panel) return;
+
+  panel.style.display = "block";
+
+  renderRadicals();
+
+}
+
+
+  function renderRadicals(list = kanjiRadicals) {
+
+  const container =
+    document.getElementById("radicalList");
+
+  if (!container) return;
+
+  if (!list.length) {
+
+    container.innerHTML = `
+      <div class="no-related">
+        Radikal tidak ditemukan.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = list.map((item, index) => {
+
+    return `
+
+      <button
+        class="radical-card"
+        onclick="showRadicalKanji(${index})">
+
+        <div class="radical-symbol">
+          ${item.radical}
+        </div>
+
+        <div class="radical-name">
+          ${item.name}
+        </div>
+
+        <div class="radical-meaning">
+          ${item.meaning}
+        </div>
+
+      </button>
+
+    `;
+
+  }).join("");
+
+}
+  
+
+function filterRadicals() {
+
+  const input =
+    document.getElementById("radicalSearch");
+
+  if (!input) return;
+
+  const keyword =
+    input.value.trim().toLowerCase();
+
+  if (!keyword) {
+
+    renderRadicals();
+
+    return;
+  }
+
+  const result =
+    kanjiRadicals.filter(item => {
+
+      return (
+        item.radical.includes(keyword) ||
+        item.name.toLowerCase().includes(keyword) ||
+        item.meaning.toLowerCase().includes(keyword)
+      );
+
+    });
+
+  renderRadicals(result);
+
+}
+
+  function showRadicalKanji(index) {
+
+  const data =
+    kanjiRadicals[index];
+
+  if (!data) return;
+
+  const container =
+    document.getElementById("radicalKanjiResult");
+
+  if (!container) return;
+
+  let html = `
+
+    <div class="radical-result-header">
+
+      <div class="radical-big">
+        ${data.radical}
+      </div>
+
+      <div>
+        <h3>${data.name}</h3>
+
+        <p>
+          ${data.meaning}
+        </p>
+      </div>
+
+    </div>
+
+    <div class="radical-kanji-grid">
+  `;
+
+  data.kanji.forEach(char => {
+
+    html += `
+
+      <button
+        class="radical-kanji-card"
+        onclick="showKanjiFromRadical('${char}')">
+
+        <div class="radical-kanji-character">
+          ${char}
+        </div>
+
+      </button>
+
+    `;
+
+  });
+
+  html += `</div>`;
+
+  container.innerHTML = html;
+
+  container.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+function showKanjiFromRadical(targetKanji) {
+
+  const container =
+    document.getElementById("radicalKanjiResult");
+
+  if (!container) return;
+
+  const words =
+    kanji.filter(item =>
+      item.word &&
+      item.word.includes(targetKanji)
+    );
+
+  let html = `
+
+    <div class="radical-selected-kanji">
+
+      <div class="radical-selected-character">
+        ${targetKanji}
+      </div>
+
+      <div>
+        <h3>Kanji 「${targetKanji}」</h3>
+
+        <p>
+          ${words.length} kotoba ditemukan
+        </p>
+      </div>
+
+    </div>
+
+  `;
+
+  if (!words.length) {
+
+    html += `
+      <div class="no-related">
+        Belum ada kotoba yang menggunakan
+        Kanji 「${targetKanji}」.
+      </div>
+    `;
+
+    container.innerHTML = html;
+
+    return;
+  }
+
+  html += `
+    <div class="radical-word-grid">
+  `;
+
+  words.forEach(item => {
+
+    const escaped =
+      targetKanji.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      );
+
+    const highlighted =
+      item.word.replace(
+        new RegExp(escaped, "g"),
+        `<span class="kanji-highlight">
+          ${targetKanji}
+        </span>`
+      );
+
+    html += `
+
+      <div class="radical-word-card">
+
+        <div class="radical-word">
+          ${highlighted}
+        </div>
+
+        <div class="radical-reading">
+          ${item.reading || ""}
+        </div>
+
+        <div class="radical-meaning">
+          ${item.meaning || ""}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  html += `</div>`;
+
+  container.innerHTML = html;
+
+}
+
+
+
+  
+
+  
 // ================================
 // IRODORI KANJI WORDS
 // ================================
