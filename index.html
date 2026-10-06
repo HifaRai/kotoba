@@ -15462,29 +15462,24 @@ function showRadicalKanjiDetail(targetKanji){
 
 
   // ===================================================
-  // CARI KOTOBA DARI DATABASE UTAMA
+  // DATA RADIKAL KANJI
   // ===================================================
 
-  let relatedWords = [];
+  const radicalData = kanjiRadicalMap[targetKanji];
 
-  if(typeof kanji !== "undefined" && Array.isArray(kanji)){
 
-    relatedWords = kanji.filter(item => {
-
-      if(!item || !item.word) return false;
-
-      return [...item.word].includes(targetKanji);
-
-    });
-
-  }
+  // Cari informasi radikal berdasarkan nomor
+  const radicalInfo = kanjiRadicals.find(
+    item => item.no === radicalData?.radicalNo
+  );
 
 
   // ===================================================
-  // CARI READING KANJI
+  // CARI READING
   // ===================================================
 
   let readings = [];
+
 
   if(typeof kanjiReadingMap !== "undefined"){
 
@@ -15515,12 +15510,54 @@ function showRadicalKanjiDetail(targetKanji){
 
 
   // ===================================================
-  // TAMPILKAN DETAIL
+  // CARI KOTOBA
+  // ===================================================
+
+  let relatedWords = [];
+
+
+  if(
+    typeof kanji !== "undefined" &&
+    Array.isArray(kanji)
+  ){
+
+    relatedWords = kanji.filter(item => {
+
+      if(!item || !item.word) return false;
+
+      return [...item.word].includes(targetKanji);
+
+    });
+
+  }
+
+
+  // Hilangkan duplicate berdasarkan word
+  const seenWords = new Set();
+
+  relatedWords = relatedWords.filter(item => {
+
+    if(seenWords.has(item.word)){
+      return false;
+    }
+
+    seenWords.add(item.word);
+
+    return true;
+
+  });
+
+
+  // ===================================================
+  // RENDER DETAIL
   // ===================================================
 
   detail.innerHTML = `
 
     <div class="radical-word-detail">
+
+
+      <!-- HEADER KANJI -->
 
       <div class="radical-word-detail-header">
 
@@ -15528,31 +15565,73 @@ function showRadicalKanjiDetail(targetKanji){
           ${targetKanji}
         </div>
 
+
         <div>
 
           <h3>
             Kanji ${targetKanji}
           </h3>
 
+
           <p>
-            
-           Radikal:
-<strong>
-  ${
-    kanjiRadicals.find(
-      r => r.no === kanjiRadicalMap[targetKanji]?.radicalNo
-    )?.radical || "—"
-  }
-</strong>
+
+            Radikal:
+
+            <strong>
+              ${radicalInfo?.radical || "—"}
+            </strong>
+
+            ${
+              radicalInfo?.meaning
+              ? `(${radicalInfo.meaning})`
+              : ""
+            }
+
           </p>
+
+
+          ${
+            radicalData?.radicalNo
+            ? `
+              <p>
+                Radikal No.
+                <strong>
+                  ${radicalData.radicalNo}
+                </strong>
+              </p>
+            `
+            : ""
+          }
+
 
           ${
             readings.length
             ? `
               <p>
+
                 Reading:
+
                 <strong>
                   ${readings.join(" ・ ")}
+                </strong>
+
+              </p>
+            `
+            : `
+              <p>
+                Reading belum tersedia.
+              </p>
+            `
+          }
+
+
+          ${
+            radicalData?.variant
+            ? `
+              <p>
+                Bentuk komponen:
+                <strong>
+                  ${radicalData.variant}
                 </strong>
               </p>
             `
@@ -15564,11 +15643,16 @@ function showRadicalKanjiDetail(targetKanji){
       </div>
 
 
+      <!-- KOTOBA -->
+
       <div class="radical-word-section">
+
 
         <div class="radical-word-section-title">
 
-          <span>ことば</span>
+          <span>
+            ことば
+          </span>
 
           <small>
             ${relatedWords.length} kosakata
@@ -15579,46 +15663,67 @@ function showRadicalKanjiDetail(targetKanji){
 
         ${
           relatedWords.length
+
           ? `
 
             <div class="radical-word-grid">
 
-              ${relatedWords.map(item => `
+              ${
+                relatedWords.map(item => `
 
-                <div class="radical-word-card">
+                  <div class="radical-word-card">
 
-                  <div class="radical-word-main">
-                    ${highlightKanjiInWord(
-                      item.word,
-                      targetKanji
-                    )}
+
+                    <div class="radical-word-main">
+
+                      ${highlightKanjiInWord(
+                        item.word,
+                        targetKanji
+                      )}
+
+                    </div>
+
+
+                    <div class="radical-word-reading">
+
+                      ${item.reading || ""}
+
+                    </div>
+
+
+                    <div class="radical-word-meaning">
+
+                      ${item.meaning || ""}
+
+                    </div>
+
+
+                    ${
+                      item.example
+
+                      ? `
+
+                        <div class="radical-word-example">
+
+                          ${item.example}
+
+                        </div>
+
+                      `
+
+                      : ""
+
+                    }
+
                   </div>
 
-                  <div class="radical-word-reading">
-                    ${item.reading || ""}
-                  </div>
-
-                  <div class="radical-word-meaning">
-                    ${item.meaning || ""}
-                  </div>
-
-                  ${
-                    item.example
-                    ? `
-                      <div class="radical-word-example">
-                        ${item.example}
-                      </div>
-                    `
-                    : ""
-                  }
-
-                </div>
-
-              `).join("")}
+                `).join("")
+              }
 
             </div>
 
           `
+
           : `
 
             <div class="no-related">
@@ -15639,9 +15744,13 @@ function showRadicalKanjiDetail(targetKanji){
   `;
 
 
+  // ===================================================
+  // SCROLL KE DETAIL
+  // ===================================================
+
   detail.scrollIntoView({
-    behavior:"smooth",
-    block:"nearest"
+    behavior: "smooth",
+    block: "nearest"
   });
 
 }
