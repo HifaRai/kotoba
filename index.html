@@ -1704,6 +1704,305 @@ footer{
 
 
 /* =====================================================
+   RADICAL → KANJI → KOTOBA
+   ===================================================== */
+
+.radical-result-title{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.radical-result-symbol{
+  width:64px;
+  height:64px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:18px;
+
+  background:rgba(145,120,190,.12);
+
+  font-size:36px;
+  font-weight:700;
+}
+
+.radical-result-header h3{
+  margin:0 0 4px;
+}
+
+.radical-result-header p{
+  margin:0;
+  opacity:.7;
+}
+
+
+/* =====================================================
+   KANJI GRID
+   ===================================================== */
+
+.radical-kanji-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(100px,1fr));
+
+  gap:10px;
+
+  margin-top:18px;
+}
+
+
+.radical-kanji-card{
+  border:none;
+
+  padding:14px 8px;
+
+  border-radius:16px;
+
+  background:#fff;
+
+  cursor:pointer;
+
+  transition:.2s;
+
+  box-shadow:
+    0 3px 12px rgba(0,0,0,.06);
+}
+
+
+.radical-kanji-card:hover{
+  transform:translateY(-3px);
+}
+
+
+.radical-kanji-card:active{
+  transform:scale(.97);
+}
+
+
+.radical-kanji-character{
+  font-size:38px;
+
+  font-weight:700;
+
+  line-height:1.2;
+}
+
+
+.radical-kanji-info{
+  margin-top:6px;
+
+  font-size:11px;
+
+  opacity:.65;
+}
+
+
+.radical-kanji-info small{
+  display:block;
+
+  margin-top:2px;
+}
+
+
+/* =====================================================
+   KANJI DETAIL
+   ===================================================== */
+
+.radical-word-detail{
+
+  margin-top:24px;
+
+  padding:20px;
+
+  border-radius:22px;
+
+  background:rgba(145,120,190,.07);
+}
+
+
+.radical-word-detail-header{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:16px;
+
+  margin-bottom:20px;
+}
+
+
+.radical-detail-kanji{
+
+  width:76px;
+  height:76px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  border-radius:20px;
+
+  background:white;
+
+  font-size:46px;
+
+  font-weight:700;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.07);
+}
+
+
+.radical-word-detail-header h3{
+  margin:0 0 5px;
+}
+
+
+.radical-word-detail-header p{
+  margin:3px 0;
+
+  font-size:13px;
+
+  opacity:.7;
+}
+
+
+/* =====================================================
+   KOTOBA SECTION
+   ===================================================== */
+
+.radical-word-section-title{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:12px;
+}
+
+
+.radical-word-section-title span{
+
+  font-size:18px;
+
+  font-weight:700;
+}
+
+
+.radical-word-section-title small{
+
+  opacity:.6;
+}
+
+
+.radical-word-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(190px,1fr));
+
+  gap:12px;
+}
+
+
+.radical-word-card{
+
+  background:white;
+
+  border-radius:16px;
+
+  padding:15px;
+
+  box-shadow:
+    0 3px 12px rgba(0,0,0,.05);
+}
+
+
+.radical-word-main{
+
+  font-size:22px;
+
+  font-weight:700;
+}
+
+
+.radical-word-reading{
+
+  margin-top:4px;
+
+  font-size:13px;
+
+  opacity:.65;
+}
+
+
+.radical-word-meaning{
+
+  margin-top:7px;
+
+  font-size:14px;
+}
+
+
+.radical-word-example{
+
+  margin-top:10px;
+
+  padding-top:9px;
+
+  border-top:1px solid rgba(0,0,0,.06);
+
+  font-size:12px;
+
+  line-height:1.6;
+
+  opacity:.65;
+}
+
+
+.kanji-highlight{
+
+  font-weight:800;
+
+  text-decoration:underline;
+
+  text-decoration-thickness:2px;
+
+  text-underline-offset:3px;
+}
+
+
+@media(max-width:600px){
+
+  .radical-kanji-grid{
+    grid-template-columns:
+      repeat(4,1fr);
+  }
+
+  .radical-kanji-character{
+    font-size:30px;
+  }
+
+  .radical-word-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+
+
+  
+
+/* =====================================================
    MOBILE
 ===================================================== */
 
