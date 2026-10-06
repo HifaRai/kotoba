@@ -12593,102 +12593,97 @@ const kanjiRadicals = [
 
 function renderRadicals(list = kanjiRadicals){
 
-  const container =
-    document.getElementById("radicalList");
+  const container = document.getElementById("radicalList");
 
   if(!container) return;
 
-
-  if(!list.length){
-
+  if(!list || !list.length){
     container.innerHTML = `
       <div class="no-related">
         Radikal tidak ditemukan.
       </div>
     `;
-
     return;
-
   }
 
+  container.innerHTML = list.map(item => {
 
-  container.innerHTML =
-    list.map(item => {
+    const variants = Array.isArray(item.variants)
+      ? item.variants
+      : [];
 
-      const safe =
-        item.radical.replace(/'/g,"\\'");
+    return `
+      <button
+        class="radical-card"
+        onclick="showRadicalKanjiByChar('${item.radical}')"
+      >
 
-      return `
+        <div class="radical-number">
+          ${item.no || ""}
+        </div>
 
-        <button
-          class="radical-card"
-          onclick="showRadicalKanjiByChar('${safe}')">
+        <div class="radical-symbol">
+          ${item.radical || "—"}
+        </div>
 
-          <div class="radical-symbol">
-            ${item.radical}
-          </div>
+        <div class="radical-name">
+          ${item.meaning || "—"}
+        </div>
 
-          <div class="radical-name">
-            ${item.name}
-          </div>
+        <div class="radical-strokes">
+          ${item.strokes || "—"} coretan
+        </div>
 
-          <div class="radical-meaning">
-            ${item.meaning}
-          </div>
+        ${
+          variants.length
+          ? `
+            <div class="radical-variants">
+              ${variants.join(" · ")}
+            </div>
+          `
+          : ""
+        }
 
-        </button>
+      </button>
+    `;
 
-      `;
-
-    }).join("");
-
+  }).join("");
 }
+
 
 
 function filterRadicals(){
 
-  const input =
-    document.getElementById("radicalSearch");
+  const input = document.getElementById("radicalSearch");
 
   if(!input) return;
 
-
-  const keyword =
-    input.value.trim().toLowerCase();
-
+  const keyword = input.value.trim().toLowerCase();
 
   if(!keyword){
-
     renderRadicals();
     return;
-
   }
 
+  const result = kanjiRadicals.filter(item => {
 
-  const result =
-    kanjiRadicals.filter(item =>
+    const radical = String(item.radical || "").toLowerCase();
+    const meaning = String(item.meaning || "").toLowerCase();
+    const no = String(item.no || "");
+    const variants = Array.isArray(item.variants)
+      ? item.variants.join(" ").toLowerCase()
+      : "";
 
-      item.radical
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      item.name
-        .toLowerCase()
-        .includes(keyword)
-
-      ||
-
-      item.meaning
-        .toLowerCase()
-        .includes(keyword)
-
+    return (
+      radical.includes(keyword) ||
+      meaning.includes(keyword) ||
+      no.includes(keyword) ||
+      variants.includes(keyword)
     );
 
+  });
 
   renderRadicals(result);
-
 }
 
 
