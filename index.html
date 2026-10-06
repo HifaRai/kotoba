@@ -13634,7 +13634,365 @@ const kanjiRadicalMap = {
 };
 
 
+// =====================================================
+// VALIDATOR: KANJI RADICAL MAP
+// =====================================================
 
+function validateKanjiRadicalStructure(){
+
+  const errors = [];
+  const warnings = [];
+
+  if(typeof kanjiRadicalMap === "undefined"){
+    console.error("❌ kanjiRadicalMap tidak ditemukan.");
+    return;
+  }
+
+  Object.entries(kanjiRadicalMap).forEach(([key, data]) => {
+
+    // -----------------------------------------
+    // KEY HARUS SATU KARAKTER KANJI
+    // -----------------------------------------
+
+    if([...key].length !== 1){
+
+      errors.push({
+        type: "MULTI-CHARACTER KEY",
+        key: key,
+        message: "Key harus berupa 1 Kanji saja."
+      });
+
+    }
+
+    if(!/^[\u4E00-\u9FFF]$/.test(key)){
+
+      errors.push({
+        type: "INVALID KANJI",
+        key: key,
+        message: "Key bukan karakter Kanji."
+      });
+
+    }
+
+    // -----------------------------------------
+    // DATA HARUS MEMILIKI RADICAL
+    // -----------------------------------------
+
+    if(!data || !data.radical){
+
+      errors.push({
+        type: "NO RADICAL",
+        key: key,
+        message: "Tidak memiliki property radical."
+      });
+
+      return;
+    }
+
+    // -----------------------------------------
+    // RADICAL HARUS ADA DI DATABASE 214
+    // -----------------------------------------
+
+    const radicalExists = kanjiRadicals.some(
+      item => item.radical === data.radical
+    );
+
+    if(!radicalExists){
+
+      errors.push({
+        type: "INVALID RADICAL",
+        key: key,
+        radical: data.radical,
+        message: "Radikal tidak ditemukan dalam database 214."
+      });
+
+    }
+
+    // -----------------------------------------
+    // VARIANT HARUS VALID
+    // -----------------------------------------
+
+    if(data.variant){
+
+      const variantExists = kanjiRadicals.some(item =>
+
+        Array.isArray(item.variants) &&
+        item.variants.includes(data.variant)
+
+      );
+
+      if(!variantExists){
+
+        warnings.push({
+          type: "UNKNOWN VARIANT",
+          key: key,
+          variant: data.variant
+        });
+
+      }
+
+    }
+
+  });
+
+
+  console.log("======================================");
+  console.log("KANJI RADICAL STRUCTURE CHECK");
+  console.log("======================================");
+
+  console.log(
+    "Total mapping:",
+    Object.keys(kanjiRadicalMap).length
+  );
+
+  console.log(
+    "Errors:",
+    errors.length
+  );
+
+  console.log(
+    "Warnings:",
+    warnings.length
+  );
+
+
+  if(errors.length){
+
+    console.error("❌ ERRORS");
+    console.table(errors);
+
+  }else{
+
+    console.log(
+      "✓ Tidak ada structural error."
+    );
+
+  }
+
+
+  if(warnings.length){
+
+    console.warn("⚠ WARNINGS");
+    console.table(warnings);
+
+  }
+
+
+  return {
+    errors,
+    warnings
+  };
+
+}
+
+
+  // =====================================================
+// COMBINED RADICAL DATABASE CHECK
+// =====================================================
+
+function runKanjiRadicalAudit(){
+
+  console.log("");
+  console.log("======================================");
+  console.log("KANJI RADICAL DATABASE AUDIT");
+  console.log("======================================");
+
+
+  // 1. Struktur
+  const structure =
+    validateKanjiRadicalStructure();
+
+
+  // 2. Coverage
+  const coverage =
+    validateKanjiRadicalCoverage();
+
+
+  console.log("");
+  console.log("======================================");
+  console.log("SUMMARY");
+  console.log("======================================");
+
+  console.log(
+    "Total Kanji:",
+    coverage.allKanji.length
+  );
+
+  console.log(
+    "Mapped:",
+    coverage.mapped.length
+  );
+
+  console.log(
+    "Unmapped:",
+    coverage.unmapped.length
+  );
+
+  console.log(
+    "Structural errors:",
+    structure.errors.length
+  );
+
+  console.log(
+    "Warnings:",
+    structure.warnings.length
+  );
+
+
+  return {
+    structure,
+    coverage
+  };
+
+}
+
+setTimeout(() => {
+
+  runKanjiRadicalAudit();
+
+}, 800);
+
+  
+// =====================================================
+// KANJI RADICAL MAP CHECKER
+// Mendeteksi semua Kanji yang ada di database
+// tetapi belum memiliki mapping radikal
+// =====================================================
+
+function extractAllKanjiCharacters(){
+
+  const kanjiSet = new Set();
+
+  function extractFromArray(data){
+
+    if(!Array.isArray(data)) return;
+
+    data.forEach(item => {
+
+      if(!item) return;
+
+      const word = item.word || item.kanji || "";
+
+      [...word].forEach(char => {
+
+        // Hanya karakter Kanji
+        if(/[\u4E00-\u9FFF]/.test(char)){
+          kanjiSet.add(char);
+        }
+
+      });
+
+    });
+  }
+
+  // Database Kotoba utama
+  if(typeof kanji !== "undefined"){
+    extractFromArray(kanji);
+  }
+
+  // Database Irodori
+  if(typeof irodoriKanji !== "undefined"){
+
+    Object.values(irodoriKanji).forEach(level => {
+
+      if(!level || typeof level !== "object") return;
+
+      Object.values(level).forEach(chapter => {
+        extractFromArray(chapter);
+      });
+
+    });
+
+  }
+
+  return [...kanjiSet].sort();
+}
+
+
+// =====================================================
+// CARI KANJI YANG BELUM ADA DI RADICAL MAP
+// =====================================================
+
+function getUnmappedKanji(){
+
+  const allKanji = extractAllKanjiCharacters();
+
+  const unmapped = allKanji.filter(char => {
+
+    return !kanjiRadicalMap ||
+           !kanjiRadicalMap[char];
+
+  });
+
+  return unmapped;
+}
+
+
+// =====================================================
+// LAPORAN RADICAL MAP
+// =====================================================
+
+function validateKanjiRadicalCoverage(){
+
+  const allKanji = extractAllKanjiCharacters();
+  const unmapped = getUnmappedKanji();
+
+  console.log("======================================");
+  console.log("KANJI RADICAL COVERAGE");
+  console.log("======================================");
+
+  console.log(
+    "Total Kanji unik:",
+    allKanji.length
+  );
+
+  console.log(
+    "Sudah memiliki radical map:",
+    allKanji.length - unmapped.length
+  );
+
+  console.log(
+    "Belum memiliki radical map:",
+    unmapped.length
+  );
+
+  if(unmapped.length){
+
+    console.warn(
+      "KANJI YANG BELUM TERPETAKAN:"
+    );
+
+    console.table(unmapped.map(char => ({
+      Kanji: char
+    })));
+
+  }else{
+
+    console.log(
+      "✓ Semua Kanji sudah memiliki radical map."
+    );
+
+  }
+
+  return {
+    allKanji,
+    mapped: allKanji.filter(
+      char => kanjiRadicalMap[char]
+    ),
+    unmapped
+  };
+}
+
+
+// Jalankan setelah semua database selesai dimuat
+setTimeout(() => {
+  validateKanjiRadicalCoverage();
+}, 500);
+
+
+
+
+  
 // =====================================================
 // VALIDASI KANJI RADIKAL
 // =====================================================
