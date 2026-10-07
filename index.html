@@ -2124,7 +2124,7 @@ footer{
 
 <header>
   <div class="logo">日本語 STUDY SPACE</div>
-  <h1>N4 Japanese Notes ♡</h1>
+  <h1>N4 Japanese Notes by Hifarai ♡</h1>
   <p>Minna no Nihongo 2 • Vocabulary • Kanji • Bunpou • Quiz</p>
 </header>
 
@@ -6963,7 +6963,15 @@ function shuffleKotoba(){
     updateKotoba();
 }
 
+function flipCard(cardId){
 
+  const card = document.getElementById(cardId);
+
+  if(!card) return;
+
+  card.classList.toggle("flipped");
+
+}
       
 /* =========================
    KANJI
